@@ -1,0 +1,35 @@
+{
+  "$schema": "π_field_v1",
+  "field_type": "wind",
+  "parameters": {
+    "direction": {
+      "type": "vector3",
+      "default": [1, 0, 0],
+      "description": "Normalized wind direction"
+    },
+    "strength": {
+      "type": "float",
+      "default": 0.5,
+      "range": [0, 10],
+      "description": "Wind force magnitude"
+    },
+    "turbulence": {
+      "type": "float",
+      "default": 0.1,
+      "range": [0, 1],
+      "description": "Randomized directional variance"
+    },
+    "falloff": {
+      "type": "string",
+      "default": "linear",
+      "enum": ["linear", "quadratic", "exponential"],
+      "description": "Strength falloff over distance"
+    }
+  },
+  "application_rules": {
+    "applies_to": ["dynamic_bodies"],
+    "excludes": ["static_bodies", "kinematic_bodies"],
+    "integration": "per_tick",
+    "order": 1
+  }
+}

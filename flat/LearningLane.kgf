@@ -1,0 +1,54 @@
+keygraph "LearningLane" version "2.0";
+namespace learning:core domain custom;
+namespace fold:core domain fold;
+namespace gram:core domain gram;
+namespace track:core domain track;
+namespace micro:core domain micro;
+namespace xcfe:core domain xcfe;
+namespace tensor:core domain custom;
+
+key learning:PROPOSAL kind field value "student.solve.learning";
+key learning:SCORED_CANDIDATE kind field value "W,C,R,G,S";
+key learning:FOLD_DELTA kind field value "proposed_delta";
+key learning:VERIFIED_DELTA kind field value "verified_delta";
+key learning:COMMIT_RECEIPT kind field value "persisted_receipt";
+key micro:STUDENT kind program;
+key xcfe:LEARNING_ADMISSION kind contract;
+key xcfe:LEARNING_VERIFICATION kind contract;
+
+edge micro:STUDENT -> learning:PROPOSAL type candidate;
+edge learning:PROPOSAL -> learning:SCORED_CANDIDATE type candidate;
+edge learning:SCORED_CANDIDATE -> learning:FOLD_DELTA type candidate;
+edge learning:FOLD_DELTA -> xcfe:LEARNING_VERIFICATION type references;
+edge xcfe:LEARNING_ADMISSION -> learning:VERIFIED_DELTA type governs;
+edge xcfe:LEARNING_VERIFICATION -> learning:VERIFIED_DELTA type governs;
+edge learning:VERIFIED_DELTA -> learning:COMMIT_RECEIPT type references;
+
+template fold:LEARNING_PROPOSE domain fold { operator MAP; input learning; output candidate; };
+template fold:WCR_ACCUMULATE domain fold { operator FOLD; input candidate; input accumulator; output proposed_delta; };
+template fold:LEARNING_VERIFY domain fold { operator VERIFY; input proposed_delta; output verified_delta; };
+template fold:LEARNING_CLOSE domain fold { operator CLOSE; input verified_delta; output result; };
+
+trigram gram:LEARNING_YAX ("learn",*,*) phase Yax fold fold:LEARNING_PROPOSE bindings [learning:explicit];
+trigram gram:LEARNING_SEK ("accumulate",*,*) phase Sek fold fold:WCR_ACCUMULATE bindings [candidate:explicit,accumulator:explicit];
+trigram gram:LEARNING_CHEN ("verify",*,*) phase Ch'en fold fold:LEARNING_VERIFY bindings [proposed_delta:explicit];
+trigram gram:LEARNING_XUL ("close",*,*) phase Xul fold fold:LEARNING_CLOSE bindings [verified_delta:explicit];
+
+track track:LEARNING { include micro:STUDENT; include gram:LEARNING_YAX; include gram:LEARNING_SEK; include gram:LEARNING_CHEN; include gram:LEARNING_XUL; };
+policy xcfe:LEARNING_POLICY { score wcr; admission xcfe:LEARNING_ADMISSION; max_depth 4; allow_cycle false; commit_phase Xul; };
+resolver learning:PROPOSAL_SELECT domain custom mode select policy xcfe:LEARNING_POLICY;
+program learning:PROPOSE track track:LEARNING entry fold:LEARNING_PROPOSE phase Yax;
+program learning:ACCUMULATE track track:LEARNING entry fold:WCR_ACCUMULATE phase Sek;
+program learning:VERIFY track track:LEARNING entry fold:LEARNING_VERIFY phase Ch'en;
+program learning:CLOSE track track:LEARNING entry fold:LEARNING_CLOSE phase Xul;
+
+bias tensor:learning_bias target learning:PROPOSE corpus 1.0 learned 1.0 update xul_commit;
+
+(* Host-side typed envelope: LearningProposal<ScoredCandidate{W,C,R,G,S}, provenance, proposal_id>.
+   The v2 grammar does not yet express this generic type or a first-class lane declaration.
+   WCRFoldAccumulator lives in the host and stages FoldDelta; this file does not execute writes.
+   The student may propose only. No persistence is permitted by adjacency, score,
+   program declaration, or reaching Xul alone. Commit requires separate Sek authority,
+   Ch'en GOOD evidence, Xul closure, and idempotent storage transaction.
+   Runtime must reject replayed proposal IDs and bind user/workspace provenance.
+*)

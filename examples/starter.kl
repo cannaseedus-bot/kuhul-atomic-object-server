@@ -1,0 +1,85 @@
+# Declarative kernel registry; shader signatures are not implementations
+[shaders]
+phase_color = "float4 phase_color(float t)"
+
+[opcodes]
+FOLD = 0x01
+MAP = 0x02
+FILTER = 0x03
+REDUCE = 0x04
+
+[glyphs]
+POP = "⟁"
+WO = "↦"
+YAX = "⟲"
+
+[semantics]
+POP = "begin or enter a phase"
+WO = "establish a typed lane and references"
+YAX = "transform values into candidates"
+SEK = "synchronize state; synchronization does not grant execution"
+CHEN = "validate transitions and results"
+XUL = "close a verified fold with an authorized accumulator"
+
+[vector]
+origin = (0.0, 0.0, 0.0)
+direction = (1.0, 0.0, 0.0)
+
+[float]
+phase_weight = 1.0
+learning_rate = 0.05
+
+[gradient]
+phase_heat = "0.0:#16324f, 0.5:#2ec4b6, 1.0:#f4d35e"
+
+[bias]
+attention = 0.0
+phase_offset = -0.125
+
+[weight]
+semantic = 0.85
+vector = 1.0
+
+[confidence]
+verified_result = 0.98
+candidate_match = 0.72
+
+[relativity]
+origin_distance = 0.25
+phase_alignment = 1.0
+
+[key]
+phase = "YAX"
+glyph = "⟁CAR"
+
+[value]
+candidate = "automobile"
+lane = "vehicle.vector"
+
+[query]
+semantic = "find related vehicle concepts"
+vector = "nearest neighbors to ⟁CAR"
+
+[bindings]
+identity = "key.glyph"
+phase = "key.phase"
+source = "value.lane"
+candidate = "value.candidate"
+semantic_query = "query.semantic"
+vector_query = "query.vector"
+semantic_weight = "weight.semantic"
+vector_weight = "weight.vector"
+attention_bias = "bias.attention"
+candidate_confidence = "confidence.candidate_match"
+
+[fold]
+operator = "FOLD"
+scope = "local"
+accumulator = "candidate"
+closure = "XUL"
+
+[admission]
+semantic = "required"
+lane = "required"
+operator = "required"
+verification = "required"

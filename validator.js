@@ -1,0 +1,10 @@
+'use strict';
+const RESERVED_TAGS=['srai','set','get','learn','learnf','that','topic','condition','random','think','bot','person','person2','gender','input','sr'];
+const RESERVED_TAG_RE=new RegExp('<\\s*/?\\s*('+RESERVED_TAGS.join('|')+')\\b','i');
+const ALLOWED_STAR_RE=/^<star(?:\s+index\s*=\s*"\s*\d+\s*")?\s*\/>$/i;
+const STAR_TAG_RE=/<star(?:\s+index\s*=\s*"\s*\d+\s*")?\s*\/>/gi;
+const MAX_LEN=256;
+function validateLiteralRule(pattern,template){const p=String(pattern||'').trim(),t=String(template||'').trim();if(!p)return{ok:false,reason:'Pattern is empty.'};if(!t)return{ok:false,reason:'Template is empty.'};if(p.length>MAX_LEN)return{ok:false,reason:'Pattern exceeds '+MAX_LEN+' chars.'};if(t.length>MAX_LEN)return{ok:false,reason:'Template exceeds '+MAX_LEN+' chars.'};if(/[<>]/.test(p))return{ok:false,reason:'Patterns cannot contain < or >.'};for(const tag of t.match(/<[^>]*>/g)||[])if(!ALLOWED_STAR_RE.test(tag))return{ok:false,reason:'Template tag not allowed: '+tag};if(/[<>]/.test(t.replace(STAR_TAG_RE,'')))return{ok:false,reason:'Template contains malformed angle brackets.'};if(RESERVED_TAG_RE.test(t))return{ok:false,reason:'Template contains a reserved AIML tag.'};return{ok:true,pattern:p,template:t};}
+function validateWildcardRule(pattern,template){const p=String(pattern||'').trim(),base=validateLiteralRule(p.replace(/[*^]/g,'WILDCARD'),template);if(!base.ok)return base;const count=(p.match(/[*^]/g)||[]).length;for(const m of String(template||'').matchAll(/<star\s+index\s*=\s*"\s*(\d+)\s*"\s*\/>/gi)){const i=parseInt(m[1],10);if(i<1||i>count)return{ok:false,reason:'Template references <star index="'+i+'"/> but pattern has only '+count+' wildcard(s).'};}return{ok:true,pattern:p,template:String(template||'').trim(),hasWildcard:count>0};}
+function parseTaughtMarker(response){if(typeof response!=='string'||!response.startsWith('TAUGHT_OK|'))return null;const rest=response.slice(10),sep=rest.indexOf('|');return sep<0?null:{pattern:rest.slice(0,sep).trim(),template:rest.slice(sep+1).trim()};}
+module.exports={validateLiteralRule,validateWildcardRule,parseTaughtMarker,MAX_LEN};

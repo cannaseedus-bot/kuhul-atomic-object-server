@@ -1,0 +1,88 @@
+# K'UHUL Symbolic Tensor Definition sample
+@manifest {
+    name: "chat-inference-ui"
+    version: "1.0.0"
+    type: "ui-kit"
+    engine: "kuhul-svg3d"
+}
+
+@tensors {
+    user.tensor ⟦U⟧ : text, timestamp, model_ref
+    ai.tensor ⟦A⟧ : text, model_id, confidence, tensor_id
+}
+
+@scx {
+    compress.rotate ⧫(↻) : tensor, angle -> tensor
+}
+
+# Keep semantic and lane JSON authoritative; compile only typed references.
+@semantic {
+    source: "../car-field.json"
+    schema: "kuhul.keyword-field.v1"
+    entry: ⟁CAR
+    preserve: lossless
+}
+
+@lanes {
+    source: "../recursive-vector-lane.json"
+    schema: "kuhul.recursive-vector-lane.v1"
+    entry: ⟁CAR
+    references: shared
+}
+
+@bindings {
+    identity: semantic.⟁CAR
+    chat_tensor: tensor.⟦U⟧
+    chat_lane: lane.⟁CAR
+}
+
+@traversal {
+    mode: recursive
+    cycle_detection: active_path
+    verification: field_scoped
+    commit: child_before_parent
+    admission: explicit
+}
+
+@shaders {
+    vertex.svg3d ◈ {
+        void main() {
+            gl_Position = vec4(0.0);
+        }
+    }
+}
+
+@components {
+    ChatBubble ⟦CB⟧ {
+        props { role: enum(user, ai, system) }
+        template svg {
+            <g class="scx-bubble">{role}</g>
+        }
+        scx_bind { tensor: user.tensor | ai.tensor }
+    }
+}
+
+@pipeline {
+    on_message ⧫ {
+        step 1: receive ⧫⟦U⟧
+        step 2: render_shader ◈
+        map(⟦U⟧ -> ⟦A⟧)
+        filter(⟦A⟧, confidence > 0.5)
+        fold(⟦A⟧, accumulator, Xul)
+    }
+}
+
+@theme {
+    quantum { primary: #16f2aa }
+}
+
+@symbols {
+    ⟦U⟧ = user_tensor
+    ◈ = wgl2_shader
+}
+
+@export {
+    output: "chat-inference-ui.js"
+    format: "kuhul-js"
+    targets: [ { platform: "web", renderer: "wgl2" } ]
+}

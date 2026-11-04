@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+  <!-- Generic starter knowledge base. Literal XML examples are escaped. -->
+  <category>
+    <pattern>HELLO</pattern>
+    <template>Hello. I am <bot name="name"/>, a chat bot. Ask me for assistance or help with K'uhul related coding.</template>
+  </category>
+  <category><pattern>HI</pattern><template><srai>HELLO</srai></template></category>
+  <category><pattern>HEY</pattern><template><srai>HELLO</srai></template></category>
+  <category><pattern>HOWDY</pattern><template><srai>HELLO</srai></template></category>
+  <category><pattern>GREETINGS</pattern><template><srai>HELLO</srai></template></category>
+  <category><pattern>HELLO *</pattern><template><srai>HELLO</srai> (You said: <star/>)</template></category>
+  <category><pattern>GOODBYE</pattern><template>Goodbye. The daemon stays running in the background.</template></category>
+  <category><pattern>BYE</pattern><template><srai>GOODBYE</srai></template></category>
+
+  <!-- Bot identity and global properties -->
+  <category><pattern>WHAT IS YOUR NAME</pattern><template>My name is <bot name="name"/>.</template></category>
+  <category><pattern>WHO ARE YOU</pattern><template><srai>WHAT IS YOUR NAME</srai></template></category>
+  <category><pattern>WHAT ARE YOU</pattern><template>I am a daemon bot — an always-on AIML agent. I answer with patterns matched to templates.</template></category>
+  <category><pattern>WHAT IS YOUR PURPOSE</pattern><template>To sit in the background and answer questions using AIML: pattern in, template out, with wildcards, SRAI, and bot keys.</template></category>
+  <category><pattern>WHO MADE YOU</pattern><template>I was built by <bot name="maker"/>.</template></category>
+  <category><pattern>WHAT VERSION ARE YOU</pattern><template>Version <bot name="version"/>.</template></category>
+
+  <!-- These are routing prefixes, not persistent mode switches. -->
+  <category><pattern>ASSISTANT</pattern><template>I can explain AIML syntax and show examples. Try: show me a pattern, show me a template, example wildcard, example srai, or example key.</template></category>
+  <category><pattern>CODER</pattern><template>I can show AIML XML examples. Ask: write a category, write a wildcard rule, write an srai rule, or write a bot key.</template></category>
+  <category><pattern>HELP</pattern><template>Topics I know: HELLO, ASSISTANT, CODER, PATTERN, TEMPLATE, WILDCARD, SRAI, KEY, BOT, CATEGORY, STAR. Ask what is a pattern to begin.</template></category>
+  <category><pattern>BOT</pattern><template><srai>WHAT ARE YOU</srai></template></category>
+
+  <!-- Patterns and templates -->
+  <category><pattern>WHAT IS A PATTERN</pattern><template>A &lt;pattern&gt; is the input side of an AIML category. It is matched against the user's normalized words. Example: the pattern HELLO matches "hello", "Hello", and "HELLO" after case normalization.</template></category>
+  <category><pattern>PATTERN</pattern><template><srai>WHAT IS A PATTERN</srai></template></category>
+  <category><pattern>SHOW ME A PATTERN</pattern><template>Here is a pattern inside a full category: &lt;category&gt;&lt;pattern&gt;HELLO&lt;/pattern&gt;&lt;template&gt;Hi there.&lt;/template&gt;&lt;/category&gt;</template></category>
+  <category><pattern>EXAMPLE PATTERN</pattern><template><srai>SHOW ME A PATTERN</srai></template></category>
+  <category><pattern>WHAT IS A TEMPLATE</pattern><template>A &lt;template&gt; is the response side of a category. It is what the bot says when the pattern matches. It can contain plain text, &lt;star/&gt;, &lt;srai&gt;, &lt;bot/&gt;, &lt;condition&gt;, &lt;random&gt;, and more.</template></category>
+  <category><pattern>TEMPLATE</pattern><template><srai>WHAT IS A TEMPLATE</srai></template></category>
+  <category><pattern>SHOW ME A TEMPLATE</pattern><template>A template with a wildcard echo: &lt;template&gt;You said: &lt;star/&gt;&lt;/template&gt;. Pair it with the pattern HELLO * to echo captured text.</template></category>
+
+  <!-- Wildcards and session predicates -->
+  <category><pattern>WHAT IS A WILDCARD</pattern><template>A wildcard matches words in a pattern. In AIML 2.0, * matches one or more words and ^ matches zero or more words. Captured text is read back with &lt;star/&gt;.</template></category>
+  <category><pattern>WILDCARD</pattern><template><srai>WHAT IS A WILDCARD</srai></template></category>
+  <category><pattern>EXAMPLE WILDCARD</pattern><template>Pattern: TELL ME ABOUT *. Template: You asked about &lt;star/&gt;. Input "tell me about daemons" captures "daemons"; output capitalization depends on the interpreter.</template></category>
+  <category><pattern>SHOW ME A WILDCARD</pattern><template><srai>EXAMPLE WILDCARD</srai></template></category>
+  <category><pattern>TELL ME ABOUT *</pattern><template>You asked about <star/>. (Wildcard captured: <star/>.)</template></category>
+  <category><pattern>I LIKE *</pattern><template>Noted: you like <star/>. This rule does not store a predicate.</template></category>
+  <category><pattern>MY NAME IS *</pattern><template><think><set name="name"><star/></set></think>Hello, <get name="name"/>. I will call you that this session.</template></category>
+  <!-- Configure empty defaults for name and mood in the host interpreter. -->
+  <category><pattern>WHAT IS MY NAME</pattern><template><condition name="name"><li value="">I do not know your name yet. Try: my name is Alex.</li><li>You are <get name="name"/>.</li></condition></template></category>
+  <category><pattern>I AM *</pattern><template><think><set name="mood"><star/></set></think>Understood — you are <get name="mood"/>.</template></category>
+  <category><pattern>HOW AM I</pattern><template><condition name="mood"><li value="">I have no read on your mood yet. Try: I am tired.</li><li>You told me you are <get name="mood"/>.</li></condition></template></category>
+
+  <!-- SRAI redirects and wildcard passthrough -->
+  <category><pattern>WHAT IS SRAI</pattern><template>&lt;srai&gt; sends its evaluated text through the matcher again, letting one template redirect to another category. It lets you route synonyms without duplicating templates.</template></category>
+  <category><pattern>SRAI</pattern><template><srai>WHAT IS SRAI</srai></template></category>
+  <category><pattern>EXAMPLE SRAI</pattern><template>&lt;category&gt;&lt;pattern&gt;HI&lt;/pattern&gt;&lt;template&gt;&lt;srai&gt;HELLO&lt;/srai&gt;&lt;/template&gt;&lt;/category&gt;. "hi" now behaves like "hello".</template></category>
+  <category><pattern>SHOW ME SRAI</pattern><template><srai>EXAMPLE SRAI</srai></template></category>
+  <category><pattern>WHAT ABOUT *</pattern><template><srai>TELL ME ABOUT <star/></srai></template></category>
+
+  <!-- Keys -->
+  <category><pattern>WHAT IS A KEY</pattern><template>A key is a named value the bot can read. &lt;bot name="name"/&gt; reads a global bot property configured by the host. &lt;get name="x"/&gt; reads a user predicate set with &lt;set name="x"&gt;value&lt;/set&gt;.</template></category>
+  <category><pattern>KEY</pattern><template><srai>WHAT IS A KEY</srai></template></category>
+  <category><pattern>EXAMPLE KEY</pattern><template>Global: &lt;bot name="name"/&gt; → <bot name="name"/>. User example: &lt;set name="mood"&gt;happy&lt;/set&gt; then &lt;get name="mood"/&gt; would output happy. This example does not change your mood.</template></category>
+  <category><pattern>SHOW ME A KEY</pattern><template><srai>EXAMPLE KEY</srai></template></category>
+
+  <!-- Categories and executable examples -->
+  <category><pattern>WHAT IS A CATEGORY</pattern><template>A &lt;category&gt; is the unit of AIML knowledge. It contains a &lt;pattern&gt; and a &lt;template&gt;, and can include context constraints.</template></category>
+  <category><pattern>CATEGORY</pattern><template><srai>WHAT IS A CATEGORY</srai></template></category>
+  <category><pattern>WRITE A CATEGORY</pattern><template>&lt;category&gt;&lt;pattern&gt;HELLO&lt;/pattern&gt;&lt;template&gt;Hi.&lt;/template&gt;&lt;/category&gt;</template></category>
+  <category><pattern>WRITE A WILDCARD RULE</pattern><template>&lt;category&gt;&lt;pattern&gt;TELL ME ABOUT *&lt;/pattern&gt;&lt;template&gt;You asked about &lt;star/&gt;.&lt;/template&gt;&lt;/category&gt;</template></category>
+  <category><pattern>WRITE AN SRAI RULE</pattern><template>&lt;category&gt;&lt;pattern&gt;HI&lt;/pattern&gt;&lt;template&gt;&lt;srai&gt;HELLO&lt;/srai&gt;&lt;/template&gt;&lt;/category&gt;</template></category>
+  <category><pattern>WRITE A BOT KEY</pattern><template>&lt;bot name="name"/&gt;</template></category>
+
+  <!-- Multiple captures -->
+  <category><pattern>WHAT IS STAR</pattern><template>&lt;star/&gt; outputs text captured by a wildcard in the pattern. &lt;star index="1"/&gt; reads the first capture; &lt;star index="2"/&gt; reads the second, and so on.</template></category>
+  <category><pattern>STAR</pattern><template><srai>WHAT IS STAR</srai></template></category>
+  <category><pattern>EXAMPLE STAR</pattern><template>Pattern * AND * with template &lt;star/&gt; + &lt;star index="2"/&gt;. Try: cats and dogs.</template></category>
+  <category><pattern>* AND *</pattern><template>You said "<star/>" and "<star index="2"/>". Together they are two captures.</template></category>
+  <category><pattern>ASSISTANT *</pattern><template><srai><star/></srai></template></category>
+  <category><pattern>CODER *</pattern><template><srai><star/></srai></template></category>
+
+  <!-- Single broad fallback; keep last for readers and ordered-match hosts. -->
+  <category><pattern>*</pattern><template>I have no rule for "<star/>" yet. Ask help to see what I know, or what is a pattern to start with AIML.</template></category>
+</aiml>

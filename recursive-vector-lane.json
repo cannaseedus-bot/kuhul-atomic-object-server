@@ -1,0 +1,19 @@
+{
+  "schema": "kuhul.recursive-vector-lane.v1",
+  "entry": "⟁CAR",
+  "laneContract": {
+    "lane": "glyph_reference",
+    "vector": { "ref": "semantic_vector_reference", "view": "semantic" },
+    "fields": { "<field_role>": { "lane": "glyph_reference", "fold": { "phase": "Pop", "state": "pending", "bindings": {}, "evidence": [], "result": null } } },
+    "fold": { "phase": "Pop", "state": "pending", "result": null }
+  },
+  "lanes": {
+    "⟁CAR": { "lane": "⟁CAR", "vector": { "ref": "vector.car", "view": "semantic" }, "fields": { "identity": { "lane": "⟁AUTOMOBILE", "fold": {} } }, "fold": {} },
+    "⟁AUTOMOBILE": { "lane": "⟁AUTOMOBILE", "vector": { "ref": "vector.automobile", "view": "semantic" }, "fields": { "gradient": { "lane": "⟁COMBUSTION", "fold": {} }, "bias": { "lane": "⟁GASOLINE", "fold": {} }, "topology": { "lane": "⟁ROADS", "fold": {} } }, "fold": {} },
+    "⟁COMBUSTION": { "lane": "⟁COMBUSTION", "vector": { "ref": "vector.combustion", "view": "semantic" }, "fields": { "dependency": { "lane": "⟁GASOLINE", "fold": {} }, "sensory": { "lane": "⟁SOUND", "fold": {} } }, "fold": {} },
+    "⟁GASOLINE": { "lane": "⟁GASOLINE", "vector": { "ref": "vector.gasoline", "view": "semantic" }, "fields": {}, "fold": {} },
+    "⟁ROADS": { "lane": "⟁ROADS", "vector": { "ref": "vector.roads", "view": "semantic" }, "fields": {}, "fold": {} },
+    "⟁SOUND": { "lane": "⟁SOUND", "vector": { "ref": "vector.sound", "view": "semantic" }, "fields": {}, "fold": {} }
+  },
+  "runtime": { "traversal": "recursive", "referenceMode": "shared_lane_registry", "cyclePolicy": "detect_active_path", "revisitPolicy": "allow_after_return", "verification": "field_scoped", "commit": "child_before_parent", "maxDepth": 64, "maxVisits": 4096, "execution": "explicit_admission_only" }
+}

@@ -1,0 +1,186 @@
+{
+  "%pi": {
+    "world": {
+      "gravity": [
+        0,
+        9.81,
+        0
+      ],
+      "air": {
+        "density": 1.225,
+        "viscosity": 1.8e-05
+      },
+      "time": {
+        "dt": 0.0166666667,
+        "substeps": 2
+      },
+      "solver": {
+        "integrator": "semi_implicit",
+        "iterations": 8
+      },
+      "fields": [
+        {
+          "field_type": "wind",
+          "parameters": {
+            "direction": [
+              1,
+              0,
+              0
+            ],
+            "strength": 0.5,
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "radius": 10.0,
+            "falloff": "linear",
+            "turbulence": 0.1,
+            "turbulence_seed": 1.0
+          }
+        },
+        {
+          "field_type": "attraction_well",
+          "parameters": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "strength": 2.0,
+            "radius": 5.0,
+            "falloff_power": 2.0
+          }
+        }
+      ]
+    },
+    "bodies": [
+      {
+        "id": "root",
+        "mass": 0.0,
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "shape": "box",
+        "size": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "flags": [
+          "static"
+        ],
+        "@role": "ui.node"
+      },
+      {
+        "id": "bone",
+        "mass": 1.0,
+        "position": [
+          0,
+          1,
+          0
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "shape": "capsule",
+        "size": [
+          0.2,
+          1.0,
+          0.2
+        ],
+        "material": {
+          "drag": 0.05
+        }
+      },
+      {
+        "id": "tip",
+        "mass": 0.5,
+        "position": [
+          0,
+          2,
+          0
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "shape": "sphere",
+        "size": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "material": {
+          "drag": 0.02
+        }
+      }
+    ],
+    "constraints": [
+      {
+        "id": "joint_root",
+        "type": "bone",
+        "a": "root",
+        "b": "bone",
+        "params": {
+          "rest_length": 1.0,
+          "stiffness": 1.0
+        }
+      },
+      {
+        "id": "joint_tip",
+        "type": "bone",
+        "a": "bone",
+        "b": "tip",
+        "params": {
+          "rest_length": 1.0,
+          "stiffness": 1.0
+        }
+      }
+    ],
+    "events": [
+      {
+        "type": "impulse",
+        "target": "tip",
+        "payload": {
+          "impulse": [
+            0.5,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "type": "torque",
+        "target": "bone",
+        "payload": {
+          "torque": [
+            0,
+            0,
+            0.2
+          ]
+        }
+      }
+    ],
+    "memory": {
+      "keys": [],
+      "queries": [],
+      "thoughts": [],
+      "foldKeys": []
+    }
+  },
+  "⟁tree": {
+    "⟁node": "body",
+    "⟁children": []
+  }
+}

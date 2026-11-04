@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kuhul://schema/kso/v1",
+  "title": "K'UHUL Symbolic Object package manifest",
+  "description": "Schema for the Extended JSON view of a KSO1 package. The .kso wire file is the four-byte ASCII KSO1 header followed by exactly one BSON document; this schema is not the BSON wire encoding.",
+  "type": "object",
+  "required": ["magic", "format", "version", "entry", "semantic", "lanes", "xcfe", "kernels", "compression"],
+  "properties": {
+    "magic": { "const": "KSO1" },
+    "format": { "const": "kuhul.symbolic-object" },
+    "version": { "const": 1 },
+    "entry": { "type": "string", "pattern": "^⟁[^\\s]+$" },
+    "semantic": { "$ref": "#/$defs/definition" },
+    "lanes": { "$ref": "#/$defs/definition", "properties": { "representation": { "const": "recursive-vector-graph" }, "sharedReferences": { "type": "boolean" } } },
+    "xcfe": {
+      "type": "object", "required": ["admission", "verification", "commit", "authority"],
+      "properties": {
+        "admission": { "const": "explicit" }, "verification": { "type": "string" },
+        "commit": { "type": "string" }, "authority": { "const": "host" }
+      }, "additionalProperties": true
+    },
+    "kernels": { "type": "array", "items": { "$ref": "#/$defs/kernel" } },
+    "attention": {
+      "type": "object",
+      "required": ["schema", "provider", "model", "definition", "externalUri", "status"],
+      "properties": {
+        "schema": { "const": "kuhul.neighborhood.attention.v1" },
+        "provider": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "definition": { "const": "external" },
+        "externalUri": { "type": "string", "minLength": 1, "format": "uri-reference" },
+        "status": { "const": "candidate_relevance_only" }
+      },
+      "additionalProperties": true
+    },
+    "compression": {
+      "type": "object", "required": ["codec", "scope"],
+      "properties": { "codec": { "const": "SCXQ2" }, "scope": { "type": "string" } },
+      "additionalProperties": true
+    },
+    "asxg": { "oneOf": [{ "$ref": "#/$defs/binary" }, { "type": "object", "required": ["ref", "format"], "properties": { "ref": { "type": "string" }, "format": { "const": "ASXG" } } }] }
+  },
+  "$defs": {
+    "definition": {
+      "type": "object", "required": ["ref", "preserve", "definition"],
+      "properties": {
+        "ref": { "type": "string", "minLength": 1 }, "preserve": { "const": "lossless" },
+        "definition": { "enum": ["embedded", "external"] }, "levels": { "type": "integer", "minimum": 1 },
+        "representation": { "type": "string" }, "sharedReferences": { "type": "boolean" },
+        "data": { "type": "object" }, "externalUri": { "type": "string", "format": "uri-reference" }
+      }, "additionalProperties": true
+    },
+    "binary": {
+      "type": "object", "required": ["$binary"], "properties": {
+        "$binary": { "type": "object", "required": ["base64", "subType"], "properties": {
+          "base64": { "type": "string", "contentEncoding": "base64" },
+          "subType": { "pattern": "^[0-9a-fA-F]{2}$" }
+        }, "additionalProperties": false }
+      }, "additionalProperties": false
+    },
+    "kernel": {
+      "type": "object", "required": ["id", "backend", "language", "profile", "format", "binary"],
+      "properties": {
+        "id": { "type": "string" }, "backend": { "enum": ["d3d11", "wgl2", "webgpu", "cpu"] },
+        "language": { "enum": ["hlsl", "glsl", "wgsl", "native"] },
+        "profile": { "type": "string" }, "entryPoint": { "type": "string" },
+        "format": { "enum": ["DXBC", "DXIL", "SPIR-V", "WGSL", "native"] },
+        "binary": { "$ref": "#/$defs/binary" },
+        "externalUri": { "type": "string", "format": "uri-reference" },
+        "bindings": { "type": "array", "items": { "type": "object" } }
+      }, "additionalProperties": true,
+      "oneOf": [{ "required": ["binary"] }, { "required": ["externalUri"] }]
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+  <!-- condition -->
+  <category><pattern>WHAT IS CONDITION</pattern><template>&lt;condition&gt; branches on a predicate value. Use &lt;condition name="mood"&gt; with value-specific &lt;li&gt; elements and a bare &lt;li&gt; default. The documented attribute form is &lt;condition var="mood" value="happy"&gt;.</template></category>
+  <category><pattern>CONDITION</pattern><template><srai>WHAT IS CONDITION</srai></template></category>
+  <category><pattern>EXAMPLE CONDITION</pattern><template>&lt;condition name="mood"&gt;&lt;li value="happy"&gt;Glad to hear it.&lt;/li&gt;&lt;li value="tired"&gt;Rest if you can.&lt;/li&gt;&lt;li&gt;I do not know your mood.&lt;/li&gt;&lt;/condition&gt;. Try: I am happy then how am I.</template></category>
+  <category><pattern>SHOW ME CONDITION</pattern><template><srai>EXAMPLE CONDITION</srai></template></category>
+  <category><pattern>WHAT MODE AM I IN</pattern><template><condition name="mode"><li value="assistant">You are in assistant mode.</li><li value="coder">You are in coder mode.</li><li value="idle">You are in the default idle mode.</li><li>Mode is unset.</li></condition></template></category>
+
+  <!-- random -->
+  <category><pattern>WHAT IS RANDOM</pattern><template>&lt;random&gt; picks one &lt;li&gt; response at random each time the template fires.</template></category>
+  <category><pattern>RANDOM</pattern><template><srai>WHAT IS RANDOM</srai></template></category>
+  <category><pattern>EXAMPLE RANDOM</pattern><template>&lt;random&gt;&lt;li&gt;One.&lt;/li&gt;&lt;li&gt;Two.&lt;/li&gt;&lt;li&gt;Three.&lt;/li&gt;&lt;/random&gt;. Ask roll a few times.</template></category>
+  <category><pattern>SHOW ME RANDOM</pattern><template><srai>EXAMPLE RANDOM</srai></template></category>
+  <category><pattern>ROLL</pattern><template><random><li>One.</li><li>Two.</li><li>Three.</li></random></template></category>
+  <category><pattern>ROLL *</pattern><template>Rolling <star/>: <random><li>One.</li><li>Two.</li><li>Three.</li></random></template></category>
+  <category><pattern>GREET RANDOM</pattern><template><random><li>Hello. I am <bot name="name"/>.</li><li>Hi. <bot name="name"/> here.</li><li>Greetings from the background process.</li></random></template></category>
+
+  <!-- silent memory -->
+  <category><pattern>WHAT IS THINK</pattern><template>&lt;think&gt; runs its contents silently. Use it to set a predicate without printing the value; outside &lt;think&gt;, &lt;set&gt; is visible.</template></category>
+  <category><pattern>THINK</pattern><template><srai>WHAT IS THINK</srai></template></category>
+  <category><pattern>EXAMPLE THINK</pattern><template>&lt;think&gt;&lt;set name="lastTopic"&gt;&lt;star/&gt;&lt;/set&gt;&lt;/think&gt; stores a value without echoing it.</template></category>
+  <category><pattern>SHOW ME THINK</pattern><template><srai>EXAMPLE THINK</srai></template></category>
+  <category><pattern>REMEMBER *</pattern><template><think><set name="lastTopic"><star/></set></think>Stored. Ask what was my last topic.</template></category>
+  <category><pattern>WHAT WAS MY LAST TOPIC</pattern><template><condition name="lastTopic"><li value="">No topic stored yet. Try: remember AIML.</li><li>Your last topic was <get name="lastTopic"/>.</li></condition></template></category>
+  <category><pattern>I AM * AND I LIKE *</pattern><template><think><set name="mood"><star/></set><set name="likes"><star index="2"/></set></think>Noted: mood <get name="mood"/>, likes <get name="likes"/>.</template></category>
+
+  <!-- topic switching -->
+  <category><pattern>WHAT IS TOPIC</pattern><template>&lt;topic name="..."&gt; scopes categories. A topic category matches only while that topic is active; setting the topic switches modes.</template></category>
+  <category><pattern>TOPIC</pattern><template><srai>WHAT IS TOPIC</srai></template></category>
+  <category><pattern>EXAMPLE TOPIC</pattern><template>Ask switch to coder, switch to assistant, or switch to idle. Each changes the active topic and mirrors it into the mode predicate.</template></category>
+  <category><pattern>SHOW ME TOPIC</pattern><template><srai>EXAMPLE TOPIC</srai></template></category>
+  <category><pattern>SWITCH TO CODER</pattern><template><set name="topic">coder</set><think><set name="mode">coder</set></think>Coder mode on. I answer in AIML XML.</template></category>
+  <category><pattern>SWITCH TO ASSISTANT</pattern><template><set name="topic">assistant</set><think><set name="mode">assistant</set></think>Assistant mode on. I explain AIML in plain language.</template></category>
+  <category><pattern>SWITCH TO IDLE</pattern><template><set name="topic">idle</set><think><set name="mode">idle</set></think>Idle mode. I answer generic categories.</template></category>
+
+  <topic name="coder">
+    <category><pattern>HELLO</pattern><template>&lt;category&gt;&lt;pattern&gt;HELLO&lt;/pattern&gt;&lt;template&gt;Hi.&lt;/template&gt;&lt;/category&gt; Coder mode: here is the XML for a greeting.</template></category>
+    <category><pattern>WRITE A CATEGORY</pattern><template>&lt;category&gt;&lt;pattern&gt;HELLO&lt;/pattern&gt;&lt;template&gt;Hi.&lt;/template&gt;&lt;/category&gt;</template></category>
+    <category><pattern>WRITE A WILDCARD RULE</pattern><template>&lt;category&gt;&lt;pattern&gt;TELL ME ABOUT *&lt;/pattern&gt;&lt;template&gt;You asked about &lt;star/&gt;.&lt;/template&gt;&lt;/category&gt;</template></category>
+    <category><pattern>WRITE AN SRAI RULE</pattern><template>&lt;category&gt;&lt;pattern&gt;HI&lt;/pattern&gt;&lt;template&gt;&lt;srai&gt;HELLO&lt;/srai&gt;&lt;/template&gt;&lt;/category&gt;</template></category>
+    <category><pattern>WRITE A BOT KEY</pattern><template>&lt;bot name="name"/&gt; reads the configured name property.</template></category>
+  </topic>
+  <topic name="assistant">
+    <category><pattern>HELLO</pattern><template>Assistant mode here. Ask what is a pattern, what is a template, what is a wildcard, what is srai, or what is a key.</template></category>
+    <category><pattern>EXPLAIN *</pattern><template><srai><star/></srai></template></category>
+  </topic>
+
+  <!-- combined state demonstrations -->
+  <category><pattern>LOG GREETING</pattern><template><think><set name="greeted">yes</set></think>Greeting logged.</template></category>
+  <category><pattern>DID I GREET YOU</pattern><template><condition name="greeted"><li value="yes">Yes, you greeted me this session.</li><li>No greeting recorded yet. Try: log greeting.</li></condition></template></category>
+  <category><pattern>MOOD CHECK</pattern><template><condition name="mood"><li value="happy"><random><li>Happy is a good daemon state.</li><li>Glad the process is content.</li></random></li><li value="tired">A tired daemon still answers. Rest well.</li><li><random><li>I have no mood on file. Try: I am happy.</li><li>Set a mood first: I am happy.</li></random></li></condition></template></category>
+  <category><pattern>MODE</pattern><template><srai>WHAT MODE AM I IN</srai></template></category>
+
+  <!-- Keep the single broad fallback last. -->
+  <category><pattern>*</pattern><template><condition name="mode"><li value="coder">&lt;!-- no coder rule for: <star/> --&gt; Try write a category or switch to assistant.</li><li value="assistant">I do not have an explanation rule for "<star/>" yet. Try explain patterns or switch to coder.</li><li>I do not have a rule for "<star/>" yet. Ask help, or switch to assistant.</li></condition></template></category>
+</aiml>

@@ -1,0 +1,7 @@
+# K'UHUL semantic key grammar: KEY = meaning; no execution authority implied
+POP  = begin or enter a phase; initialize phase context
+WO   = establish a typed lane and references
+YAX  = transform values into candidates
+SEK  = synchronize state; synchronization does not grant execution
+CHEN = validate transitions and results
+XUL  = close a verified fold with an authorized accumulator

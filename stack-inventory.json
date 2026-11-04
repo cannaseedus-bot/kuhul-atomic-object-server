@@ -1,0 +1,236 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-30T13:39:16.775Z",
+  "files": [
+    {
+      "path": "atomic.css",
+      "plane": "ui",
+      "role": "Canonical ASX token block and responsive console layout",
+      "bytes": 8585,
+      "sha256": "9dac3e24a002038e3474d5cc0fb52aaf65cd5f4bbc9451d05112982e72d2cc76"
+    },
+    {
+      "path": "field/attraction_well_spec.json",
+      "plane": "field-contract",
+      "role": "JSON schema or field specification",
+      "bytes": 787,
+      "sha256": "dcb912db2368c771253501fd3e9e2976c8f8776463760884921c8bbbc6e35ad9"
+    },
+    {
+      "path": "field/field_composition.py",
+      "plane": "legacy-field",
+      "role": "Alternate standalone field compositor; not imported by PiKernel",
+      "bytes": 3268,
+      "sha256": "021d9b06940d97ed4e3d57c3b00642a22c67ca9961eafb7794e5d3c6adb6b34d"
+    },
+    {
+      "path": "field/main.py",
+      "plane": "field",
+      "role": "Python bundle CLI and deterministic tick JSONL output; typed PiEvent input",
+      "bytes": 3819,
+      "sha256": "93a8c58204a5ab289d9405ffa92d4c07ccb55c210d1e637bebf5f0548848278e"
+    },
+    {
+      "path": "field/pi_constraints.py",
+      "plane": "field",
+      "role": "Spring constraints",
+      "bytes": 1323,
+      "sha256": "48f54010f9a21902929940447622028460c5f2e2458dadca1f14357542b659d6"
+    },
+    {
+      "path": "field/pi_fields.py",
+      "plane": "field",
+      "role": "Active wind and attraction-well force compositor",
+      "bytes": 2354,
+      "sha256": "04f937259175083d19db521a041f1999e11d99437559b3e67c463d2999956bea"
+    },
+    {
+      "path": "field/pi_hash.py",
+      "plane": "field",
+      "role": "Canonical snapshots and SHA-256",
+      "bytes": 1442,
+      "sha256": "17ac550d3ce9052e0331044ea0efb311fb15a016d8b03d3d038e3fa7b86a4cec"
+    },
+    {
+      "path": "field/pi_kernel.py",
+      "plane": "field",
+      "role": "Field forces, symbolic impulses, constraints, integration, projection, hash chain",
+      "bytes": 6585,
+      "sha256": "a78920d7baa740ed57ca47f72ea9f29e2d64704748247386c204d9e739bf6006"
+    },
+    {
+      "path": "field/pi_symbolic.py",
+      "plane": "field",
+      "role": "Symbolic tree to kernel-owned event intent extraction",
+      "bytes": 875,
+      "sha256": "e6bbbfd8be56190afef8586731bd99272a91336143a655920607a465b0a4eae3"
+    },
+    {
+      "path": "field/pi_types.py",
+      "plane": "field",
+      "role": "World, body, event, constraint and projection dataclasses",
+      "bytes": 2508,
+      "sha256": "a12a6329cbde833178750b508d4d43455e85589d5ac10ad608d15db151a6ea81"
+    },
+    {
+      "path": "field/wind_field_spec.json",
+      "plane": "field-contract",
+      "role": "JSON schema or field specification",
+      "bytes": 845,
+      "sha256": "a422275cf4a8930230aa89658458444d1c730e9794177650cb7468feaddd882a"
+    },
+    {
+      "path": "field/π-bundle.schema.json",
+      "plane": "field-contract",
+      "role": "JSON schema or field specification",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "index.html",
+      "plane": "ui",
+      "role": "ASX keyed object editor, fold inspector, route and inventory browser",
+      "bytes": 6770,
+      "sha256": "331e6b517b565f3e80f977e684d0e69bd80bdf4d3444eadb65798b43046b1c5f"
+    },
+    {
+      "path": "lib/atomic-app.js",
+      "plane": "ui",
+      "role": "Manifest-resolved ASX action dispatch and DOM projection",
+      "bytes": 8302,
+      "sha256": "4a744bcbd0ca47ca365bcd0f4ccbfa3c84e00cc6afd48076fbfdb92893f8c076"
+    },
+    {
+      "path": "lib/ghost-kuhul-adapter.js",
+      "plane": "optional",
+      "role": "Parent iframe RPC and canvas session adapter",
+      "bytes": 17651,
+      "sha256": "268817c241f83d72c4ca9e8a3c78f3dd5a223f2071d39cc4bfd16e0991d912ae"
+    },
+    {
+      "path": "lib/ghost.kuhul.js",
+      "plane": "optional",
+      "role": "Physical intent bridge requiring an external compatible JS kernel",
+      "bytes": 1452,
+      "sha256": "8c9614863653c833a3d377adab45bd68101290b38cb35be23ffea289faecb309"
+    },
+    {
+      "path": "lib/kuhul-client.js",
+      "plane": "adapter",
+      "role": "Same-origin XJSON inference client; abortable timeout; explicit fallback",
+      "bytes": 13753,
+      "sha256": "1381b683909b4a818f644f6762670e7cddb6e7f7e7f7bcf028c59f44a47b401a"
+    },
+    {
+      "path": "lib/kuhul-packs.js",
+      "plane": "optional",
+      "role": "Pack capability declarations and seal ribbon",
+      "bytes": 10612,
+      "sha256": "9a6c4254c579dd9d7bfdd9efc461032247f851f11dad4b918bde45b6308cb1af"
+    },
+    {
+      "path": "lib/kuhul-runtime.js",
+      "plane": "optional",
+      "role": "Capability-gated browser modules and canvas devices; not booted by console",
+      "bytes": 19205,
+      "sha256": "8e8dacd84ca621e0d3af7d2b02e4d622863e0b9055bdb8792fb3db5168a09a5d"
+    },
+    {
+      "path": "lib/kuhul-sandbox-bridge.js",
+      "plane": "optional",
+      "role": "Sandbox-side capability and message bridge",
+      "bytes": 20413,
+      "sha256": "b0fe283504eeaae2ac37b65d6e653e6f7b3356052f3e250cc5cabb354817db03"
+    },
+    {
+      "path": "lib/kuhul-xjson.js",
+      "plane": "contract",
+      "role": "XJSON request, completion and error helpers",
+      "bytes": 9293,
+      "sha256": "7aa37245ceae7e89d3a474cae56237ac438bce782a4590da7eac99a4c12176a8"
+    },
+    {
+      "path": "lib/object-api.cjs",
+      "plane": "server",
+      "role": "Binds declared routes to object storage operations",
+      "bytes": 3085,
+      "sha256": "30055e0dba79198eb8c380a6f6c0d4255630e97ffbaddc9a8a8ca1cdda153c57"
+    },
+    {
+      "path": "lib/object-store.cjs",
+      "plane": "storage",
+      "role": "KDB1 checksummed binary codec and atomic single-writer persistence",
+      "bytes": 6702,
+      "sha256": "0c850b0a22974cb22ed93993027b76a992cdfbce3d3aae2f815adfc894069b0e"
+    },
+    {
+      "path": "lib/pi-goat-api.js",
+      "plane": "optional",
+      "role": "REST, XJSON, mesh and dot-notation API language adapter",
+      "bytes": 19276,
+      "sha256": "741db3ae4270dea9d007411ad69ef8b23c6e0d393ba75985fb98ff8ac9757177"
+    },
+    {
+      "path": "lib/pi-goat.js",
+      "plane": "optional",
+      "role": "Polyglot parsing, runtime dispatch and pack adapter",
+      "bytes": 33375,
+      "sha256": "0c3e6e256e64ec0f54453247f5a360219fecc8b1a2d23977592c8cf7c751dd5f"
+    },
+    {
+      "path": "lib/pi.event.schema.json",
+      "plane": "contract",
+      "role": "JSON schema or field specification",
+      "bytes": 609,
+      "sha256": "67e5829479d55b68d8400dfd1255ec2ac41103d3eb5f727816db508262b641cd"
+    },
+    {
+      "path": "lib/pi.field.schema.json",
+      "plane": "contract",
+      "role": "JSON schema or field specification",
+      "bytes": 1097,
+      "sha256": "695223e1dd4022a5093b867feadbc492c30d116d37df4b266f0b07d36de511b1"
+    },
+    {
+      "path": "lib/scxq2.js",
+      "plane": "adapter",
+      "role": "SCXQ2 fingerprints and IR utilities; distinct from KDB1 binary format",
+      "bytes": 9734,
+      "sha256": "4174150f5b2183f14af63fbb4bd7996be4aaddd102042594772fa646d5810edd"
+    },
+    {
+      "path": "manifest.json",
+      "plane": "authority",
+      "role": "PWA metadata, route registry, table schemas and seeds, fold geometry, ASX actions",
+      "bytes": 132128,
+      "sha256": "3cf9ed7b3fa69163b9ee5fb60e83d85a0ff637edc53a92d1da1aa0da0dfe5c58"
+    },
+    {
+      "path": "orchestrator.js",
+      "plane": "server",
+      "role": "Express host; manifest routes; lam.o inference adapter; public asset allowlist",
+      "bytes": 11600,
+      "sha256": "4450852b881a63fa7dae6fc32aaac40f2d7a14e7f8a36737abb5af38ce961423"
+    },
+    {
+      "path": "styles.css",
+      "plane": "ui",
+      "role": "Existing model-runner styles; retained for compatibility",
+      "bytes": 17418,
+      "sha256": "1b09e858d12ad7cd59ffb4154cb1dc7e10a8585dbc75b8b9ff147472092b5602"
+    },
+    {
+      "path": "sw.js",
+      "plane": "carrier",
+      "role": "Manifest shell cache; network-only API transport; legacy carrier messages",
+      "bytes": 2940,
+      "sha256": "f479ffff87115c310bf98030eec17ea08df83e33857aeec5994e15057705b7f2"
+    }
+  ],
+  "boundaries": [
+    "Node executes declared REST actions; no sw.khl interpreter is present.",
+    "Python field CLI remains independent; field specs are seeded into the fields table.",
+    "Optional browser modules are inventoried but not automatically executed.",
+    "Only shell assets are cached; API requests require the server."
+  ]
+}

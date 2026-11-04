@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://asx/pi/pi.event.schema.json",
+  "title": "π.event",
+  "type": "object",
+  "required": ["trigger", "action"],
+  "properties": {
+    "trigger": { 
+      "enum": ["onPointerDown", "onPointerEnter", "onScroll", "onFocus"] 
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["impulse", "torque", "attract", "repel"] },
+        "magnitude": { "type": "number" },
+        "direction": { "type": "array", "items": { "type": "number" }, "minItems": 3 }
+      }
+    }
+  }
+}

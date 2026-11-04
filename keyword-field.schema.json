@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kuhul://schema/keyword-field/v1",
+  "title": "K'UHUL keyword semantic field",
+  "type": "object",
+  "patternProperties": {
+    "^⟁": {
+      "type": "object",
+      "required": ["root", "field", "maxLevel", "terminal", "levels", "inference", "memory"],
+      "properties": {
+        "root": { "type": "string", "pattern": "^⟁" },
+        "field": { "type": "string", "minLength": 1 },
+        "maxLevel": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "terminal": { "const": 10 },
+        "vector": {
+          "type": "object",
+          "required": ["space", "dimensions", "coordinates", "fieldDimensions", "evaluationDimensions", "fieldCoordinates"],
+          "properties": {
+            "space": { "type": "string" },
+            "dimensions": { "const": 10 },
+            "coordinates": { "type": "array", "minItems": 10, "maxItems": 10, "items": { "type": "string", "pattern": "^⟁" } },
+            "fieldDimensions": { "const": [1, 2, 3, 4, 5, 6, 7, 8] },
+            "evaluationDimensions": { "const": [9, 10] },
+            "fieldCoordinates": { "type": "object", "minProperties": 8 }
+          }
+        },
+        "fields": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["level", "symbol", "sourceLevel"],
+            "properties": {
+              "level": { "type": "integer", "minimum": 1, "maximum": 8 },
+              "symbol": { "type": "string", "pattern": "^⟁" },
+              "sourceLevel": { "type": "string", "pattern": "^[1-8]$" }
+            }
+          }
+        },
+        "levels": { "type": "object", "minProperties": 1 },
+        "semanticNotation": { "type": "object" },
+        "relations": { "type": "array", "items": { "$ref": "#/$defs/relation" } },
+        "inference": { "$ref": "#/$defs/inference" },
+        "memory": { "type": "object", "required": ["replay", "field", "provenance", "commitPolicy"] }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "relation": {
+      "type": "object",
+      "required": ["subject", "predicate", "object", "type", "polarity"],
+      "properties": {
+        "subject": { "type": "string", "pattern": "^⟁" },
+        "predicate": { "type": "string" },
+        "object": { "type": "string", "pattern": "^⟁" },
+        "type": { "type": "string" },
+        "polarity": { "enum": ["positive", "negative"] },
+        "scope": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "inference": {
+      "type": "object",
+      "required": ["mode", "rules", "constraints"],
+      "properties": {
+        "mode": { "const": "evidence_gated" },
+        "rules": { "type": "array" },
+        "constraints": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

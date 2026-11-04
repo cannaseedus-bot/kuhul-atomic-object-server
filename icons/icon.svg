@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a25;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accent-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00cc6a;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="250" fill="url(#bg-gradient)" stroke="#2a2a35" stroke-width="4"/>
+
+  <!-- Outer torus ring -->
+  <circle cx="256" cy="256" r="200" fill="none" stroke="#00ff88" stroke-width="3" opacity="0.3" filter="url(#glow)"/>
+
+  <!-- Middle torus ring -->
+  <circle cx="256" cy="256" r="160" fill="none" stroke="#00ff88" stroke-width="2" opacity="0.5" filter="url(#glow)"/>
+
+  <!-- Inner torus ring -->
+  <circle cx="256" cy="256" r="120" fill="none" stroke="#00ff88" stroke-width="2" opacity="0.7" filter="url(#glow)"/>
+
+  <!-- Central hexagon (K'uhul symbol) -->
+  <polygon
+    points="256,170 314,213 314,299 256,342 198,299 198,213"
+    fill="none"
+    stroke="url(#accent-gradient)"
+    stroke-width="4"
+    filter="url(#glow)"
+  />
+
+  <!-- Inner K glyph -->
+  <g fill="#00ff88" filter="url(#glow)">
+    <!-- K letter stylized -->
+    <rect x="230" y="220" width="12" height="72" rx="2"/>
+    <polygon points="242,256 280,220 295,220 260,253 295,292 280,292 242,256"/>
+  </g>
+
+  <!-- Connection nodes (representing seal ribbon) -->
+  <circle cx="130" cy="256" r="12" fill="#00ff88" opacity="0.8"/>
+  <circle cx="180" cy="180" r="10" fill="#ffff00" opacity="0.7"/>
+  <circle cx="256" cy="130" r="10" fill="#ff6600" opacity="0.7"/>
+  <circle cx="332" cy="180" r="10" fill="#3776ab" opacity="0.7"/>
+  <circle cx="382" cy="256" r="12" fill="#ff00ff" opacity="0.8"/>
+
+  <!-- Connection lines -->
+  <line x1="142" y1="256" x2="198" y2="256" stroke="#00ff88" stroke-width="2" opacity="0.5"/>
+  <line x1="314" y1="256" x2="370" y2="256" stroke="#ff00ff" stroke-width="2" opacity="0.5"/>
+
+  <!-- lam.o text -->
+  <text x="256" y="400" z="550" text-anchor="middle" font-family="monospace" font-size="36" fill="#00ff88" filter="url(#glow)">
+    WWW.KUHUL.DEV
+  </text>
+</svg>

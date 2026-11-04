@@ -1,0 +1,38 @@
+.asx_memory.json
+.asx_memory.json.*.tmp
+.micronaut/sandboxes/
+micronaut/daemon-chat-wpf/bin/
+micronaut/daemon-chat-wpf/obj/
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# CMake build output
+build/
+
+# Runtime state (generated, not source)
+.kuhul-data/
+.micronaut/
+.asx/
+
+# Large generated binary data (use Git LFS to version these)
+micronaut.bson
+*.kso
+*.safetensors
+
+# Large training / vector data — too large for GitHub (use Git LFS)
+neighborhood.jsonl
+neighborhood.attention.jsonl
+vendor/key-grammar-kit/data/vectors.svg
+vendor/key-grammar-kit/data/vectors.gml
+vendor/key-grammar-kit/english-dictionary.*.jsonl
+vendor/key-grammar-kit/data/grammar/english-dictionary.*.jsonl
+vendor/key-grammar-kit/data/gram/codegen-cpp.jsonl
+
+# Personal Claude instructions
+CLAUDE.local.md

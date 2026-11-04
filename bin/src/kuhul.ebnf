@@ -1,0 +1,121 @@
+(* K'UHUL source syntax. XCFE admission and runtime behavior are separate contracts. *)
+program          = { statement } ;
+statement        = declaration | instruction | phase_block | lane_block
+                 | micronaut_decl | binding | xpath_expression_statement
+                 | host_phase_block | phase_expression | micronaut_block
+                 | aiml_block | srai_binding | eliza_block | xcfe_block ;
+declaration      = "glyph" , identifier , "=" , string ;
+instruction      = map_instruction | filter_instruction | fold_instruction | opcode_instruction ;
+map_instruction  = "map" , "(" , expression , "->" , expression , ")" ;
+filter_instruction = "filter" , "(" , expression , "," , expression , ")" ;
+fold_instruction = "fold" , "(" , expression , "," , expression , "," , expression , ")" ;
+opcode_instruction = opcode , "(" , [ argument_list ] , ")" ;
+opcode           = "reduce" | "sync" | "emit" | "verify" | "dispatch" ;
+phase_block      = phase , "{" , { statement } , "}" ;
+phase            = "Pop" | "Wo" | "Yax" | "Sek" | "Ch'en" | "Xul" ;
+lane_block       = "lane" , identifier , ":" , type , "{" , { statement } , "}" ;
+binding          = "bind" , identifier , "->" , binding_target , [ binding_options ]
+                 | micronaut_reference , "->" , target , [ binding_options ] ;
+binding_target   = identifier | target ;
+target           = micronaut_reference | glyph_reference | lane_ref | field_ref | vector_ref ;
+micronaut_reference = micronaut_handle | micronaut_key | micronaut_named_ref ;
+micronaut_handle = "µ" , hex_digit , { hex_digit } ;
+micronaut_key    = "µ://" , identifier ;
+micronaut_named_ref = "micro:" , identifier ;
+lane_ref         = "lane:" , identifier ;
+field_ref        = "field:" , identifier ;
+vector_ref       = "vector:" , identifier ;
+binding_options  = "[" , binding_property , { "," , binding_property } , "]" ;
+binding_property = "type=" , binding_type | "mode=" , binding_mode | "weight=" , number ;
+binding_type     = "semantic" | "vector" | "field" | "program" | "state" ;
+binding_mode     = "read" | "sync" | "invoke" | "fold" ;
+type             = "Glyph" | "Vector" | "Field" | "Tensor" | "Graph" | "Scalar" | "Memory" | "Program" ;
+argument_list    = value , { "," , value } ;
+(* Expression syntax delegates to the normative XPath 3.1 Expr production.
+   Existing K'UHUL statements remain host syntax around these expressions. *)
+expression       = XPath31Expr ;
+value            = identifier | number | string | glyph_reference ;
+glyph_reference  = "⟁" , identifier ;
+identifier       = letter , { letter | digit | "_" | "-" | ":" | "µ" } ;
+number           = digit , { digit } ;
+string           = "\"" , { character } , "\"" ;
+letter           = "A".."Z" | "a".."z" ;
+digit            = "0".."9" ;
+hex_digit        = digit | "A".."F" | "a".."f" ;
+character        = ? printable character other than quote ? ;
+
+(* A Micronaut declaration defines an addressable component and its declared
+   routing/data contract. It does not confer XCFE admission or execution. The
+   full projection, profile, and MML forms are specified by the separate
+   micronaut.runtime-grammar.ebnf and micronaut-program.runtime-grammar.ebnf.
+   A contract validator requires one identity, phase scope, capability list,
+   and authority boundary per declaration; optional sections may occur between
+   phase scope and authority boundary. *)
+micronaut_decl   = "micronaut" , micronaut_id , "{" , { micronaut_section } , "}" ;
+micronaut_id     = identifier | string ;
+micronaut_section = identity_section | phase_scope_section | capability_section
+                  | tensor_slot_section | route_contract_ref | profile_ref
+                  | pattern_ref | template_ref | key_grammar_ref
+                  | track_ref | program_ref | sandbox_section
+                  | authority_boundary_section ;
+identity_section = "identity" , "{" , "name" , ":" , string
+                    [ "," , "role" , ":" , string ]
+                    [ "," , "category" , ":" , string ]
+                    [ "," , "version" , ":" , string ] , "}" ;
+phase_scope_section = "phase_scope" , ":" , phase_list ;
+capability_section = "capabilities" , ":" , string_list ;
+tensor_slot_section = "tensor_slot" , "{" , "provider" , ":" , identifier , ","
+                    "anchor" , ":" , string
+                    [ "," , "slot_id" , ":" , string ]
+                    [ "," , "semantic_authority" , ":" , false_lit ] , "}" ;
+route_contract_ref = "route_contract" , ":" , micronaut_id ;
+profile_ref      = "micronaut_profile" , ":" , micronaut_id ;
+pattern_ref      = "patterns" , ":" , identifier_list ;
+template_ref     = "templates" , ":" , identifier_list ;
+key_grammar_ref  = "key_grammar" , ":" , identifier_list ;
+track_ref        = "track" , ":" , micronaut_id ;
+program_ref      = "programs" , ":" , identifier_list ;
+sandbox_section  = "sandbox" , ":" , metadata_object ;
+authority_boundary_section = "authority_boundary" , "{" ,
+                    "semantic_authority" , ":" , false_lit , ","
+                    "topology_authority" , ":" , false_lit , ","
+                    "verification_authority" , ":" , false_lit , ","
+                    "commit_authority" , ":" , false_lit , "}" ;
+phase_list       = "[" , phase , { "," , phase } , "]" ;
+string_list      = "[" , [ string , { "," , string } ] , "]" ;
+identifier_list  = "[" , [ identifier , { "," , identifier } ] , "]" ;
+metadata_object  = "{" , [ metadata_pair , { "," , metadata_pair } ] , "}" ;
+metadata_pair    = identifier , ":" , metadata_value ;
+metadata_value   = string | number | true_lit | false_lit | null_lit | string_list ;
+true_lit         = "true" ;
+false_lit        = "false" ;
+null_lit         = "null" ;
+
+(* XPath 3.1 host grammar extension. These external references preserve XPath
+   precedence, namespace/EQName resolution, paths, predicates, sequences,
+   functions, maps, and arrays. This EBNF declares the host boundary; it does
+   not implement an XPath parser or evaluator. *)
+XPath31Expr      = ? external production "Expr" from W3C XPath 3.1 Appendix A ? ;
+EQName           = ? external production "EQName" from W3C XPath 3.1 Appendix A ? ;
+xpath_expression_statement = XPath31Expr , ";" ;
+host_phase_block = "[Pop" , identifier , "]" , { host_statement } ,
+                   "[Xul" , identifier , "]" ;
+host_statement   = phase_expression | micronaut_block | aiml_block
+                 | srai_binding | eliza_block | xcfe_block
+                 | pattern_binding | xpath_expression_statement ;
+phase_expression = "[" , expression_phase , XPath31Expr , "]" ;
+expression_phase = "Wo" | "Yax" | "Sek" | "Ch'en" | "Xul" ;
+micronaut_block  = "[Micronaut" , EQName , "]" , { host_statement } ,
+                   "[Xul Micronaut]" ;
+aiml_block       = "[AIML" , EQName , "]" , { pattern_binding } ,
+                   "[Xul AIML]" ;
+srai_binding     = "[SRAI" , EQName , "->" , EQName , "]" ;
+eliza_block      = "[ELIZA" , EQName , "]" , { host_statement } ,
+                   "[Xul ELIZA]" ;
+xcfe_block       = "[XCFE" , EQName , "]" , { host_statement } ,
+                   "[Xul XCFE]" ;
+pattern_binding  = "[Pattern" , string , "->" , EQName , "]" ;
+
+(* xgc: A host block terminator is recognized at XPath bracket depth zero,
+   outside strings, comments, and enclosed constructors. Predicate brackets
+   within XPath31Expr remain XPath syntax; closing type/name must match. *)

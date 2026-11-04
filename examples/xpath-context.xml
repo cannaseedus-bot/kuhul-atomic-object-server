@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="urn:kuhul:books">
+  <book id="one"><title>Grammar</title></book>
+  <book id="two"><title>Runtime</title></book>
+</library>

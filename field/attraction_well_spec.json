@@ -1,0 +1,35 @@
+{
+  "$schema": "π_field_v1",
+  "field_type": "attraction_well",
+  "parameters": {
+    "position": {
+      "type": "vector3",
+      "default": [0, 0, 0],
+      "description": "Center of attraction"
+    },
+    "strength": {
+      "type": "float",
+      "default": 2.0,
+      "range": [-10, 10],
+      "description": "Positive attracts, negative repels"
+    },
+    "radius": {
+      "type": "float",
+      "default": 5.0,
+      "range": [0.1, 100],
+      "description": "Effective radius"
+    },
+    "falloff_power": {
+      "type": "float",
+      "default": 2.0,
+      "range": [1, 4],
+      "description": "Inverse power law"
+    }
+  },
+  "application_rules": {
+    "applies_to": ["all_bodies"],
+    "force_model": "inverse_power",
+    "direction": "toward_center",
+    "order": 2
+  }
+}

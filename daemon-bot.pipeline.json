@@ -1,0 +1,20 @@
+{
+  "pipeline": "daemon-aiml-build",
+  "category": "learning",
+  "sources": ["daemon-bot.aiml", "daemon-bot-extended.aiml", "daemon-bot-learn.aiml"],
+  "bots": [
+    { "name": "ngrams", "category": "learning", "method": "ngram_scrape", "params": { "n": [1, 2, 3], "min_count": 1 } },
+    { "name": "fold", "category": "learning", "method": "build_fold_nodes", "params": { "role": "daemon_aiml" } },
+    { "name": "brief", "category": "learning", "method": "research_brief", "params": { "query": "Daemon Bot AIML knowledge base" } }
+  ],
+  "execution": { "mode": "local_helper_pipeline", "authority": "analysis_only", "executes_aiml": false },
+  "trace": {
+    "contract": "vendor/key-grammar-kit/data/grammar/daemon-bot.trace.contracts.json",
+    "schema": "daemon-bot.reply-trace.v1",
+    "emit": true,
+    "surface": "reply.trace",
+    "authority": "observation_only",
+    "fields": ["input", "phases", "match", "captures", "srai", "children", "xcfe", "predicates", "conditions", "mode", "admission", "commit", "status", "steps"],
+    "law": "the pipeline reports the trace; it never treats a traced phase or dispatch as admission, verification or commit"
+  }
+}

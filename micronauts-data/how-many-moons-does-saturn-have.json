@@ -1,0 +1,305 @@
+{
+  "schema": "kuhul.micronaut_data.research.v1",
+  "question_id": "how-many-moons-does-saturn-have",
+  "question": "How many moons does Saturn have?",
+  "query_terms": "moons saturn",
+  "ngrams": {
+    "unigram": [
+      "how",
+      "many",
+      "moons",
+      "does",
+      "saturn",
+      "have"
+    ],
+    "bigram": [
+      "how many",
+      "many moons",
+      "moons does",
+      "does saturn",
+      "saturn have"
+    ],
+    "trigram": [
+      "how many moons",
+      "many moons does",
+      "moons does saturn",
+      "does saturn have"
+    ]
+  },
+  "retrieved_at": "2026-11-03T03:48:03.305Z",
+  "retrieval_status": "retrieved",
+  "authority": "source_evidence_only; not_verified_fact",
+  "created_by": [
+    "Librarian-µ",
+    "Factory-µ"
+  ],
+  "sources": [
+    {
+      "source": "NASA",
+      "title": "Saturn Facts",
+      "url": "https://science.nasa.gov/saturn/facts/",
+      "text": "Explore This Section Our Solar System Saturn Facts Saturn is the sixth planet from the Sun, and the second-largest planet in our solar system. Introduction Namesake Potential for Life Size and Distance Orbit and Rotation Moons Rings Formation Structure Surface Atmosphere Magnetosphere Introduction NASAâ€™s Cassini spacecraft captured one of its last looks at Saturn, and its main rings from a distance. The images used to create this view were taken on Oct. 28, 2016. The spacecraft arrived at Saturn in 2004, and the mission ended Sept.15, 2017. Credits: NASA/JPL-Caltech/Space Science Institute Like fellow gas giant Jupiter, Saturn is a massive ball made mostly of hydrogen and helium. Saturn is not the only planet to have rings, but none are as spectacular or as complex as Saturn's. Saturn also has dozens of moons. From the jets of water that spray from Saturn's moon Enceladus to the methane lakes on smoggy Titan , the Saturn system is a rich source of scientific discovery and still holds many mysteries. Namesake The farthest planet from Earth discovered by the unaided human eye, Saturn has been known since ancient times. The planet is named for the Roman god of agriculture and wealth, who was also the father of Jupiter. Potential for Life Saturn's environment is not conducive to life as we know it. The temperatures, pressures, and materials that characterize this planet are most likely too extreme and volatile for organisms to adapt to. While planet Saturn is an unlikely place for living things to take hold, the same is not true of some of its many moons. Satellites like Enceladus and Titan, home to internal oceans, could possibly support life. Size and Distance With an equatorial diameter of about 74,897 miles (120,500 kilometers), Saturn is 9 times wider than Earth. If Earth were the size of a nickel, Saturn would be about as big as a volleyball. From an average distance of 886 million miles (1.4 billion kilometers), Saturn is 9.5 astronomical units away from the Sun. One astronomical unit (abbreviated as AU), is the distance from the Sun to Earth. From this distance, it takes sunlight 80 minutes to travel from the Sun to Saturn. Orbit and Rotation Saturn has the second-shortest day in the solar system. One day on Saturn takes only 10.7 hours (the time it takes for Saturn to rotate or spin around once), and Saturn makes a complete orbit around the Sun (a year in Saturnian time) in about 29.4 Earth years (10,756 Earth days). Its axis is tilted by 26.73 degrees with respect to its orbit around the Sun, which is similar to Earth's 23.5-degree tilt. This means that, like Earth, Saturn experiences seasons. Moons Saturn is home to a vast array of intriguing and unique worlds. From the haze-shrouded surface of Titan to crater-riddled Phoebe, each of Saturn's moons tells another piece of the story surrounding the Saturn system. As of March 2025, Saturn had 274 confirmed moons in its orbit, far more than any other planet in our solar system, with other Saturnian satellites continually awaiting confirmation of their discovery and official naming by the International Astronomical Union (IAU). Colorful Colossuses and Changing Hues : A giant of a moon appears before a giant of a planet undergoing seasonal changes in this natural color view of Titan and Saturn from NASA's Cassini spacecraft. NASA/JPL-Caltech/Space Science Institute Rings Saturn's rings are thought to be pieces of comets, asteroids, or shattered moons that broke up before they reached the planet, torn apart by Saturn's powerful gravity. They are made of billions of small chunks of ice and rock coated with other materials such as dust. The ring particles mostly range from tiny, dust-sized icy grains to chunks as big as a house. A few particles are as large as mountains. The rings would look mostly white if you looked at them from the cloud tops of Saturn, and interestingly, each ring orbits at a different speed around the planet. Saturn's ring system extends up to 175,000 miles (282,000 kilometers) from the planet, yet the vertical height is typically about 30 feet (10 meters) in the main rings. Named alphabetically in the order they were discovered, the rings are relatively close to each other, with the exception of a gap measuring 2,920 miles (4,700 kilometers) in width called the Cassini Division that separates Rings A and B. The main rings are A, B, and C. Rings D, E, F, and G are fainter and more recently discovered. Starting at Saturn and moving outward, there is the D ring, C ring, B ring, Cassini Division, A ring, F ring, G ring, and finally, the E ring. Much farther out, there is the very faint Phoebe ring in the orbit of Saturn's moon Phoebe. Formation Saturn took shape when the rest of the solar system formed about 4.5 billion years ago when gravity pulled swirling gas and dust in to become this gas giant. About 4 billion years ago, Saturn settled into its current position in the outer solar system, where it is the sixth planet from the Sun. Like ",
+      "retrieved_at": "2026-11-03T03:48:03.866Z",
+      "excerpt": "As of March 2025, Saturn had 274 confirmed moons in its orbit, far more than any other planet in our solar system, with other Saturnian satellites continually awaiting confirmation of their discovery and official naming by the International Astronomical Union (IAU)."
+    },
+    {
+      "source": "Wikipedia",
+      "title": "Moons of Saturn",
+      "url": "https://en.wikipedia.org/wiki/Moons_of_Saturn",
+      "text": "Saturn has 293 moons with confirmed orbits as of June 2026, the most of any planet in the Solar System. Saturn's moons are diverse in size, ranging from tiny moonlets to Titan, which is larger than the planet Mercury and the second largest moon in the Solar System. Three of these moons possess particularly notable features: Titan has a nitrogen-rich atmosphere and a landscape featuring river networks and hydrocarbon lakes; Enceladus emits jets of ice from its south-polar region and is covered in a deep layer of snow; and Iapetus has contrasting black and white hemispheres as well as an extensive ridge of equatorial mountains which are among the tallest in the Solar System. Twenty-five of the confirmed moons are regular satellites; they have prograde orbits not greatly inclined to Saturn's equatorial plane (except Iapetus, which has a prograde but significantly inclined orbit). They include the seven rounded satellites, and four small moons that exist in a trojan orbit with some of the large moons. Four orbit inside of the diffuse G ring or between the major moons Mimas and Enceladus. Two moons are mutually co-orbital, Janus and Epimetheus. The relatively large Hyperion is locked in an orbital resonance with Titan. The remaining regular moons orbit near the edges of or within gaps in the main rings, some of which act as shepherd moons of the dense A Ring and the narrow F Ring. The regular satellites are traditionally named after Titans and Titanesses or other figures associated with the mythological Saturn, and two, S/2009 S 1 and S/2009 S 2, remain unnamed. The remaining 268 moons, with mean diameters ranging from 2 to 213 km (1 to 132 mi), orbit much farther from Saturn. They are irregular satellites, which have high orbital inclinations and eccentricities mixed between prograde and retrograde. These moons are probably captured minor planets, or fragments from the collisional breakup of such bodies after they were captured, creating collisional families. The irregular satellites are classified by their orbital characteristics into the prograde Inuit and Gallic groups and the large retrograde Norse group, and their names are chosen from the corresponding mythologies (with the Gallic group corresponding to Celtic mythology). Phoebe, the largest irregular Saturnian moon, is the sole exception to this naming system; it is part of the Norse group but named for a Greek Titaness. As of April 2026, 228 of Saturn's irregular moons are unnamed. The rings of Saturn are made of objects ranging in size from microscopic to moonlets hundreds of meters across, each in its own orbit around Saturn. The number of moons given above does not include these moonlets, nor hundreds of possible kilometer-sized distant moons that have been observed on single occasions. Thus an absolute number of Saturnian moons cannot be given, because there is no consensus on a boundary between the countless small unnamed objects that form Saturn's ring system and the larger objects that have been named as moons. Over 150 moonlets embedded in the rings have been detected by the disturbance they create in the surrounding ring material, though this is thought to be only a small sample of the total population of such objects.",
+      "retrieved_at": "2026-11-03T03:48:04.156Z",
+      "excerpt": "Saturn has 293 moons with confirmed orbits as of June 2026, the most of any planet in the Solar System."
+    }
+  ],
+  "failures": [],
+  "reply_field": {
+    "schema": "kuhul.research_reply_field.v1",
+    "question": "How many moons does Saturn have?",
+    "question_id": "how-many-moons-does-saturn-have",
+    "reply_depth": {
+      "level": "concise",
+      "guidance": "Give the source-backed result and any material disagreement in one or two sentences."
+    },
+    "cfpc": {
+      "gap": "KNOWLEDGE_GAP_NO_KEYS",
+      "route": "retrieval",
+      "evidence": {
+        "intents": [
+          "count",
+          "explain"
+        ],
+        "pattern": "how-many",
+        "keys": 0,
+        "values": 2,
+        "record": "how-many-moons-does-saturn-have",
+        "conflicts": [
+          {
+            "term": "moons",
+            "values": {
+              "NASA": [
+                "274"
+              ],
+              "Wikipedia": [
+                "293"
+              ]
+            },
+            "as_of": {
+              "NASA": "March 2025",
+              "Wikipedia": "June 2026"
+            }
+          }
+        ]
+      },
+      "evidence_status": "conflicted",
+      "authority": "proposal_only"
+    },
+    "viable_data": {
+      "quantities": [
+        {
+          "source": "NASA",
+          "term": "moons",
+          "value": "274",
+          "as_of": "March 2025",
+          "sentence": "As of March 2025, Saturn had 274 confirmed moons in its orbit, far more than any other planet in our solar system, with other Saturnian satellites continually awaiting confirmation of their discovery and official naming by the International Astronomical Union (IAU)."
+        },
+        {
+          "source": "Wikipedia",
+          "term": "moons",
+          "value": "293",
+          "as_of": "June 2026",
+          "sentence": "Saturn has 293 moons with confirmed orbits as of June 2026, the most of any planet in the Solar System."
+        }
+      ],
+      "sources": [
+        {
+          "source": "NASA",
+          "title": "Saturn Facts",
+          "url": "https://science.nasa.gov/saturn/facts/",
+          "excerpt": "As of March 2025, Saturn had 274 confirmed moons in its orbit, far more than any other planet in our solar system, with other Saturnian satellites continually awaiting confirmation of their discovery and official naming by the International Astronomical Union (IAU)."
+        },
+        {
+          "source": "Wikipedia",
+          "title": "Moons of Saturn",
+          "url": "https://en.wikipedia.org/wiki/Moons_of_Saturn",
+          "excerpt": "Saturn has 293 moons with confirmed orbits as of June 2026, the most of any planet in the Solar System."
+        }
+      ],
+      "source_count": 2
+    },
+    "conflicts": [
+      {
+        "term": "moons",
+        "values": {
+          "NASA": [
+            "274"
+          ],
+          "Wikipedia": [
+            "293"
+          ]
+        },
+        "as_of": {
+          "NASA": "March 2025",
+          "Wikipedia": "June 2026"
+        }
+      }
+    ],
+    "dispatch": {
+      "schema": "kuhul.xaiml.route_proposals.v1",
+      "authority": "proposal_only",
+      "dispatch_authorized": false,
+      "xcfe_admission": "not_run",
+      "proposals": [
+        {
+          "target": "LIBRARIAN-Âµ",
+          "task": "organize_retrieved_public_evidence",
+          "phase": "Yax",
+          "basis": "retrieved source records are present"
+        },
+        {
+          "target": "ALICE-Âµ",
+          "task": "topic_domain_candidate_expansion",
+          "phase": "Yax",
+          "basis": "topic lookup trigger"
+        }
+      ],
+      "ambiguity_gate": {
+        "open_ended": false,
+        "cfpc_gap": "KNOWLEDGE_GAP_NO_KEYS",
+        "source_conflicts": true,
+        "route_entropy": null,
+        "required_entropy_threshold": 0.9,
+        "eligible": false,
+        "reason": "route entropy evidence is not present"
+      }
+    },
+    "phase_trace": [
+      {
+        "phase": "Pop",
+        "status": "performed",
+        "operation": "accept_question_and_provenance"
+      },
+      {
+        "phase": "Wo",
+        "status": "performed",
+        "operation": "bind_question_to_research_record"
+      },
+      {
+        "phase": "Yax",
+        "status": "performed",
+        "operation": "classify_gap_and_organize_retrieved_evidence"
+      },
+      {
+        "phase": "Sek",
+        "status": "deferred_to_host",
+        "operation": "format_reply_field_via_configured_model"
+      },
+      {
+        "phase": "Ch'en",
+        "status": "host_validation_required",
+        "operation": "check_formatted_claims_against_evidence"
+      },
+      {
+        "phase": "Xul",
+        "status": "not_committed",
+        "operation": "return_response_without_topology_or_fact_commit"
+      }
+    ],
+    "formatting_contract": {
+      "authority": "source_evidence_only; not_verified_fact",
+      "allowed_numeric_values": [
+        "274",
+        "293",
+        "2025",
+        "2026"
+      ],
+      "report_all_source_values_when_conflicted": true,
+      "select_conflict_winner": false,
+      "invent_unsourced_claims": false
+    },
+    "quantity_evidence": {
+      "status": "sources_disagree",
+      "rows": [
+        {
+          "source": "NASA",
+          "title": "Saturn Facts",
+          "url": "https://science.nasa.gov/saturn/facts/",
+          "term": "moons",
+          "value": "274",
+          "asOf": "March 2025",
+          "sentence": "As of March 2025, Saturn had 274 confirmed moons in its orbit, far more than any other planet in our solar system, with other Saturnian satellites continually awaiting confirmation of their discovery and official naming by the International Astronomical Union (IAU)."
+        },
+        {
+          "source": "Wikipedia",
+          "title": "Moons of Saturn",
+          "url": "https://en.wikipedia.org/wiki/Moons_of_Saturn",
+          "term": "moons",
+          "value": "293",
+          "asOf": "June 2026",
+          "sentence": "Saturn has 293 moons with confirmed orbits as of June 2026, the most of any planet in the Solar System."
+        }
+      ]
+    }
+  },
+  "cfpc": {
+    "gap": "KNOWLEDGE_GAP_NO_KEYS",
+    "route": "retrieval",
+    "evidence": {
+      "intents": [
+        "count",
+        "explain"
+      ],
+      "pattern": "how-many",
+      "keys": 0,
+      "values": 2,
+      "record": "how-many-moons-does-saturn-have",
+      "conflicts": [
+        {
+          "term": "moons",
+          "values": {
+            "NASA": [
+              "274"
+            ],
+            "Wikipedia": [
+              "293"
+            ]
+          },
+          "as_of": {
+            "NASA": "March 2025",
+            "Wikipedia": "June 2026"
+          }
+        }
+      ]
+    },
+    "evidence_status": "conflicted",
+    "authority": "proposal_only"
+  },
+  "evidence_resolution": {
+    "status": "sources_disagree",
+    "rows": [
+      {
+        "source": "NASA",
+        "title": "Saturn Facts",
+        "url": "https://science.nasa.gov/saturn/facts/",
+        "term": "moons",
+        "value": "274",
+        "asOf": "March 2025",
+        "sentence": "As of March 2025, Saturn had 274 confirmed moons in its orbit, far more than any other planet in our solar system, with other Saturnian satellites continually awaiting confirmation of their discovery and official naming by the International Astronomical Union (IAU)."
+      },
+      {
+        "source": "Wikipedia",
+        "title": "Moons of Saturn",
+        "url": "https://en.wikipedia.org/wiki/Moons_of_Saturn",
+        "term": "moons",
+        "value": "293",
+        "asOf": "June 2026",
+        "sentence": "Saturn now has 293 confirmed moons with orbits as of June 2026, the most of any planet in the Solar System."
+      }
+    ]
+  },
+  "factory_materialization": {
+    "track": "Factory-µ",
+    "operation": "create_question_scoped_research_record",
+    "admission": "evidence_record_only",
+    "path": "micronauts-data/how-many-moons-does-saturn-have.json"
+  }
+}

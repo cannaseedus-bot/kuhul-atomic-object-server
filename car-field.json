@@ -1,0 +1,262 @@
+{
+  "⟁CAR": {
+    "root": "⟁CAR",
+    "field": "vehicle",
+    "maxLevel": 10,
+    "terminal": 10,
+    "vector": {
+      "space": "semantic-field",
+      "dimensions": 10,
+      "coordinates": [
+        "⟁AUTOMOBILE",
+        "⟁COMBUSTION",
+        "⟁GASOLINE",
+        "⟁ROADS",
+        "⟁SOUND",
+        "⟁DAILY",
+        "⟁REGIONAL",
+        "⟁LICENSED",
+        "⟁VERIFIED",
+        "⟁COMMIT"
+      ],
+      "fieldDimensions": [1, 2, 3, 4, 5, 6, 7, 8],
+      "evaluationDimensions": [9, 10],
+      "fieldCoordinates": {
+        "1": "field.identity",
+        "2": "field.gradient",
+        "3": "field.bias",
+        "4": "field.topology",
+        "5": "field.sensory",
+        "6": "field.temporal",
+        "7": "field.spatial",
+        "8": "field.operational"
+      }
+    },
+    "fields": {
+      "identity": { "level": 1, "symbol": "⟁AUTOMOBILE", "sourceLevel": "1" },
+      "gradient": { "level": 2, "symbol": "⟁COMBUSTION", "sourceLevel": "2" },
+      "bias": { "level": 3, "symbol": "⟁GASOLINE", "sourceLevel": "3" },
+      "topology": { "level": 4, "symbol": "⟁ROADS", "sourceLevel": "4" },
+      "sensory": { "level": 5, "symbol": "⟁SOUND", "sourceLevel": "5" },
+      "temporal": { "level": 6, "symbol": "⟁DAILY", "sourceLevel": "6" },
+      "spatial": { "level": 7, "symbol": "⟁REGIONAL", "sourceLevel": "7" },
+      "operational": { "level": 8, "symbol": "⟁LICENSED", "sourceLevel": "8" }
+    },
+    "levels": {
+      "1": { "role": "field", "symbol": "⟁AUTOMOBILE", "kind": "identity", "notation": ["car", "automobile", "motor_vehicle"] },
+      "2": { "role": "gradient", "symbol": "⟁COMBUSTION", "kind": "behavior", "notation": ["gasoline_powered_combustion_engine", "engine_generates_motion"] },
+      "3": { "role": "bias", "symbol": "⟁GASOLINE", "kind": "dependency", "notation": ["car_that_uses_gas", "requires_gasoline_to_operate"] },
+      "4": { "role": "topology", "symbol": "⟁ROADS", "kind": "relation", "notation": ["car_drives_on_roads", "vehicle_follows_route"] },
+      "5": { "role": "sensory", "symbol": "⟁SOUND", "kind": "audible", "notation": ["engine_makes_sound", "vehicle_can_be_heard"] },
+      "6": { "role": "temporal", "symbol": "⟁DAILY", "kind": "recurring", "notation": ["drive_car_daily", "vehicle_used_regularly"] },
+      "7": { "role": "spatial", "symbol": "⟁REGIONAL", "kind": "bounded", "notation": ["travel_between_states", "car_travels_long_distances"] },
+      "8": { "role": "operational", "symbol": "⟁LICENSED", "kind": "required", "notation": ["driver_requires_license", "vehicle_requires_registration"] },
+      "9": { "role": "confidence", "symbol": "⟁VERIFIED", "kind": "confirmed", "requires": ["assertion", "evidence", "scope", "verification_result"] },
+      "10": { "role": "terminal", "symbol": "⟁COMMIT", "kind": "sealed", "requires": ["authorized_commit", "verified_assertions"] }
+    },
+    "reasoningQuestions": [
+      {
+        "id": "⟁CAR:⟁AUTOMOBILE:question.v1",
+        "targetGlyph": "⟁AUTOMOBILE",
+        "template": "relation_probe.v1",
+        "question": "How is car related to automobile?",
+        "slots": {
+          "subject": "⟁CAR",
+          "subjectWord": "car",
+          "neighbor": "⟁AUTOMOBILE",
+          "neighborWord": "automobile",
+          "relation": "identity"
+        },
+        "responseContract": {
+          "type": "relation_explanation",
+          "requiresEvidence": true,
+          "allowUnknown": true
+        },
+        "purpose": "relation_probe",
+        "status": "candidate"
+      },
+      {
+        "id": "⟁CAR:⟁COMBUSTION:question.v1",
+        "targetGlyph": "⟁COMBUSTION",
+        "template": "role_probe.v1",
+        "question": "What role does combustion play for car?",
+        "slots": {
+          "subject": "⟁CAR",
+          "subjectWord": "car",
+          "neighbor": "⟁COMBUSTION",
+          "neighborWord": "combustion",
+          "relation": "mechanism"
+        },
+        "responseContract": {
+          "type": "relation_explanation",
+          "requiresEvidence": true,
+          "allowUnknown": true
+        },
+        "purpose": "relation_probe",
+        "status": "candidate"
+      },
+      {
+        "id": "⟁CAR:⟁GASOLINE:question.v1",
+        "targetGlyph": "⟁GASOLINE",
+        "template": "condition_probe.v1",
+        "question": "When does a car need gasoline?",
+        "slots": {
+          "subject": "⟁CAR",
+          "subjectWord": "car",
+          "neighbor": "⟁GASOLINE",
+          "neighborWord": "gasoline",
+          "relation": "dependency"
+        },
+        "responseContract": {
+          "type": "relation_explanation",
+          "requiresEvidence": true,
+          "allowUnknown": true
+        },
+        "purpose": "relation_probe",
+        "status": "candidate"
+      },
+      {
+        "id": "⟁CAR:⟁ROADS:question.v1",
+        "targetGlyph": "⟁ROADS",
+        "template": "connection_probe.v1",
+        "question": "What connects a car with roads?",
+        "slots": {
+          "subject": "⟁CAR",
+          "subjectWord": "car",
+          "neighbor": "⟁ROADS",
+          "neighborWord": "roads",
+          "relation": "relation"
+        },
+        "responseContract": {
+          "type": "relation_explanation",
+          "requiresEvidence": true,
+          "allowUnknown": true
+        },
+        "purpose": "relation_probe",
+        "status": "candidate"
+      },
+      {
+        "id": "⟁CAR:⟁SOUND:question.v1",
+        "targetGlyph": "⟁SOUND",
+        "template": "relation_probe.v1",
+        "question": "How does sound indicate that a car is present?",
+        "slots": {
+          "subject": "⟁CAR",
+          "subjectWord": "car",
+          "neighbor": "⟁SOUND",
+          "neighborWord": "sound",
+          "relation": "sensory"
+        },
+        "responseContract": {
+          "type": "relation_explanation",
+          "requiresEvidence": true,
+          "allowUnknown": true
+        },
+        "purpose": "relation_probe",
+        "status": "candidate"
+      },
+      {
+        "id": "⟁CAR:⟁DAILY:question.v1",
+        "targetGlyph": "⟁DAILY",
+        "template": "condition_probe.v1",
+        "question": "How does daily use shape what a car is?",
+        "slots": {
+          "subject": "⟁CAR",
+          "subjectWord": "car",
+          "neighbor": "⟁DAILY",
+          "neighborWord": "daily",
+          "relation": "recurring"
+        },
+        "responseContract": {
+          "type": "relation_explanation",
+          "requiresEvidence": true,
+          "allowUnknown": true
+        },
+        "purpose": "relation_probe",
+        "status": "candidate"
+      },
+      {
+        "id": "⟁CAR:⟁REGIONAL:question.v1",
+        "targetGlyph": "⟁REGIONAL",
+        "template": "connection_probe.v1",
+        "question": "What regional distance can a car cover?",
+        "slots": {
+          "subject": "⟁CAR",
+          "subjectWord": "car",
+          "neighbor": "⟁REGIONAL",
+          "neighborWord": "regional",
+          "relation": "spatial_action"
+        },
+        "responseContract": {
+          "type": "relation_explanation",
+          "requiresEvidence": true,
+          "allowUnknown": true
+        },
+        "purpose": "relation_probe",
+        "status": "candidate"
+      },
+      {
+        "id": "⟁CAR:⟁LICENSED:question.v1",
+        "targetGlyph": "⟁LICENSED",
+        "template": "condition_probe.v1",
+        "question": "What does licensed operation of a car require?",
+        "slots": {
+          "subject": "⟁CAR",
+          "subjectWord": "car",
+          "neighbor": "⟁LICENSED",
+          "neighborWord": "licensed",
+          "relation": "operational"
+        },
+        "responseContract": {
+          "type": "relation_explanation",
+          "requiresEvidence": true,
+          "allowUnknown": true
+        },
+        "purpose": "relation_probe",
+        "status": "candidate"
+      }
+    ],
+    "semanticNotation": {
+      "format": "underscore_compound",
+      "representation": "typed_relational_graph",
+      "patterns": {
+        "attribute": "*_that_uses_*",
+        "negation": "not_an_*",
+        "mechanism": "*_powered_*_engine",
+        "action": "*_around_*",
+        "dependency": "*_requires_*",
+        "location": "*_drives_on_*",
+        "capability": "*_can_*",
+        "temporal": "*_daily"
+      }
+    },
+    "relations": [
+      { "notation": "car_that_uses_gas", "subject": "⟁CAR", "predicate": "USES", "object": "⟁GASOLINE", "type": "dependency", "polarity": "positive" },
+      { "notation": "not_an_electric_car", "subject": "⟁CAR", "predicate": "IS_A", "object": "⟁ELECTRIC_CAR", "type": "exclusion", "polarity": "negative", "scope": "electric_only_vehicle" },
+      { "notation": "gasoline_powered_combustion_engine", "subject": "⟁ENGINE", "predicate": "POWERED_BY", "object": "⟁GASOLINE", "type": "mechanism", "polarity": "positive", "mechanism": "⟁COMBUSTION" },
+      { "notation": "drive_around_the_country", "subject": "⟁CAR", "predicate": "TRAVELS_WITHIN", "object": "⟁COUNTRY", "type": "spatial_action", "polarity": "positive", "action": "⟁DRIVE" }
+    ],
+    "inference": {
+      "mode": "evidence_gated",
+      "rules": [
+        { "if": ["car_that_uses_gas", "gasoline_powered_combustion_engine"], "then": "gasoline_powered_car", "status": "candidate" },
+        { "if": ["car_drives_on_roads", "roads_connect_cities"], "then": "car_can_travel_between_cities", "status": "candidate" }
+      ],
+      "constraints": [
+        "gasoline_usage_does_not_exclude_hybrid",
+        "electric_cars_do_not_require_combustion",
+        "negation_requires_explicit_scope",
+        "candidate_inference_requires_verification",
+        "contextual_properties_are_not_universal"
+      ]
+    },
+    "memory": { "replay": "observed_vehicle_events", "field": "semantic_vehicle_relations", "provenance": "per_assertion", "commitPolicy": "verified_and_authorized" },
+    "evidence": {
+      "candidateRelevance": { "source": "neighborhood.attention.jsonl", "status": "candidate_relevance_only", "candidates": 8, "temperature": 0.07 },
+      "syllableMatches": { "source": "vendor/key-grammar-kit/data/syllable.gml", "matchPolicy": "exact", "declared": false },
+      "alphabetTokenIds": { "source": ".micronaut/checkpoints/gqa-demo.safetensors", "kind": "character", "vocab": 70 },
+      "framedQuestions": { "source": "neighborhood.jsonl", "purpose": "relation_probe", "status": "candidate" },
+      "provenance": { "origin": "authored", "layer": "answer", "precedence": 0, "overrides": ["model"], "rule": "lower precedence wins; an authored definition is never replaced by a generated one" }
+    }
+  }
+}

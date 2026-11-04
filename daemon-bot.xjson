@@ -1,0 +1,400 @@
+{
+  "@meta": {
+    "id": "DAEMON-BOT",
+    "name": "Daemon Bot",
+    "description": "STUDENT-inspired symbolic question-answering micronaut — Daemon Bot AIML learner (PATTERN fold)",
+    "version": "1.0",
+    "format": "atomic_block_fold",
+    "spec": "docs/specs/horizontal-fold-linear-system.md"
+  },
+  "@knowledge": {
+    "aiml": [
+      "daemon-bot.aiml",
+      "daemon-bot-extended.aiml",
+      "daemon-bot-learn.aiml"
+    ],
+    "student_reference": "https://en.wikipedia.org/wiki/STUDENT",
+    "student_model": "rule_based_natural_language_question_answering",
+    "interpretation_pipeline": [
+      "surface_input",
+      "kernel_sentence",
+      "symbolic_expression",
+      "verified_response"
+    ],
+    "validator": "validator.js",
+    "storage": "learned-rules.json",
+    "authority": "pattern_match_only",
+    "arbitraryCode": false,
+    "network": false,
+    "xaiml_pattern_bank": "micronaut/xaiml/daemon-cli.xaiml",
+    "model_runtime_frame": "micronaut/xaiml/model-runtime-frame.json",
+    "model_runtime": "micronaut/model_runtime.py",
+    "kernel_facade": "micronaut/model_kernel.py",
+    "trace_contract": "vendor/key-grammar-kit/data/grammar/daemon-bot.trace.contracts.json",
+    "trace_schema": "daemon-bot.reply-trace.v1",
+    "trace_surface": "reply.trace (observation only; never admission, verification or commit)",
+    "candidate_policy": "Model-created patterns stay candidates until validation and explicit admission."
+  },
+  "@lanes": {
+    "agent": {
+      "@dict": 0,
+      "@role": "stateful cognitive tensor space",
+      "@bus": "cognition"
+    },
+    "skills": {
+      "@dict": 1,
+      "@role": "event routing triggers",
+      "@bus": "intent"
+    },
+    "experts": {
+      "@dict": 2,
+      "@role": "compute endpoints (MoE)",
+      "@bus": "execution"
+    },
+    "runtime": {
+      "@dict": 3,
+      "@role": "hardware abstraction",
+      "@bus": "hardware"
+    },
+    "router": {
+      "@dict": 4,
+      "@role": "control plane",
+      "@bus": "control",
+      "@kernel": "implicit"
+    }
+  },
+  "@phases": {
+    "Pop": {
+      "@op": "load",
+      "@desc": "load state vector from BSON snapshot"
+    },
+    "Wo": {
+      "@op": "resolve",
+      "@desc": "resolve lanes → build x blocks from @lanes"
+    },
+    "Sek": {
+      "@op": "execute",
+      "@desc": "x_next = A·x, top_k dispatch to Daemon Bot experts"
+    },
+    "Ch'en": {
+      "@op": "update",
+      "@desc": "A ← A + ΔA, persist learned_biases to BSON"
+    }
+  },
+  "@variables": {
+    "routing_bias": {
+      "@mutability": "MUTABLE",
+      "@update": "reinforce(success) - decay(failure)",
+      "@range": [
+        0,
+        1
+      ],
+      "@persist": "@agent.main.learned_biases"
+    },
+    "learned": {
+      "@mutability": "MUTABLE",
+      "@update": "A + ΔA per turn",
+      "@range": [
+        -1,
+        1
+      ],
+      "@persist": "models/DAEMON-BOT_state.bson"
+    },
+    "memory": {
+      "@mutability": "MUTABLE",
+      "@update": "last_topic, context_window",
+      "@persist": "@agent.main.memory"
+    },
+    "model": {
+      "@mutability": "IMMUTABLE",
+      "@source": "@model.core",
+      "@note": "vocab_size, num_layers, num_experts — schema-locked"
+    },
+    "experts": {
+      "@mutability": "IMMUTABLE",
+      "@source": "@experts",
+      "@note": "expert structure schema-locked; routing_bias MUTABLE within"
+    }
+  },
+  "@edges": [
+    {
+      "@id": "aiml→exp-0",
+      "@from": "@skills.skill-aiml",
+      "@to": "@experts.exp-0",
+      "@control": "route",
+      "@condition": "match(intent=aiml)",
+      "@weight": "@variable.routing_bias[exp-0]",
+      "@phase": "Sek"
+    },
+    {
+      "@id": "wildcards→exp-1",
+      "@from": "@skills.skill-wildcards",
+      "@to": "@experts.exp-1",
+      "@control": "route",
+      "@condition": "match(intent=wildcards)",
+      "@weight": "@variable.routing_bias[exp-1]",
+      "@phase": "Sek"
+    },
+    {
+      "@id": "phase-routing→exp-2",
+      "@from": "@skills.skill-phase-routing",
+      "@to": "@experts.exp-2",
+      "@control": "route",
+      "@condition": "match(intent=phase-routing)",
+      "@weight": "@variable.routing_bias[exp-2]",
+      "@phase": "Sek"
+    },
+    {
+      "@id": "agent→router",
+      "@from": "@agent.main",
+      "@to": "@moe.router",
+      "@control": "control",
+      "@condition": "always",
+      "@weight": 1.0,
+      "@phase": "Sek",
+      "@xcfe": "IMMUTABLE"
+    },
+    {
+      "@id": "router→experts",
+      "@from": "@moe.router",
+      "@to": "@experts.*",
+      "@control": "dispatch",
+      "@condition": "top_k(@variable.routing_bias, k=2) && @runtime.gpu.enabled",
+      "@weight": "@variable.routing_bias",
+      "@phase": "Sek"
+    },
+    {
+      "@id": "experts→learned",
+      "@from": "@experts.*",
+      "@to": "@agent.main.learned_biases",
+      "@control": "feedback",
+      "@condition": "always",
+      "@weight": "@variable.signal",
+      "@update": "reinforce(success) - decay(failure)",
+      "@phase": "Ch'en",
+      "@note": "CRITICAL: closed-loop learning — without this edge, adaptation is not possible"
+    }
+  ],
+  "@agent.main": {
+    "@lane": 0,
+    "@dict": 0,
+    "@kind": "atomic_block",
+    "@phase": "Pop",
+    "id": "agent-main",
+    "name": "Daemon Bot",
+    "persona": "A deterministic STUDENT-inspired symbolic question-answering micronaut that learns validated AIML patterns, wildcards, SRAI, keys, topics, and session teaching.",
+    "system_prompt": "You are Daemon Bot, a STUDENT-inspired symbolic learner. Normalize input into structured statements, reason with validated rules, explain the transformation, and never treat unverified input as authority.",
+    "temperature": 0.7,
+    "max_tokens": 2048,
+    "interaction_count": 0,
+    "learned_biases": {},
+    "memory": {}
+  },
+  "@model.core": {
+    "@xcfe": "IMMUTABLE",
+    "backend": "api_custom",
+    "model": "daemon-bot",
+    "api_base": "http://127.0.0.1:5780",
+    "env_key": "API_KEY",
+    "stream": true
+  },
+  "@runtime.gpu": {
+    "@lane": 3,
+    "@dict": 0,
+    "@kind": "atomic_block",
+    "@phase": "Pop",
+    "enabled": false,
+    "backend": "d3d12",
+    "@condition_exports": [
+      "gpu_enabled",
+      "memory_available"
+    ]
+  },
+  "@moe.router": {
+    "@lane": 4,
+    "@dict": 0,
+    "@kind": "atomic_block",
+    "@kernel": "implicit",
+    "top_k_experts": 2,
+    "allow_self_modify": false,
+    "persist_learning": true,
+    "state_file": "models/DAEMON-BOT_state.bson",
+    "@control": {
+      "mode": "route",
+      "variable": "routing_bias",
+      "budget_ms": 50,
+      "max_latency_ms": 200,
+      "ops": [
+        "read",
+        "write",
+        "query",
+        "sek",
+        "infer"
+      ]
+    },
+    "@phase": "Sek"
+  },
+  "@skills": {
+    "skill-aiml": {
+      "@lane": 1,
+      "@dict": 0,
+      "@kind": "atomic_block",
+      "@phase": "Wo",
+      "enabled": true,
+      "name": "Aiml",
+      "trigger": "user asks about aiml",
+      "action": "handle_aiml",
+      "priority": 0.8,
+      "@control": {
+        "mode": "infer",
+        "variable": "skill_active",
+        "route": "skill-aiml",
+        "throttle": {
+          "max_calls_per_min": 120,
+          "burst": 10,
+          "cooldown_ms": 250
+        },
+        "metrics": {
+          "track_latency_ms": true,
+          "track_tokens": true
+        }
+      }
+    },
+    "skill-wildcards": {
+      "@lane": 1,
+      "@dict": 1,
+      "@kind": "atomic_block",
+      "@phase": "Wo",
+      "enabled": true,
+      "name": "Wildcards",
+      "trigger": "user asks about wildcards",
+      "action": "handle_wildcards",
+      "priority": 0.8,
+      "@control": {
+        "mode": "infer",
+        "variable": "skill_active",
+        "route": "skill-wildcards",
+        "throttle": {
+          "max_calls_per_min": 120,
+          "burst": 10,
+          "cooldown_ms": 250
+        },
+        "metrics": {
+          "track_latency_ms": true,
+          "track_tokens": true
+        }
+      }
+    },
+    "skill-phase-routing": {
+      "@lane": 1,
+      "@dict": 2,
+      "@kind": "atomic_block",
+      "@phase": "Wo",
+      "enabled": true,
+      "name": "Phase-Routing",
+      "trigger": "user asks about phase-routing",
+      "action": "handle_phase-routing",
+      "priority": 0.8,
+      "@control": {
+        "mode": "infer",
+        "variable": "skill_active",
+        "route": "skill-phase-routing",
+        "throttle": {
+          "max_calls_per_min": 120,
+          "burst": 10,
+          "cooldown_ms": 250
+        },
+        "metrics": {
+          "track_latency_ms": true,
+          "track_tokens": true
+        }
+      }
+    }
+  },
+  "@experts": {
+    "exp-0": {
+      "@lane": 2,
+      "@dict": 0,
+      "@kind": "atomic_block",
+      "@phase": "Sek",
+      "name": "Aiml",
+      "domain": "aiml",
+      "weights_ref": "expert_0",
+      "trainable": true,
+      "layer_start": 0,
+      "layer_end": 8,
+      "routing_bias": 0.0,
+      "@control": {
+        "mode": "route",
+        "variable": "routing_bias",
+        "route": "exp-0",
+        "throttle": {
+          "max_calls_per_min": 240,
+          "burst": 20,
+          "cooldown_ms": 100
+        },
+        "metrics": {
+          "track_latency_ms": true,
+          "track_tokens": true,
+          "track_hits": true
+        }
+      }
+    },
+    "exp-1": {
+      "@lane": 2,
+      "@dict": 1,
+      "@kind": "atomic_block",
+      "@phase": "Sek",
+      "name": "Wildcards",
+      "domain": "wildcards",
+      "weights_ref": "expert_1",
+      "trainable": true,
+      "layer_start": 0,
+      "layer_end": 8,
+      "routing_bias": 0.0,
+      "@control": {
+        "mode": "route",
+        "variable": "routing_bias",
+        "route": "exp-1",
+        "throttle": {
+          "max_calls_per_min": 240,
+          "burst": 20,
+          "cooldown_ms": 100
+        },
+        "metrics": {
+          "track_latency_ms": true,
+          "track_tokens": true,
+          "track_hits": true
+        }
+      }
+    },
+    "exp-2": {
+      "@lane": 2,
+      "@dict": 2,
+      "@kind": "atomic_block",
+      "@phase": "Sek",
+      "name": "Phase-Routing",
+      "domain": "phase-routing",
+      "weights_ref": "expert_2",
+      "trainable": true,
+      "layer_start": 0,
+      "layer_end": 8,
+      "routing_bias": 0.0,
+      "@control": {
+        "mode": "route",
+        "variable": "routing_bias",
+        "route": "exp-2",
+        "throttle": {
+          "max_calls_per_min": 240,
+          "burst": 20,
+          "cooldown_ms": 100
+        },
+        "metrics": {
+          "track_latency_ms": true,
+          "track_tokens": true,
+          "track_hits": true
+        }
+      }
+    }
+  }
+}

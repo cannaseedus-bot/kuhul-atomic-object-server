@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07101a">
+  <title>Daemon Bot · K'UHUL</title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    html,body{height:100%;overflow:auto;background:#07101a;color:#e6edf3}
+    body{margin:0;font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+    #root{min-height:100vh;padding:clamp(14px,3vw,30px);box-sizing:border-box}
+    .chat-shell{max-width:900px;margin:0 auto;display:grid;gap:14px}
+    .chat-head{display:flex;align-items:center;gap:13px;padding:14px 16px;border:1px solid #263746;border-radius:16px;background:#0b1520}
+    .chat-head h1{font-size:1rem;line-height:1.2;margin:0;color:#dffaf2}.chat-head p{margin:4px 0 0;color:#91a4b4;font-size:.76rem}
+    .avatar{width:46px;height:46px;object-fit:contain;filter:drop-shadow(0 0 8px #40e0b055);animation:avatar-pulse 3s ease-in-out infinite}
+    @keyframes avatar-pulse{50%{transform:scale(1.07) rotate(2deg);filter:drop-shadow(0 0 13px #40e0b088)}}
+    .transcript{display:grid;gap:10px;min-height:240px;max-height:57vh;overflow:auto;padding:4px}
+    .bubble-row{display:flex;align-items:flex-end;gap:9px}.bubble-row.user{justify-content:flex-end}
+    .bubble{max-width:min(84%,680px);padding:11px 13px;border:1px solid #263746;border-radius:14px;background:#101b27;white-space:pre-wrap;overflow-wrap:anywhere}
+    .user .bubble{background:#0d2a25;border-color:#23654f}.bubble-role{font-size:.68rem;color:#8ca2b4;font-weight:700;margin-bottom:4px}.bubble-route{font:10px/1.4 ui-monospace,Consolas,monospace;color:#7f95a6;margin-top:7px;overflow-wrap:anywhere}
+    .bubble-sources{display:grid;gap:7px;margin-top:10px;padding-top:8px;border-top:1px solid #263746;font-size:.72rem}.bubble-sources strong{color:#54e5b3}.bubble-sources a{display:grid;gap:2px;color:#8ecbff;text-decoration:none;overflow-wrap:anywhere}.bubble-sources a span{color:#9eafbd;font-size:.68rem;line-height:1.45}.bubble-sources a:hover{text-decoration:underline}
+    .bubble-trace{margin-top:7px;font:10px/1.45 ui-monospace,Consolas,monospace;color:#7f95a6}.bubble-trace summary{cursor:pointer;color:#54e5b3}.bubble-trace pre{margin:6px 0 0;max-height:220px;overflow:auto;white-space:pre-wrap}
+    .pattern-approval{margin-top:9px}.pattern-approval button{border:1px solid #22a77d;border-radius:8px;background:#10382e;color:#c9ffec;padding:7px 11px;cursor:pointer;font-size:.75rem}.pattern-approval button:disabled{opacity:.55;cursor:wait}.pattern-approval span{font-size:.72rem;color:#54e5b3}
+    .form{display:grid;gap:9px;padding:12px;border:1px solid #263746;border-radius:14px;background:#0b1520}.input-row{display:flex;gap:8px}
+    .input-row input{flex:1;min-width:0;margin:0;border-radius:10px;background:#050b12;color:#e6edf3;border:1px solid #304455;padding:11px}
+    .input-row button,.chips button{border:1px solid #23654f;border-radius:10px;background:#123c31;color:#c9ffec;padding:9px 13px;cursor:pointer}
+    .input-row button:disabled{opacity:.5;cursor:wait}.chips{display:flex;gap:7px;flex-wrap:wrap}.chips button{font-size:.72rem;background:transparent;border-color:#304455;color:#b3c5d3}
+    .notice{margin:0;color:#8ca2b4;font-size:.72rem}.error{color:#ff9b9b}
+    .response-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;color:#91a4b4;font-size:.72rem}
+    .response-controls label{display:flex;align-items:center;gap:6px}.response-controls select{background:#07101a;color:#d9e7f0;border:1px solid #304455;border-radius:7px;padding:5px}
+    .response-controls input[type=range]{width:90px;accent-color:#22f2b3}.response-controls output{font:10px ui-monospace,Consolas,monospace;color:#bce8dc}
+    @media(max-width:560px){.transcript{max-height:52vh}.bubble{max-width:92%}.input-row{align-items:stretch}.input-row button{padding-inline:10px}}
+  </style>
+</head>
+<body>
+  <main id="root" data-asx-key="⟁FRAME:DAEMON_CHAT" data-trace-contract="urn:kuhul:daemon-bot:trace:v1" aria-label="Daemon Bot chat"></main>
+  <script src="./micronaut/vendor/react/react.production.min.js"></script>
+  <script src="./micronaut/vendor/react/react-dom.production.min.js"></script>
+  <script src="./micronaut/xaiml/chat-frame.compiled.js"></script>
+</body>
+</html>

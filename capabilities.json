@@ -1,0 +1,109 @@
+{
+  "schema": "kuhul.css-capabilities.v1",
+  "authority": "css_declaration_js_allowlist_candidate_handoffs",
+  "declaration": "CSS custom properties declare capability identity, arity, guard, and expression metadata. Expression strings are documentation and are never evaluated.",
+  "⟁MATH": {"kind":"capability_group","domain":"mathematics","authority":"pure","keys":["⟁MATH:ADD","⟁MATH:SUB","⟁MATH:MUL","⟁MATH:DIV","⟁MATH:CLAMP","⟁MATH:LERP","⟁MATH:NORM","⟁MATH:MOD"]},
+  "⟁MATH:ADD": {"kind":"operation","domain":"math","className":"cap-math-add","arity":2,"guard":"always","expression":"a+b","authority":"pure","implementation":"add","callableByEvaluator":true},
+  "⟁MATH:SUB": {"kind":"operation","domain":"math","className":"cap-math-sub","arity":2,"guard":"always","expression":"a-b","authority":"pure","implementation":"sub","callableByEvaluator":true},
+  "⟁MATH:MUL": {"kind":"operation","domain":"math","className":"cap-math-mul","arity":2,"guard":"always","expression":"a*b","authority":"pure","implementation":"mul","callableByEvaluator":true},
+  "⟁MATH:DIV": {"kind":"operation","domain":"math","className":"cap-math-div","arity":2,"guard":"b!=0","expression":"a/b","authority":"pure","implementation":"div","callableByEvaluator":true},
+  "⟁MATH:CLAMP": {"kind":"operation","domain":"math","className":"cap-math-clamp","arity":3,"guard":"lo<=hi","expression":"min(max(a,lo),hi)","authority":"pure","implementation":"clamp","callableByEvaluator":true},
+  "⟁MATH:LERP": {"kind":"operation","domain":"math","className":"cap-math-lerp","arity":3,"guard":"t>=0&&t<=1","expression":"a+(b-a)*t","authority":"pure","implementation":"lerp","callableByEvaluator":true},
+  "⟁MATH:NORM": {"kind":"operation","domain":"math","className":"cap-math-norm","arity":3,"guard":"hi!=lo","expression":"(v-lo)/(hi-lo)","authority":"pure","implementation":"norm","callableByEvaluator":true},
+  "⟁MATH:MOD": {"kind":"operation","domain":"math","className":"cap-math-mod","arity":2,"guard":"b!=0","expression":"a%b","authority":"pure","implementation":"mod","callableByEvaluator":true},
+
+  "⟁FN": {"kind":"capability_group","domain":"function-application","authority":"pure","keys":["⟁FN:COMPOSE","⟁FN:PIPE","⟁FN:CURRY","⟁FN:MEMO"]},
+  "⟁FN:COMPOSE": {"kind":"operation","domain":"function","className":"cap-fn-compose","arity":2,"guard":"both arguments are functions","expression":"(f,g)=>x=>f(g(x))","authority":"pure","implementation":"compose","callableByEvaluator":false},
+  "⟁FN:PIPE": {"kind":"operation","domain":"function","className":"cap-fn-pipe","arity":"variadic:1+","guard":"every argument is a function","expression":"(...fs)=>x=>fs.reduce((v,f)=>f(v),x)","authority":"pure","implementation":"pipe","callableByEvaluator":false},
+  "⟁FN:CURRY": {"kind":"operation","domain":"function","className":"cap-fn-curry","arity":2,"guard":"arity is a positive integer","expression":"(f,arity)=>curried","authority":"pure","implementation":"curry","callableByEvaluator":false},
+  "⟁FN:MEMO": {"kind":"operation","domain":"function","className":"cap-fn-memo","arity":2,"guard":"both arguments are functions","expression":"(f,keyFn)=>cache","authority":"local_ephemeral","implementation":"memo","callableByEvaluator":false},
+
+  "⟁GRAPH": {"kind":"capability_group","domain":"graph","authority":"read_only","keys":["⟁GRAPH:NODE","⟁GRAPH:EDGE","⟁GRAPH:BFS","⟁GRAPH:DFS","⟁GRAPH:DIJKSTRA","⟁GRAPH:TOPO","⟁GRAPH:CYCLE","⟁GRAPH:LAYOUT2D"]},
+  "⟁GRAPH:NODE": {"kind":"type","domain":"graph","authority":"read_only","fields":["id","edges","weight"]},
+  "⟁GRAPH:EDGE": {"kind":"type","domain":"graph","authority":"read_only","fields":["from","to","weight","directed"]},
+  "⟁GRAPH:BFS": {"kind":"operation","domain":"graph","className":"cap-graph-bfs","arity":2,"dynamicArity":1,"injected":["graph"],"guard":"nodeExists(start)","expression":"bfs(graph,start)","authority":"read_only","implementation":"bfs","callableByEvaluator":true},
+  "⟁GRAPH:DFS": {"kind":"operation","domain":"graph","className":"cap-graph-dfs","arity":2,"dynamicArity":1,"injected":["graph"],"guard":"nodeExists(start)","expression":"dfs(graph,start)","authority":"read_only","implementation":"dfs","callableByEvaluator":true},
+  "⟁GRAPH:DIJKSTRA": {"kind":"operation","domain":"graph","className":"cap-graph-dij","arity":3,"dynamicArity":2,"injected":["graph"],"guard":"nodesExist(start,end)&&weights>=0","expression":"dijkstra(graph,start,end)","authority":"read_only","implementation":"dijkstra","callableByEvaluator":true},
+  "⟁GRAPH:TOPO": {"kind":"operation","domain":"graph","className":"cap-graph-topo","arity":1,"dynamicArity":0,"injected":["graph"],"guard":"directed&&acyclic","expression":"topologicalSort(graph)","authority":"read_only","implementation":"topo","callableByEvaluator":true},
+  "⟁GRAPH:CYCLE": {"kind":"operation","domain":"graph","className":"cap-graph-cycle","arity":1,"dynamicArity":0,"injected":["graph"],"guard":"graph is well formed","expression":"findCycle(graph)","authority":"read_only","implementation":"cycle","callableByEvaluator":true},
+  "⟁GRAPH:LAYOUT2D": {"kind":"operation","domain":"graph","className":"cap-graph-layout2d","arity":1,"dynamicArity":0,"injected":["graph"],"guard":"graph is well formed","expression":"radialLayout2D(graph)","authority":"read_only","implementation":"layout2d","callableByEvaluator":true},
+
+  "⟁SHEET": {"kind":"capability_group","domain":"cheatsheet","authority":"reference","keys":["⟁SHEET:CSS","⟁SHEET:AIML","⟁SHEET:MATH","⟁SHEET:GRAPH","⟁SHEET:DB"]},
+  "⟁SHEET:CSS": {"kind":"operation","domain":"sheet","className":"cap-sheet-css","arity":0,"guard":"sheet exists","expression":"lookup(css)","authority":"reference","implementation":"sheetCss","callableByEvaluator":true},
+  "⟁SHEET:AIML": {"kind":"operation","domain":"sheet","className":"cap-sheet-aiml","arity":0,"guard":"sheet exists","expression":"lookup(aiml)","authority":"reference","implementation":"sheetAiml","callableByEvaluator":true},
+  "⟁SHEET:MATH": {"kind":"operation","domain":"sheet","className":"cap-sheet-math","arity":0,"guard":"sheet exists","expression":"lookup(math)","authority":"reference","implementation":"sheetMath","callableByEvaluator":true},
+  "⟁SHEET:GRAPH": {"kind":"operation","domain":"sheet","className":"cap-sheet-graph","arity":0,"guard":"sheet exists","expression":"lookup(graph)","authority":"reference","implementation":"sheetGraph","callableByEvaluator":true},
+  "⟁SHEET:DB": {"kind":"operation","domain":"sheet","className":"cap-sheet-db","arity":0,"guard":"sheet exists","expression":"lookup(database)","authority":"reference","implementation":"sheetDb","callableByEvaluator":true},
+
+  "⟁EVAL": {"kind":"capability_group","domain":"evaluator","authority":"gated","keys":["⟁EVAL:CALL","⟁EVAL:PIPELINE","⟁EVAL:TRACE"]},
+  "⟁EVAL:CALL": {"kind":"operation","domain":"evaluator","className":"cap-eval-call","arity":2,"guard":"capability is allowlisted and evaluator-callable","expression":"registry[id](...args)","authority":"gated","implementation":"call","callableByEvaluator":false},
+  "⟁EVAL:PIPELINE": {"kind":"operation","domain":"evaluator","className":"cap-eval-pipeline","arity":2,"guard":"each step is allowlisted and evaluator-callable","expression":"compose(steps)","authority":"gated","implementation":"pipeline","callableByEvaluator":false},
+  "⟁EVAL:TRACE": {"kind":"operation","domain":"evaluator","className":"cap-eval-trace","arity":2,"guard":"capability is allowlisted and evaluator-callable","expression":"trace(id,args)","authority":"gated","implementation":"trace","callableByEvaluator":false},
+
+  "⟁AGENT": {"kind":"capability_group","domain":"micronaut-routing","authority":"gated","keys":["⟁AGENT:CALL","⟁AGENT:CHAIN","⟁AGENT:TRACE","⟁AGENT:ATTEST"]},
+  "⟁AGENT:CALL": {"kind":"operation","domain":"agent-routing","className":"cap-agent-call","arity":4,"guard":"source binding, capability, and target handoff are explicitly allowlisted","expression":"planAgentCall(source,capability,args,target)","authority":"gated","implementation":"agentCall","callableByEvaluator":false},
+  "⟁AGENT:CHAIN": {"kind":"operation","domain":"agent-routing","className":"cap-agent-chain","arity":2,"guard":"all agent and capability steps are explicitly allowlisted","expression":"runChain(chain_spec,initial_value)","authority":"gated","implementation":"agentChain","callableByEvaluator":false},
+  "⟁AGENT:TRACE": {"kind":"operation","domain":"agent-routing","className":"cap-agent-trace","arity":1,"guard":"trace exists","expression":"readTrace(chain_id)","authority":"read_only","implementation":"agentTrace","callableByEvaluator":false},
+  "⟁AGENT:ATTEST": {"kind":"operation","domain":"agent-routing","className":"cap-agent-attest","arity":1,"guard":"trace is canonicalizable","expression":"sha256(canonicalize(chain_result))","authority":"integrity_only","implementation":"agentAttest","callableByEvaluator":false},
+
+  "⟁DB": {"kind":"capability_group","domain":"database-schema","authority":"read_only_description","keys":["⟁DB:SCHEMA","⟁DB:TABLE","⟁DB:COLUMN","⟁DB:PRIMARY_KEY","⟁DB:FOREIGN_KEY","⟁DB:RELATION"]},
+  "⟁DB:SCHEMA": {"kind":"type","domain":"database-schema","authority":"read_only_description","fields":["schemaId","tables","provenance"]},
+  "⟁DB:TABLE": {"kind":"type","domain":"database-schema","authority":"read_only_description","fields":["id","name","columns","primaryKey","foreignKeys"]},
+  "⟁DB:COLUMN": {"kind":"type","domain":"database-schema","authority":"read_only_description","fields":["name","type","nullable","indexed"]},
+  "⟁DB:PRIMARY_KEY": {"kind":"type","domain":"database-schema","authority":"read_only_description","fields":["table","column","unique"]},
+  "⟁DB:FOREIGN_KEY": {"kind":"type","domain":"database-schema","authority":"read_only_description","fields":["fromTable","fromColumn","toTable","toColumn","onDelete"]},
+  "⟁DB:RELATION": {"kind":"type","domain":"database-schema","authority":"read_only_description","fields":["from","to","relation","direction"]},
+
+  "agentBindings": {
+    "micronaut-db-master": {
+      "className":"micronaut-db-master",
+      "capabilities":["⟁MATH:CLAMP","⟁MATH:LERP","⟁MATH:NORM","⟁SHEET:AIML"],
+      "chains":["micronaut-vector-ctrl","micronaut-ast-gen","micronaut-code-exec"]
+    },
+    "micronaut-vector-ctrl": {
+      "className":"micronaut-vector-ctrl",
+      "capabilities":["⟁MATH:CLAMP","⟁MATH:NORM","⟁GRAPH:BFS","⟁GRAPH:DIJKSTRA","⟁SHEET:CSS","⟁SHEET:GRAPH"],
+      "chains":["*"]
+    },
+    "micronaut-ast-gen": {
+      "className":"micronaut-ast-gen",
+      "capabilities":["⟁MATH:CLAMP","⟁MATH:LERP","⟁MATH:NORM","⟁FN:COMPOSE","⟁GRAPH:TOPO"],
+      "chains":["micronaut-code-exec","micronaut-vector-ctrl"]
+    },
+    "micronaut-code-exec": {
+      "className":"micronaut-code-exec",
+      "capabilities":["⟁MATH:ADD","⟁MATH:MUL","⟁MATH:DIV","⟁MATH:CLAMP"],
+      "chains":["micronaut-vector-ctrl","micronaut-db-master"]
+    },
+    "micronaut-lang-parse": {
+      "className":"micronaut-lang-parse",
+      "capabilities":["⟁SHEET:AIML"],
+      "chains":["micronaut-pattern-match"]
+    },
+    "micronaut-pattern-match": {
+      "className":"micronaut-pattern-match",
+      "capabilities":["⟁SHEET:AIML"],
+      "chains":["micronaut-lang-parse","micronaut-db-master"]
+    }
+  },
+  "sheets": {
+    "css": {"flex":"display:flex; flex-direction:row|column; gap:1rem;","grid":"display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));","color":"color:#e5f2ff; background:#020b12;","border":"border:1px solid rgba(148,163,184,0.5); border-radius:1.25rem;"},
+    "aiml": {"pattern":"<pattern>TELL ME ABOUT *</pattern>","template":"<template>You asked about <star/>.</template>","srai":"<srai>HELLO</srai>","star":"<star/> and <star index=\"2\"/>","condition":"<condition name=\"mood\"><li value=\"happy\">Glad.</li></condition>"},
+    "math": {"clamp":"min(max(a,lo),hi)","lerp":"a+(b-a)*t","norm":"(v-lo)/(hi-lo)","div":"a/b with guard b!=0"},
+    "graph": {"bfs":"queue + visited set; O(V+E)","dfs":"stack + visited set; O(V+E)","dijkstra":"non-negative weights; O((V+E)log V)","topo":"Kahn order for a directed acyclic graph","layout2d":"Deterministic radial node coordinates for a 2D topology view"},
+    "database": {"schema":"table and key descriptors", "table":"table identity and column references", "primaryKey":"unique row identity declaration", "foreignKey":"typed relation edge between table columns", "authority":"read-only schema description; no row access"}
+  },
+  "uiExamples": [
+    {"label":"clamp(42,0,100)","className":"cap-math-clamp","args":[42,0,100]},
+    {"label":"lerp(0,100,0.5)","className":"cap-math-lerp","args":[0,100,0.5]},
+    {"label":"div(9,3)","className":"cap-math-div","args":[9,3]},
+    {"label":"div(9,0) → guard","className":"cap-math-div","args":[9,0]},
+    {"label":"BFS from A","className":"cap-graph-bfs","args":["A"]},
+    {"label":"Dijkstra A → D","className":"cap-graph-dij","args":["A","D"]}
+  ],
+  "extensions": {
+    "keyGraph": {"nodeAddress": "⟁ keys", "edges": "declared semantic relations", "sheetLookup": "⟁SHEET:* reference capability"},
+    "xaiml": {"role": "surface-pattern-to-key-and-response-format routing", "execution": "external XAIML adapter"},
+    "tssl": {"role": "declared tensor transforms over graph vectors", "execution": "not implemented by this browser runtime"}
+  }
+}

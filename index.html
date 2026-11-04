@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#020617">
+<title>Daemon Bot · K'UHUL</title>
+<link rel="manifest" href="./manifest.json"><link rel="stylesheet" href="./atomic.css">
+<script defer src="./lib/kuhul-xjson.js"></script><script defer src="./lib/scxq2.js"></script>
+<script defer src="./lib/kuhul-client.js"></script><script defer src="./lib/atomic-app.js"></script><script defer src="./lib/frame-projection.js"></script>
+</head>
+<body data-frame="daemon-chat">
+<a class="skip" href="#main">Skip to console</a>
+<div class="layout" data-asx-key="⟁PAGE">
+<aside hidden><div class="brand"><span class="glyph">⟁</span><strong>K'UHUL</strong><small>ATOMIC OBJECT SERVER / 02</small></div>
+<nav aria-label="Console sections"><a href="#overview">01 / Overview</a><a href="#tables">02 / Object tables</a><a href="#folds">03 / Fold geometry</a><a href="#routes">04 / REST contract</a><a href="#inference">05 / Model runner</a><a href="#inventory">06 / Stack inventory</a><a href="#references">07 / References</a></nav>
+<div class="sidebar-note"><span class="tag">EXECUTION LAW</span><p>JSON declares.<br>Adapters execute.<br>ASX renders.</p><small>Node compatibility runtime</small></div></aside>
+<main id="main">
+<header><a class="home-brand" href="./#frame=daemon-chat" aria-label="Daemon Bot home"><span>⟁</span><strong>DAEMON BOT</strong></a><div class="header-right"><nav id="frame-tabs" class="frame-tabs" aria-label="Runtime frames" data-asx-key="⟁FRAME:TABS"><a class="frame-fallback" href="./chat.html">Chat</a><a class="frame-fallback" href="./#frame=dashboard">Workspace</a><a class="frame-fallback" href="./#frame=key-patterns">Key patterns</a><a class="frame-fallback" href="./micronaut/docs/css_micronaut_control_system.html">Capabilities</a></nav><span id="connection" data-asx-key="⟁STATUS" role="status" aria-label="Runtime status">Local patterns</span></div></header>
+<section id="daemon-chat" class="projected-frame"><div class="section-heading"><div><p class="eyebrow">LOCAL XAIML · MANIFEST-BOUND</p><h2>Talk to Daemon Bot</h2></div><a id="chat-open-link" class="secondary frame-link" href="./chat.html" target="_blank" rel="noopener">Open standalone ↗</a></div><div id="daemon-chat-panel" class="projected-chat-panel" data-asx-key="⟁PANEL:DAEMON_FORM"><iframe id="daemon-chat-iframe" src="./chat.html" title="Daemon Bot chat form" loading="eager" referrerpolicy="no-referrer"></iframe></div></section>
+<section id="key-patterns" class="projected-frame" hidden><p class="eyebrow">FRAME / SYMBOLIC MANIFESTS</p><h2>Key patterns and projection tracks</h2><label for="key-pattern-filter">Filter keys and values<input id="key-pattern-filter" type="search" placeholder="Try AIML, Pop, panel, or topology" autocomplete="off"></label><p id="key-pattern-status" class="muted" role="status">Loading key manifests…</p><div class="key-pattern-canvas-wrap"><canvas id="key-pattern-canvas" data-asx-key="⟁CANVAS" width="1200" height="440" aria-label="Canvas projection grouped by source manifest">Manifest key projection; detailed entries follow as text cards.</canvas></div><div id="key-pattern-list" class="key-pattern-grid" data-asx-key="⟁PANEL:KEY_PATTERNS"></div></section>
+<section id="capability-control" class="projected-frame" hidden><p class="eyebrow">FRAME / CSS DECLARATIONS · JS ALLOWLIST</p><h2>Micronaut capabilities</h2><div class="projected-control-panel" data-asx-key="⟁PANEL:CAPABILITY_CONSOLE"><iframe id="capabilities-iframe" title="CSS Micronaut capability console" loading="lazy" referrerpolicy="no-referrer"></iframe></div></section>
+<section id="overview" hidden><p class="eyebrow">01 / MANIFEST → ROUTES → OBJECTS</p><h1>A callable<br><em>atomic stack.</em></h1>
+<p class="intro">Inspect the runtime, address JSON objects, and persist typed binary lanes through one manifest-defined interface.</p>
+<div class="metrics"><article><small>DECLARED TABLES</small><strong id="table-count">—</strong></article><article><small>STORED ROWS</small><strong id="row-count">—</strong></article><article><small>NUMERIC PAYLOAD</small><strong id="byte-count">—</strong></article><article><small>PERSISTENCE</small><strong class="small">KDB1 / LE</strong></article></div>
+<p class="note" id="notice" role="status" aria-live="polite">Loading the manifest contract…</p></section>
+<section id="tables" data-asx-key="⟁TABLES" hidden><div class="section-heading"><div><p class="eyebrow">02 / OBJECT SERVER</p><h2>JSON objects. Binary data[].</h2></div><button data-asx-call="tables.refresh">Refresh tables</button></div>
+<div class="table-layout"><div class="panel"><label for="table-select">Table</label><select id="table-select" data-asx-key="⟁TABLE:SELECT"></select><p id="table-description"></p><div id="row-list" class="row-list"></div><small id="page-info"></small><button class="secondary" data-asx-call="table.export">Download binary table</button></div>
+<div class="panel"><div class="row"><label class="grow" for="row-id">Object ID<input id="row-id" value="my-object" pattern="[a-zA-Z0-9_-]{1,80}"></label><label for="dtype">Lane type<select id="dtype"><option>float64</option><option>float32</option><option>uint8</option></select></label></div>
+<label for="object-json">JSON object</label><textarea id="object-json" spellcheck="false" rows="6">{
+  "key": "⟁OBJECT",
+  "phase": "Pop",
+  "message": "An addressable atomic object"
+}</textarea>
+<label for="data-json">Binary data[] <small>Numbers are packed using the selected lane type.</small></label><textarea id="data-json" spellcheck="false" rows="3">[1, 0.5, -0.5, -1, -0.5, 0.5]</textarea>
+<div class="row"><button data-asx-call="row.save">Save object</button><button class="secondary" data-asx-call="row.load">Load ID</button><button class="danger" data-asx-call="row.delete">Delete ID</button></div>
+<p class="muted">Save creates or replaces this ID. Delete removes this ID from the selected table.</p></div></div>
+<details><summary>Last API response</summary><pre id="api-output" data-asx-key="⟁OUTPUT">No request yet.</pre></details></section>
+<section id="folds" hidden><p class="eyebrow">03 / K-CUBE GEOMETRY</p><h2>One phase across. Six phases deep.</h2>
+<div class="two-col"><div class="panel"><div class="row"><label class="grow" for="source-phase">Source phase<select id="source-phase"></select></label><label class="grow" for="target-phase">Target phase<select id="target-phase"></select></label><label for="arc-weight">Arc weight<input id="arc-weight" type="number" value="1" step="0.1"></label></div>
+<button data-asx-call="fold.inspect">Inspect arc</button><p class="formula">w × cos(θ target − θ source)</p><output id="arc-result" data-asx-key="⟁ARC"></output>
+<p>Horizontal folds connect different nodes at a shared phase. Vertical folds traverse one node through the phase chain.</p><small>This is a geometry inspector; it does not execute a K'UHUL VM.</small></div>
+<div class="panel"><div id="phase-chain" class="phase-chain"></div><div class="horizontal"><span>node A</span><span>↔</span><span>node B</span><span>↔</span><span>node C</span></div><small>Same phase · cos(0) = 1</small></div></div></section>
+<section id="routes" hidden><div class="section-heading"><div><p class="eyebrow">04 / DECLARATIVE API</p><h2>The manifest is the contract.</h2></div><button class="secondary" data-asx-call="manifest.inspect">Inspect manifest</button></div><div class="table-wrap"><table><thead><tr><th>Method</th><th>Route</th><th>Action / adapter</th></tr></thead><tbody id="route-list"></tbody></table></div><details id="manifest-details"><summary>Resolved manifest and ASX keys</summary><pre id="manifest-output"></pre></details></section>
+<section id="inference" hidden><p class="eyebrow">05 / LAM.O ADAPTER</p><h2>Local model runner.</h2><div class="panel"><label for="model">Ollama model<input id="model" value="llama3"></label><label for="prompt">Prompt<textarea id="prompt" rows="3" placeholder="Ask your local model…"></textarea></label><button data-asx-call="model.infer">Run inference</button><pre id="completion">The object server works independently of Ollama.</pre></div></section>
+<section id="inventory" hidden><p class="eyebrow">06 / STACK MAP</p><h2>Every surface has a role.</h2><p id="inventory-summary"></p><div class="table-wrap"><table><thead><tr><th>File</th><th>Plane</th><th>Role</th></tr></thead><tbody id="inventory-list"></tbody></table></div></section>
+<section id="references" hidden><p class="eyebrow">07 / SOURCE REFERENCES</p><h2>Built from the stack's guides.</h2><div class="reference-grid"><a href="./KHANARY-ATOMIC-MASTER-GUIDE.html"><span>01</span>Atomic master guide ↗</a><a href="./kuhul_atomic_horizontal_vertical_folds_guide.html"><span>02</span>Horizontal & vertical folds ↗</a><a href="./asx-key-grammar.html"><span>03</span>ASX key grammar ↗</a></div></section>
+<footer>K'UHUL / Atomic Object Server <span>Manifest authority · server persistence · symbolic DOM</span></footer>
+</main></div>
+</body></html>

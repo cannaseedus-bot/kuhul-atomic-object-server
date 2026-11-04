@@ -1,0 +1,759 @@
+{
+  "@meta": {
+    "@id": "kuhul-xsl-semantic-bindings",
+    "@name": "K'UHUL XSL Semantic Bindings",
+    "@format": "kuhul.xsl.semantic-bindings/1",
+    "@version": "1.0.0",
+    "@status": "declarative_projection",
+    "@domain": "kuhul.dev"
+  },
+  "@runtime": {
+    "@engine": "XSL",
+    "@dataModel": "XML-style nodes and XPath 3.1 values",
+    "@backend": "K'UHUL phase runtime",
+    "@sourceOfMicronautBindings": "vendor/key-grammar-kit/data/micronauts/kuhul-micronaut-registry.json",
+    "@resourceSurface": [
+      "program",
+      "micronaut",
+      "widget",
+      "topology",
+      "vector",
+      "image",
+      "video",
+      "database_table",
+      "mml_field",
+      "gml_field",
+      "mml_graph",
+      "gml_graph"
+    ]
+  },
+  "@phases": {
+    "Pop": {
+      "@code": "000",
+      "@role": "ingress",
+      "@operators": [
+        "MAP"
+      ]
+    },
+    "Wo": {
+      "@code": "001",
+      "@role": "assignment",
+      "@operators": [
+        "FILTER",
+        "FOLD"
+      ]
+    },
+    "Yax": {
+      "@code": "010",
+      "@role": "expansion",
+      "@operators": [
+        "MAP",
+        "FILTER"
+      ]
+    },
+    "Sek": {
+      "@code": "011",
+      "@role": "selection",
+      "@operators": [
+        "MAP",
+        "FILTER",
+        "FOLD",
+        "REDUCE"
+      ]
+    },
+    "Ch'en": {
+      "@code": "100",
+      "@role": "verification",
+      "@operators": [
+        "FILTER",
+        "REDUCE"
+      ]
+    },
+    "Xul": {
+      "@code": "101",
+      "@role": "closure",
+      "@operators": [
+        "FOLD"
+      ]
+    }
+  },
+  "@micronauts": {
+    "micronaut:ELIZA": {
+      "@descriptorStatus": "declarative_proposal",
+      "@identity": {
+        "id": "micronaut:ELIZA",
+        "name": "ELIZA-µ",
+        "class": "conversational",
+        "version": "1.0",
+        "authority_claim": "proposal_only",
+        "evidence_refs": [
+          "data/manifest/eliza.manifest.json",
+          "data/manifest/aiml.manifest.json"
+        ]
+      },
+      "@phaseBindings": {
+        "Pop": {
+          "role": "conversation_ingress",
+          "descriptor_ref": "phase:Pop"
+        },
+        "Wo": {
+          "role": "intent_binding",
+          "descriptor_ref": "phase:Wo"
+        },
+        "Yax": {
+          "role": "question_generation",
+          "descriptor_ref": "phase:Yax"
+        },
+        "Sek": {
+          "role": "candidate_selection",
+          "descriptor_ref": "phase:Sek"
+        },
+        "Ch'en": {
+          "role": "proposal_verification",
+          "descriptor_ref": "phase:Ch'en"
+        },
+        "Xul": {
+          "role": "fold_closure",
+          "descriptor_ref": "phase:Xul"
+        }
+      },
+      "@capabilities": {
+        "declared": [
+          "question_proposal",
+          "pattern_matching",
+          "wildcard_capture",
+          "intent_reflection",
+          "gap_detection",
+          "semantic_routing",
+          "candidate_ranking"
+        ],
+        "registered": [],
+        "registered_status": "not_verified_in_this_declarative_document",
+        "registration_source": "active runtime registry"
+      },
+      "@lanes": {
+        "input": "lane:CONVERSATION",
+        "pattern": "lane:WILDCARD",
+        "intent": "lane:INTENT",
+        "question": "lane:QUESTION",
+        "output": "lane:PROPOSAL"
+      },
+      "@xcfe": {
+        "admission_requirement": "required_before_execution",
+        "execution_claim": "not_implicitly_authorized",
+        "proposal_authority_claim": "proposal_only",
+        "lane_authorization_requirement": "required",
+        "phase_authorization_requirement": "required",
+        "verification_phase_ref": "phase:Ch'en",
+        "closure_phase_ref": "phase:Xul"
+      },
+      "@output": {
+        "type": "QuestionProposal",
+        "format": "semantic_map",
+        "persistence_claim": false,
+        "dispatch_claim": false
+      },
+      "@aiml": {
+        "grammar": "aiml.runtime/5",
+        "pattern_ref": "aiml:FORGETTING_PATTERN",
+        "pattern": "MY MODEL KEEPS FORGETTING *",
+        "capture_count": 1,
+        "capture_lane": "lane:WILDCARD",
+        "template_ref": "template:MEMORY_REFLECTION",
+        "status": "proposed_reference_unverified"
+      },
+      "@srai": {
+        "redirect": "srai:DIAGNOSE_MEMORY",
+        "canonical_intent": "intent:MEMORY_DIAGNOSIS",
+        "max_redirects": 8,
+        "cycle_detection": true,
+        "status": "proposed_reference_unverified"
+      },
+      "@cfpc": {
+        "intent": "cfpc:MEMORY_FAILURE",
+        "gap": "cfpc:MEMORY_FAILURE_MECHANISM",
+        "gap_family": "KNOWLEDGE_GAP_NO_VALUES",
+        "route": "micronaut:QUESTION_ENGINE",
+        "classification": "candidate"
+      },
+      "@learning": {
+        "enabled_claim": true,
+        "mode_claim": "proposal_only",
+        "gradient_lane_ref": "lane:GRADIENT",
+        "feedback_lane_ref": "lane:FEEDBACK",
+        "target_ref": "gramstore:W_learned",
+        "commit_requirement": "authorized_xul_only",
+        "corpus_weights_claim": "immutable"
+      },
+      "@questions": [
+        {
+          "key": "question:STORAGE_OR_RETRIEVAL",
+          "text": "Is information lost from storage, or is retrieval failing?",
+          "default_weight": 0.9,
+          "source": "seed"
+        },
+        {
+          "key": "question:WHICH_SESSION",
+          "text": "Does the failure happen across sessions?",
+          "default_weight": 0.82,
+          "source": "seed"
+        },
+        {
+          "key": "question:MEMORY_SCOPE",
+          "text": "What information should the system remember?",
+          "default_weight": 0.76,
+          "source": "seed"
+        }
+      ],
+      "@wcr": {
+        "weight_ref": "gramstore:W",
+        "confidence_ref": "evidence:C",
+        "relativity_ref": "context:R",
+        "score_formula_ref": "formula:WCR",
+        "gate_ref": "xcfe:ADMISSION"
+      }
+    },
+    "micronaut:QUESTION_ENGINE": {
+      "@descriptorStatus": "declarative_proposal",
+      "@identity": {
+        "id": "micronaut:QUESTION_ENGINE",
+        "name": "Question Engine",
+        "class": "question_generation",
+        "authority_claim": "proposal_only"
+      },
+      "@phaseBindings": {
+        "Yax": {
+          "role": "question_generation",
+          "descriptor_ref": "phase:Yax"
+        },
+        "Sek": {
+          "role": "candidate_ranking",
+          "descriptor_ref": "phase:Sek"
+        }
+      },
+      "@capabilities": {
+        "declared": [
+          "question_generation",
+          "candidate_ranking"
+        ],
+        "registered": [],
+        "registered_status": "not_verified_in_this_declarative_document",
+        "registration_source": "active runtime registry"
+      },
+      "@lanes": {
+        "input": "lane:GAP",
+        "output": "lane:QUESTION"
+      },
+      "@xcfe": {
+        "admission_requirement": "required_before_execution",
+        "execution_claim": "not_implicitly_authorized",
+        "proposal_authority_claim": "proposal_only",
+        "lane_authorization_requirement": "required",
+        "phase_authorization_requirement": "required"
+      },
+      "@output": {
+        "type": "QuestionProposal",
+        "persistence_claim": false,
+        "dispatch_claim": false
+      }
+    },
+    "micronaut:CFPC": {
+      "@descriptorStatus": "declarative_proposal",
+      "@identity": {
+        "id": "micronaut:CFPC",
+        "name": "CFPC-µ",
+        "class": "classification",
+        "authority_claim": "classification_only"
+      },
+      "@phaseBindings": {
+        "Wo": {
+          "role": "intent_and_gap_classification",
+          "descriptor_ref": "phase:Wo"
+        }
+      },
+      "@capabilities": {
+        "declared": [
+          "intent_classification",
+          "gap_classification",
+          "capability_routing"
+        ],
+        "registered": [],
+        "registered_status": "not_verified_in_this_declarative_document",
+        "registration_source": "active runtime registry"
+      },
+      "@lanes": {
+        "input": "lane:INTENT",
+        "output": "lane:GAP"
+      },
+      "@xcfe": {
+        "admission_requirement": "required_before_execution",
+        "execution_claim": "not_implicitly_authorized",
+        "classification_authority_claim": "classification_only"
+      },
+      "@output": {
+        "type": "GapCandidate",
+        "persistence_claim": false,
+        "dispatch_claim": false
+      }
+    },
+    "micronaut:SHEOGORATH": {
+      "@descriptorStatus": "declarative_proposal",
+      "@identity": {
+        "id": "micronaut:SHEOGORATH",
+        "name": "SHEOGORATH-µ",
+        "class": "candidate_generation",
+        "authority_claim": "proposal_only",
+        "evidence_refs": [
+          "data/micronaut/sheogorath.manifest.json"
+        ]
+      },
+      "@phaseBindings": {
+        "Yax": {
+          "role": "candidate_expansion",
+          "descriptor_ref": "phase:Yax"
+        }
+      },
+      "@capabilities": {
+        "declared": [
+          "candidate_expansion",
+          "challenge_generation",
+          "entropy_exploration"
+        ],
+        "registered": [],
+        "registered_status": "not_verified_in_this_declarative_document",
+        "registration_source": "active runtime registry"
+      },
+      "@lanes": {
+        "input": "lane:QUESTION",
+        "output": "lane:CANDIDATES"
+      },
+      "@xcfe": {
+        "admission_requirement": "required_before_execution",
+        "execution_claim": "not_implicitly_authorized",
+        "proposal_authority_claim": "proposal_only"
+      },
+      "@output": {
+        "type": "CandidateSet",
+        "persistence_claim": false,
+        "dispatch_claim": false
+      }
+    },
+    "micronaut:JYGGALAG": {
+      "@descriptorStatus": "declarative_proposal",
+      "@identity": {
+        "id": "micronaut:JYGGALAG",
+        "name": "JYGGALAG-µ",
+        "class": "candidate_selection",
+        "authority_claim": "selection_only"
+      },
+      "@phaseBindings": {
+        "Sek": {
+          "role": "deterministic_selection",
+          "descriptor_ref": "phase:Sek"
+        },
+        "Ch'en": {
+          "role": "constraint_verification",
+          "descriptor_ref": "phase:Ch'en"
+        }
+      },
+      "@capabilities": {
+        "declared": [
+          "constraint_filtering",
+          "deterministic_selection"
+        ],
+        "registered": [],
+        "registered_status": "not_verified_in_this_declarative_document",
+        "registration_source": "active runtime registry"
+      },
+      "@lanes": {
+        "input": "lane:CANDIDATES",
+        "output": "lane:SELECTION"
+      },
+      "@xcfe": {
+        "admission_requirement": "required_before_execution",
+        "execution_claim": "not_implicitly_authorized",
+        "selection_authority_claim": "selection_only"
+      },
+      "@output": {
+        "type": "SelectionProposal",
+        "persistence_claim": false,
+        "dispatch_claim": false
+      }
+    },
+    "micronaut:LEARNING": {
+      "@descriptorStatus": "declarative_proposal",
+      "@identity": {
+        "id": "micronaut:LEARNING",
+        "name": "Learning Micronaut",
+        "class": "learning_proposal",
+        "authority_claim": "proposal_only"
+      },
+      "@phaseBindings": {
+        "Ch'en": {
+          "role": "feedback_evaluation",
+          "descriptor_ref": "phase:Ch'en"
+        },
+        "Xul": {
+          "role": "authorized_delta_closure",
+          "descriptor_ref": "phase:Xul"
+        }
+      },
+      "@capabilities": {
+        "declared": [
+          "feedback_evaluation",
+          "gradient_proposal"
+        ],
+        "registered": [],
+        "registered_status": "not_verified_in_this_declarative_document",
+        "registration_source": "active runtime registry"
+      },
+      "@lanes": {
+        "input": "lane:FEEDBACK",
+        "output": "lane:LEARNING_DELTA"
+      },
+      "@xcfe": {
+        "admission_requirement": "required_before_execution",
+        "execution_claim": "not_implicitly_authorized",
+        "proposal_authority_claim": "proposal_only"
+      },
+      "@output": {
+        "type": "LearningDeltaProposal",
+        "persistence_claim": false,
+        "dispatch_claim": false
+      },
+      "@learning": {
+        "mode_claim": "proposal_only",
+        "target_ref": "gramstore:W_learned",
+        "commit_requirement": "authorized_xul_only",
+        "corpus_weights_claim": "immutable"
+      }
+    },
+    "micronaut:ADVISOR": {
+      "@descriptorStatus": "declarative_proposal",
+      "@identity": {
+        "id": "micronaut:ADVISOR",
+        "name": "ADVISOR-µ",
+        "class": "request_to_expert_router",
+        "authority_claim": "none",
+        "evidence_refs": [
+          "advisor-bootstrap.json"
+        ]
+      },
+      "@phaseBindings": {
+        "Pop": {
+          "role": "request_ingress",
+          "descriptor_ref": "phase:Pop"
+        },
+        "Wo": {
+          "role": "request_classification",
+          "descriptor_ref": "phase:Wo"
+        },
+        "Yax": {
+          "role": "expert_route_proposal",
+          "descriptor_ref": "phase:Yax"
+        },
+        "Sek": {
+          "role": "candidate_route_selection",
+          "descriptor_ref": "phase:Sek"
+        },
+        "Ch'en": {
+          "role": "route_contract_verification",
+          "descriptor_ref": "phase:Ch'en"
+        },
+        "Xul": {
+          "role": "proposal_closure",
+          "descriptor_ref": "phase:Xul"
+        }
+      },
+      "@capabilities": {
+        "declared": [
+          "request_classification",
+          "route_proposal"
+        ],
+        "registered": [],
+        "registered_status": "not_verified_in_this_declarative_document",
+        "registration_source": "active runtime registry"
+      },
+      "@lanes": {
+        "input": "lane:CONVERSATION",
+        "candidate": "lane:ROUTE_CANDIDATE",
+        "output": "lane:PROPOSAL"
+      },
+      "@xcfe": {
+        "admission_requirement": "required_before_dispatch",
+        "dispatch_claim": "host_controlled",
+        "route_authority_claim": "proposal_only",
+        "registration_check_requirement": "required",
+        "eligibility_check_requirement": "required",
+        "phase_authorization_requirement": "required"
+      },
+      "@output": {
+        "type": "ExpertRouteProposal",
+        "persistence_claim": false,
+        "dispatch_claim": false
+      },
+      "@aiml": {
+        "projection_ref": "aiml:ADVISOR_PROJECTION",
+        "source_ref": "advisor-bootstrap.json",
+        "projection_status": "generated_projection_runtime_router_authoritative"
+      }
+    }
+  },
+  "@xsl": {
+    "@matchingModel": "XSL template patterns select source nodes; templates transform or route selected nodes",
+    "@nodeRules": [
+      {
+        "@id": "bind-phase-descriptors",
+        "@match": "xj:entry[@key='@phases']",
+        "@phaseRef": "phase:Wo",
+        "@operation": "resolve_data_binding",
+        "@effect": "none"
+      },
+      {
+        "@id": "bind-micronaut-descriptors",
+        "@match": "xj:entry[@key='@micronauts']",
+        "@phaseRef": "phase:Wo",
+        "@operation": "resolve_data_binding",
+        "@effect": "none"
+      },
+      {
+        "@id": "route-aiml-patterns",
+        "@match": "xj:entry[@key='@aiml']",
+        "@phaseRef": "phase:Yax",
+        "@operation": "pattern_route_candidate",
+        "@effect": "proposal_only"
+      },
+      {
+        "@id": "route-srai-intents",
+        "@match": "xj:entry[@key='@srai']",
+        "@phaseRef": "phase:Yax",
+        "@operation": "canonical_intent_candidate",
+        "@effect": "proposal_only"
+      },
+      {
+        "@id": "classify-cfpc-gaps",
+        "@match": "xj:entry[@key='@cfpc']",
+        "@phaseRef": "phase:Wo",
+        "@operation": "gap_binding_candidate",
+        "@effect": "classification_only"
+      },
+      {
+        "@id": "verify-proposal-nodes",
+        "@match": "xj:entry[@key='@xcfe']",
+        "@phaseRef": "phase:Ch'en",
+        "@operation": "verification_reference",
+        "@effect": "no_admission"
+      },
+      {
+        "@operation": "program_reference_candidate",
+        "@phaseRef": "phase:Sek",
+        "@id": "route-program-reference",
+        "@effect": "xcfe_admission_required",
+        "@match": "xj:entry[@key='@program']"
+      },
+      {
+        "@operation": "widget_reference_candidate",
+        "@phaseRef": "phase:Sek",
+        "@id": "route-widget-reference",
+        "@effect": "host_controlled",
+        "@match": "xj:entry[@key='@widget']"
+      },
+      {
+        "@operation": "topology_binding",
+        "@phaseRef": "phase:Wo",
+        "@id": "route-topology-reference",
+        "@effect": "none",
+        "@match": "xj:entry[@key='@topology']"
+      },
+      {
+        "@operation": "typed_resource_binding",
+        "@phaseRef": "phase:Wo",
+        "@id": "route-data-resource",
+        "@effect": "none",
+        "@match": "xj:entry[@key=('vector','image','video','database_table','mml_field','gml_field','mml_graph','gml_graph')]"
+      },
+      {
+        "@effect": "xcfe_admission_required",
+        "@match": "xj:entry[@key='@program']",
+        "@operation": "program_reference_candidate",
+        "@phaseRef": "phase:Sek",
+        "@id": "route-program-reference"
+      },
+      {
+        "@effect": "host_controlled",
+        "@match": "xj:entry[@key='@widget']",
+        "@operation": "widget_reference_candidate",
+        "@phaseRef": "phase:Sek",
+        "@id": "route-widget-reference"
+      },
+      {
+        "@effect": "none",
+        "@match": "xj:entry[@key='@topology']",
+        "@operation": "topology_binding",
+        "@phaseRef": "phase:Wo",
+        "@id": "route-topology-reference"
+      },
+      {
+        "@effect": "none",
+        "@match": "xj:entry[@key=('vector','image','video','database_table','mml_field','gml_field','mml_graph','gml_graph')]",
+        "@operation": "typed_resource_binding",
+        "@phaseRef": "phase:Wo",
+        "@id": "route-data-resource"
+      },
+      {
+        "@id": "prompt-to-field-candidate",
+        "@phaseRef": "phase:Yax",
+        "@effect": "proposal_only",
+        "@operation": "semantic_field_candidate_generation",
+        "@match": "xj:entry[@key='@context']"
+      },
+      {
+        "@operation": "micronaut_call_proposal",
+        "@effect": "xcfe_admission_required",
+        "@phaseRef": "phase:Sek",
+        "@match": "xj:entry[@key='@micronaut']",
+        "@id": "route-micronaut-reference"
+      }
+    ],
+    "@effectfulDispatch": "must delegate to runtime after XCFE admission",
+    "@stylesheetRef": "micronaut/xjson-bindings.xsl",
+    "@resourceKinds": [
+      "program",
+      "micronaut",
+      "widget",
+      "topology",
+      "vector",
+      "image",
+      "video",
+      "database_table",
+      "mml_field",
+      "gml_field",
+      "mml_graph",
+      "gml_graph"
+    ]
+  },
+  "@xcfe": {
+    "@control": "separate_runtime_gate",
+    "@admission": "external_per_invocation",
+    "@nodeMatching": "selecting a node is not admission",
+    "@dispatch": "host_controlled",
+    "@learningCommit": "authorized_xul_only",
+    "@authorityClaim": false
+  },
+  "@contributors": {
+    "@embeddings": ".micronaut/checkpoints/neighborhood-attention.safetensors",
+    "@embeddingIndex": ".micronaut/checkpoints/neighborhood-attention.safetensors.index.json",
+    "@embeddingModel": "embeddinggemma:latest",
+    "@foldGeometry": ".micronaut/checkpoints/neighborhood-attention.bones.safetensors",
+    "@foldGeometryMetadata": ".micronaut/checkpoints/neighborhood-attention.bones.json",
+    "@classificationTrace": ".micronaut/checkpoints/neighborhood-attention.cfpc.jsonl",
+    "@proposalTrace": ".micronaut/checkpoints/neighborhood-attention.pi-trace.jsonl",
+    "@role": "semantic_geometry_and_bias_contributors",
+    "@authority": false
+  },
+  "@questionGeneration": {
+    "@sourceFieldRef": "field:CAR",
+    "@fieldToBigram": "adjacent semantic key pairs",
+    "@persistence": "authorized_Xul_commit_only",
+    "@aimlPattern": "HOW IS * RELATED_TO *",
+    "@bigramToQuestion": "bind subject/object labels into wildcard captures",
+    "@status": "proposal_only",
+    "@resultLane": "lane:QUESTION",
+    "@relationshipAssertion": "candidate_requires_evidence_and_Ch_en_verification"
+  },
+  "@semanticFields": {
+    "field:ELECTRIC": [
+      "⟁VOLTAGE",
+      "⟁ENGINE",
+      "⟁BATTERY",
+      "⟁UTILITY"
+    ],
+    "field:CAR": [
+      "⟁CARRIAGE",
+      "⟁AUTOMOBILE",
+      "⟁GASOLINE",
+      "⟁ELECTRIC"
+    ],
+    "field:GASOLINE": [
+      "⟁AUTOMOBILE",
+      "⟁ENGINE",
+      "⟁PETROLEUM",
+      "⟁ECONOMY"
+    ],
+    "field:COMBUSTION": [
+      "⟁ROCKET",
+      "⟁GUNPOWDER",
+      "⟁ENGINE",
+      "⟁GASOLINE"
+    ]
+  },
+  "@contextIngress": {
+    "@xcfeAdmission": "separate",
+    "@route": "POST /api/xsl/context/fields",
+    "@embeddingModel": "embeddinggemma:latest",
+    "@generatorModel": "qwen3.5:4b",
+    "@processor": "field/field-distill.py",
+    "@output": "field/distilled/proposals",
+    "@sourceManifestMutation": false,
+    "@input": "user_prompt",
+    "@status": "candidate_only"
+  },
+  "@apiRoutes": {
+    "@basePath": "/api/xsl",
+    "@routes": {
+      "health": {
+        "@method": "GET",
+        "@path": "/health",
+        "@response": "service_descriptor_status"
+      },
+      "descriptor": {
+        "@method": "GET",
+        "@contentType": "application/json",
+        "@path": "/api/xsl/descriptor",
+        "@stream": "semantic_bindings"
+      },
+      "xml": {
+        "@method": "GET",
+        "@contentType": "application/xml",
+        "@path": "/api/xsl/xml",
+        "@stream": "xjson_xml_nodes"
+      },
+      "resolve": {
+        "@effect": "read_only_lookup",
+        "@method": "GET",
+        "@path": "/api/xsl/resolve",
+        "@query": [
+          "micronaut",
+          "phase",
+          "key"
+        ]
+      },
+      "validate": {
+        "@effect": "data_validation_only",
+        "@method": "POST",
+        "@contentType": "application/json",
+        "@path": "/api/xsl/validate"
+      },
+      "context-fields": {
+        "@contentType": "application/json",
+        "@response": "kuhul.semantic-field-proposal.v1",
+        "@effect": "prompt_invokes_local_field_distiller_for_candidate_output_only",
+        "@method": "POST",
+        "@request": {
+          "prompt": "string",
+          "field_count": "integer",
+          "keys_per_field": "integer"
+        },
+        "@path": "/api/xsl/context/fields"
+      },
+      "stylesheet": {
+        "@method": "GET",
+        "@path": "/api/xsl/stylesheet",
+        "@contentType": "application/xslt+xml",
+        "@effect": "read_only",
+        "@stream": "xsl_binding_projection"
+      }
+    },
+    "@authority": "route_declaration_is_not_xcfe_admission"
+  }
+}

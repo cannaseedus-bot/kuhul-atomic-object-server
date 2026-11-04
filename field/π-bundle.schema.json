@@ -1,0 +1,255 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:kuhul:pi-bundle:v1",
+  "title": "K'UHUL-π Bundle",
+  "description": "Input contract for the deterministic geometric field kernel in field/main.py.",
+  "type": "object",
+  "required": ["%pi"],
+  "properties": {
+    "%pi": {
+      "type": "object",
+      "properties": {
+        "world": { "$ref": "#/$defs/world" },
+        "bodies": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/body" }
+        },
+        "constraints": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/constraint" }
+        },
+        "events": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/event" }
+        },
+        "memory": {
+          "type": "object",
+          "properties": {
+            "keys": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/typedKey" }
+            },
+            "queries": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/query" }
+            },
+            "thoughts": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/thought" }
+            },
+            "foldKeys": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/foldKey" }
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "⟁tree": { "type": "object" }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "vector3": {
+      "type": "array",
+      "prefixItems": [
+        { "type": "number" },
+        { "type": "number" },
+        { "type": "number" }
+      ],
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "quaternion": {
+      "type": "array",
+      "prefixItems": [
+        { "type": "number" },
+        { "type": "number" },
+        { "type": "number" },
+        { "type": "number" }
+      ],
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "world": {
+      "type": "object",
+      "properties": {
+        "gravity": { "$ref": "#/$defs/vector3", "default": [0, 9.81, 0] },
+        "air": {
+          "type": "object",
+          "properties": {
+            "density": { "type": "number", "minimum": 0, "default": 1.225 },
+            "viscosity": { "type": "number", "minimum": 0, "default": 0.000018 }
+          },
+          "additionalProperties": true
+        },
+        "time": {
+          "type": "object",
+          "properties": {
+            "dt": { "type": "number", "exclusiveMinimum": 0, "default": 0.0166666667 },
+            "substeps": { "type": "integer", "minimum": 1, "default": 1 }
+          },
+          "additionalProperties": true
+        },
+        "solver": {
+          "type": "object",
+          "properties": {
+            "integrator": { "type": "string", "const": "semi_implicit", "default": "semi_implicit" },
+            "iterations": { "type": "integer", "minimum": 1, "default": 8 }
+          },
+          "additionalProperties": true
+        },
+        "fields": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/field" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "body": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "mass": { "type": "number", "default": 1 },
+        "position": { "$ref": "#/$defs/vector3" },
+        "velocity": { "$ref": "#/$defs/vector3" },
+        "rotation": { "$ref": "#/$defs/quaternion" },
+        "angularVelocity": { "$ref": "#/$defs/vector3" },
+        "inertia": { "type": "number", "exclusiveMinimum": 0 },
+        "shape": { "type": "string", "default": "box" },
+        "size": { "$ref": "#/$defs/vector3" },
+        "material": {
+          "type": "object",
+          "properties": {
+            "friction": { "type": "number", "minimum": 0 },
+            "restitution": { "type": "number", "minimum": 0 },
+            "drag": { "type": "number", "minimum": 0 }
+          },
+          "additionalProperties": true
+        },
+        "flags": { "type": "array", "items": { "type": "string" } },
+        "@role": { "type": "string" },
+        "@bind_dom": { "type": ["string", "null"] },
+        "@dom_key": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "field": {
+      "type": "object",
+      "required": ["field_type"],
+      "properties": {
+        "field_type": { "type": "string", "minLength": 1 },
+        "parameters": { "type": "object" }
+      },
+      "additionalProperties": true
+    },
+    "constraint": {
+      "type": "object",
+      "required": ["id", "type", "a", "b"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "minLength": 1, "examples": ["spring", "bone"] },
+        "a": { "type": "string", "minLength": 1 },
+        "b": { "type": "string", "minLength": 1 },
+        "params": { "type": "object" }
+      },
+      "additionalProperties": true
+    },
+    "event": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "type": "string", "minLength": 1 },
+        "target": { "type": ["string", "null"] },
+        "payload": { "type": "object" }
+      },
+      "additionalProperties": true
+    },
+    "foldKey": {
+      "type": "object",
+      "required": ["type", "key", "family"],
+      "properties": {
+        "type": { "const": "fold_key" },
+        "key": { "type": "string", "minLength": 1 },
+        "family": { "type": "string", "minLength": 1 },
+        "neighborhood": { "type": "string", "minLength": 1 },
+        "operationContext": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "provenance": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+    "typedKey": {
+      "oneOf": [
+        { "$ref": "#/$defs/glyphKey" },
+        { "$ref": "#/$defs/laneKey" },
+        { "$ref": "#/$defs/fieldKey" },
+        { "$ref": "#/$defs/foldKey" },
+        { "$ref": "#/$defs/replayKey" },
+        { "$ref": "#/$defs/queryKey" },
+        { "$ref": "#/$defs/thoughtKey" },
+        { "$ref": "#/$defs/reasoningEngineKey" },
+        { "$ref": "#/$defs/relationKey" },
+        { "$ref": "#/$defs/operationKey" }
+      ]
+    },
+    "glyphKey": { "$ref": "#/$defs/addressKey", "properties": { "type": { "const": "glyph_key" } } },
+    "laneKey": { "$ref": "#/$defs/addressKey", "properties": { "type": { "const": "lane_key" } } },
+    "fieldKey": { "$ref": "#/$defs/addressKey", "properties": { "type": { "const": "field_key" } } },
+    "replayKey": { "$ref": "#/$defs/addressKey", "properties": { "type": { "const": "replay_key" } } },
+    "queryKey": { "$ref": "#/$defs/addressKey", "properties": { "type": { "const": "query_key" } } },
+    "thoughtKey": { "$ref": "#/$defs/addressKey", "properties": { "type": { "const": "thought_key" } } },
+    "reasoningEngineKey": { "$ref": "#/$defs/addressKey", "properties": { "type": { "const": "reasoning_engine_key" } } },
+    "relationKey": { "$ref": "#/$defs/addressKey", "properties": { "type": { "const": "relation_key" } } },
+    "operationKey": { "$ref": "#/$defs/addressKey", "properties": { "type": { "const": "operation_key" } } },
+    "addressKey": {
+      "type": "object",
+      "required": ["type", "key"],
+      "properties": {
+        "type": { "enum": ["glyph_key", "lane_key", "field_key", "fold_key", "replay_key", "query_key", "thought_key", "reasoning_engine_key", "relation_key", "operation_key"] },
+        "key": { "type": "string", "minLength": 1 },
+        "namespace": { "type": "string", "minLength": 1 },
+        "target": { "type": "string", "minLength": 1 },
+        "family": { "type": "string", "minLength": 1 },
+        "neighborhood": { "type": "string", "minLength": 1 },
+        "operationContext": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "provenance": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+    "query": {
+      "type": "object",
+      "required": ["type", "text"],
+      "properties": {
+        "type": { "const": "query" },
+        "text": { "type": "string", "minLength": 1 },
+        "queryKey": { "$ref": "#/$defs/queryKey" },
+        "contextKeys": { "type": "array", "items": { "$ref": "#/$defs/typedKey" } },
+        "intent": { "type": "string", "minLength": 1, "default": "retrieve" },
+        "provenance": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+    "thought": {
+      "type": "object",
+      "required": ["type", "thoughtKey", "query", "phase", "status"],
+      "properties": {
+        "type": { "const": "thought" },
+        "thoughtKey": { "$ref": "#/$defs/thoughtKey" },
+        "query": { "$ref": "#/$defs/query" },
+        "reasoningEngineKey": { "$ref": "#/$defs/reasoningEngineKey" },
+        "activeFoldKeys": { "type": "array", "items": { "$ref": "#/$defs/foldKey" } },
+        "candidateKeys": { "type": "array", "items": { "$ref": "#/$defs/typedKey" } },
+        "phase": { "enum": ["Pop", "Wo", "Yax", "Sek", "Chen", "Ch'en", "Ch_en", "Xul"] },
+        "status": { "enum": ["candidate", "verified", "closed", "rejected"] },
+        "provenance": { "type": "object" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

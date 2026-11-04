@@ -1,0 +1,72 @@
+{
+  "schema": "kuhul.micronaut.rpc-api.v1",
+  "version": 1,
+  "description": "Editable capability registry. Entries describe abstract host ports; only host allowlisted providers can dispatch.",
+  "ports": {
+    "phase-runtime-api": {
+      "provider": "rest-json",
+      "description": "Loopback REST interface to the native K'UHUL phase runtime. Start with Micronaut.ps1 StartPhaseRuntimeApi.",
+      "endpointEnv": "MICRONAUT_PHASE_RUNTIME_API",
+      "routes": {
+        "health": { "method": "GET", "path": "/health" },
+        "phases": { "method": "GET", "path": "/phases" },
+        "validate": { "method": "POST", "path": "/validate" }
+      }
+    },
+    "xsl-runtime-api": {
+      "provider": "rest-json",
+      "description": "Loopback XJSON semantic bindings, XML-node projection, and candidate-only field generation for XSL/UI clients. Does not execute XSL, dispatch Micronauts, or grant XCFE admission.",
+      "endpointEnv": "MICRONAUT_XSL_RUNTIME_API",
+      "routes": {
+        "health": { "method": "GET", "path": "/health" },
+        "descriptor": { "method": "GET", "path": "/api/xsl/descriptor" },
+        "xml": { "method": "GET", "path": "/api/xsl/xml" },
+        "stylesheet": { "method": "GET", "path": "/api/xsl/stylesheet" },
+        "resolve": { "method": "GET", "path": "/api/xsl/resolve" },
+        "validate": { "method": "POST", "path": "/api/xsl/validate" },
+        "context-fields": { "method": "POST", "path": "/api/xsl/context/fields" }
+      }
+    },
+    "model-api": {
+      "provider": "rest-json",
+      "description": "Host-configured JSON REST API endpoint.",
+      "endpointEnv": "MICRONAUT_MODEL_API",
+      "tokenEnv": "MICRONAUT_MODEL_API_TOKEN",
+      "routes": {
+        "forward": { "method": "POST", "path": "/v1/forward/" },
+        "backward": { "method": "POST", "path": "/v1/backward/" },
+        "chat-completions": { "method": "POST", "path": "/v1/chat/completions" },
+        "models": { "method": "GET", "path": "/v1/models" }
+      }
+    },
+    "graphics-compute": {
+      "provider": "opencl-adamw",
+      "description": "OpenCL AdamW optimizer lane. Invoke through NumpyTrain so device state and training lifecycle stay host-managed.",
+      "dispatch": "Micronaut.ps1 NumpyTrain -OptimizerBackend opencl",
+      "routes": {}
+    },
+    "pi-learning-fold": {
+      "provider": "local-jsonl-fold",
+      "description": "Replay JSONL experiences, relate records, apply bounded W-C attention/residual proposals, and reward only host-verified outcomes.",
+      "dispatch": "python micronaut/pi_learning.py <experiences.jsonl> --trace <trace.jsonl>",
+      "authority": "candidate_definition_only",
+      "maxFieldDelta": 0.1,
+      "rewardRequires": "host_verifier_callback",
+      "routes": {}
+    },
+    "cfpc-classifier": {
+      "provider": "local-deterministic-classifier",
+      "description": "CFPC intent recognition, query-pattern gap classification, and candidate-field gap routing; emits candidate-only results.",
+      "dispatch": "python micronaut/cfpc_classifier.py neighborhood.attention.jsonl --output .micronaut/checkpoints/neighborhood-attention.cfpc.jsonl",
+      "authority": "deterministic_classification_only",
+      "epistemicStatus": "unknown_until_evidence_verification",
+      "routes": {}
+    },
+    "static-site": {
+      "provider": "http-static",
+      "description": "Loopback-only static file host launched by Micronaut.ps1 StaticHost.",
+      "dispatch": "Micronaut.ps1 StaticHost",
+      "routes": {}
+    }
+  }
+}

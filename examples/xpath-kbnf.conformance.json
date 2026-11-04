@@ -1,0 +1,47 @@
+{
+  "schema": "kuhul.xpath-kbnf.conformance.v1",
+  "description": "XPath 3.1 expression semantics plus separately typed K'UHUL host forms.",
+  "xpath": [
+    {
+      "id": "precedence",
+      "expression": "1 + 2 * 3",
+      "expected": ["7"]
+    },
+    {
+      "id": "for-expression-sequence",
+      "expression": "for $x in 1 to 3 return $x * $x",
+      "expected": ["1", "4", "9"]
+    },
+    {
+      "id": "map-array-lookup",
+      "expression": "map { 'items': [1, 2, 3] }?items?2",
+      "expected": ["2"]
+    },
+    {
+      "id": "higher-order-filter",
+      "expression": "filter((1, 2, 3), function($x) { $x gt 1 })",
+      "expected": ["2", "3"]
+    },
+    {
+      "id": "namespaced-context-path",
+      "expression": "count(/b:library/b:book)",
+      "context": "examples/xpath-context.xml",
+      "namespaces": [["b", "urn:kuhul:books"]],
+      "expected": ["2"]
+    }
+  ],
+  "host_forms": [
+    { "source": "[Pop QUESTION_ENGINE]", "node": "PhaseBlockOpen", "name": "QUESTION_ENGINE" },
+    { "source": "[Wo $q?gap eq 'KNOWLEDGE_GAP_NO_VALUES']", "node": "PhaseExpression", "phase": "Wo" },
+    { "source": "[Yax filter($candidates, function($q) { $q?gap eq 'KNOWLEDGE_GAP_NO_VALUES' })]", "node": "PhaseExpression", "phase": "Yax" },
+    { "source": "[Sek sort($candidates)]", "node": "PhaseExpression", "phase": "Sek" },
+    { "source": "[Ch'en verify($candidates)]", "node": "PhaseExpression", "phase": "Ch'en" },
+    { "source": "[Micronaut micronaut:QUESTION_ENGINE]", "node": "MicronautBlockOpen", "name": "micronaut:QUESTION_ENGINE" },
+    { "source": "[AIML aiml:FORGETTING_PATTERN]", "node": "AIMLBlockOpen", "name": "aiml:FORGETTING_PATTERN" },
+    { "source": "[Pattern 'MY MODEL KEEPS FORGETTING *' -> srai:DIAGNOSE_MEMORY]", "node": "PatternBinding", "target": "srai:DIAGNOSE_MEMORY" },
+    { "source": "[SRAI aiml:FORGETTING_PATTERN -> srai:DIAGNOSE_MEMORY]", "node": "SRAIBinding", "target": "srai:DIAGNOSE_MEMORY" },
+    { "source": "[ELIZA eliza:MEMORY_FAILURE]", "node": "ELIZABlockOpen", "name": "eliza:MEMORY_FAILURE" },
+    { "source": "[XCFE xcfe:QUESTION_SELECTION]", "node": "XCFEBlockOpen", "name": "xcfe:QUESTION_SELECTION" },
+    { "source": "[Xul QUESTION_ENGINE]", "node": "PhaseBlockClose", "name": "QUESTION_ENGINE" }
+  ]
+}

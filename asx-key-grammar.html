@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ASX DOM — Key Grammar</title>
+<style>
+:root{color-scheme:dark;--bg:#080d13;--panel:#121c26;--line:#294052;--text:#e6f4ef;--accent:#69ffbc;--muted:#91a8b2}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#12362e,var(--bg) 55%);color:var(--text);font:16px system-ui,sans-serif}header,main,footer{max-width:1100px;margin:auto;padding:24px}header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}h1{margin:0;font-size:1.4rem}small,.muted{color:var(--muted)}.tag{color:var(--accent);letter-spacing:.12em;font-size:.75rem}h2{font-size:clamp(2rem,5vw,3.8rem);line-height:1.08;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:24px 0}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}.card h3{margin-top:0}button{background:var(--accent);color:#052019;border:0;border-radius:8px;padding:12px 18px;font-weight:700;cursor:pointer}button:hover{filter:brightness(1.1)}code,pre{font-family:ui-monospace,monospace}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#070e14;border:1px solid var(--line);border-radius:10px;padding:18px;color:#a8ffcf}.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}input{background:#09131a;color:var(--text);border:1px solid var(--line);padding:12px;border-radius:8px;min-width:220px}footer{color:var(--muted);border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<!-- ASX key grammar: every data-asx-key is a stable symbolic address. -->
+<header data-asx-key="⟁HEADER"><div><span class="tag" data-asx-key="⟁BRAND">ASX / DOM</span><h1 data-asx-key="⟁TITLE">Key-Grammar Runtime</h1></div><span class="muted" data-asx-key="⟁STATUS">● Ready</span></header>
+<main data-asx-key="⟁PAGE">
+<section data-asx-key="⟁HERO"><div class="tag">SYMBOLIC DOM ADDRESSING</div><h2 data-asx-key="⟁HEADLINE">One page. Callable keys.<br>Semantic components.</h2><p class="muted" data-asx-key="⟁DESCRIPTION">Each element exposes an ASX key. The manifest resolves keys to DOM nodes, and named actions dispatch through a tiny native browser bridge.</p><div class="row"><button data-asx-key="⟁ACTION:COUNT" data-asx-call="counter.increment">Increment counter</button><button data-asx-key="⟁ACTION:RESET" data-asx-call="counter.reset">Reset</button></div></section>
+<div class="grid" data-asx-key="⟁CARDS"><article class="card" data-asx-key="⟁CARD:COUNTER"><span class="tag">STATE</span><h3>Counter</h3><h2 data-asx-key="⟁COUNTER">0</h2></article><article class="card" data-asx-key="⟁CARD:MESSAGE"><span class="tag">BINDING</span><h3>Message</h3><p data-asx-key="⟁MESSAGE">Hello from ASX DOM.</p><input data-asx-key="⟁INPUT:MESSAGE" aria-label="Message" value="K’UHUL is callable"><button data-asx-call="message.apply" data-asx-key="⟁ACTION:MESSAGE">Apply message</button></article><article class="card" data-asx-key="⟁CARD:PHASE"><span class="tag">FOLD</span><h3>Current phase</h3><h2 data-asx-key="⟁PHASE">Pop</h2><button data-asx-call="phase.next" data-asx-key="⟁ACTION:PHASE">Next phase</button></article></div>
+<section class="panel" data-asx-key="⟁INSPECTOR"><h3>Key manifest / live inspection</h3><p class="muted">Inspect the resolved key registry and call actions directly from the browser console with <code>ASX.call('counter.increment')</code>.</p><pre data-asx-key="⟁OUTPUT"></pre><button data-asx-call="manifest.inspect" data-asx-key="⟁ACTION:INSPECT">Refresh inspector</button></section>
+</main><footer data-asx-key="⟁FOOTER">ASX DOM · Key Grammar example · Native browser bridge</footer>
+<script type="application/json" id="asx-manifest">
+{"grammar":"asx-key-grammar/1","root":"⟁PAGE","keys":{"⟁HEADER":{"type":"region"},"⟁PAGE":{"type":"root"},"⟁HERO":{"type":"section"},"⟁CARDS":{"type":"collection"},"⟁CARD:COUNTER":{"type":"component"},"⟁CARD:MESSAGE":{"type":"component"},"⟁CARD:PHASE":{"type":"component"},"⟁COUNTER":{"type":"state","initial":0},"⟁MESSAGE":{"type":"text"},"⟁PHASE":{"type":"state","initial":"Pop"},"⟁OUTPUT":{"type":"inspection"}},"actions":{"counter.increment":{"target":"⟁COUNTER","operation":"increment"},"counter.reset":{"target":"⟁COUNTER","operation":"reset"},"message.apply":{"source":"⟁INPUT:MESSAGE","target":"⟁MESSAGE","operation":"copyText"},"phase.next":{"target":"⟁PHASE","operation":"cycle"},"manifest.inspect":{"target":"⟁OUTPUT","operation":"inspect"}}}
+</script>
+<script>
+/* Compatibility bridge only: ASX keys/manifest are declarative; replace this adapter with KuhulVM in production. */
+(()=>{'use strict';const manifest=JSON.parse(document.getElementById('asx-manifest').textContent);const nodes=new Map([...document.querySelectorAll('[data-asx-key]')].map(n=>[n.dataset.asxKey,n]));const state={counter:0,phase:0};const phases=['Pop','Wo','Yax','Sek',"Ch’en",'Xul'];const actions={
+'counter.increment'(){nodes.get('⟁COUNTER').textContent=String(++state.counter)},
+'counter.reset'(){state.counter=0;nodes.get('⟁COUNTER').textContent='0'},
+'message.apply'(){nodes.get('⟁MESSAGE').textContent=nodes.get('⟁INPUT:MESSAGE').value},
+'phase.next'(){state.phase=(state.phase+1)%phases.length;nodes.get('⟁PHASE').textContent=phases[state.phase]},
+'manifest.inspect'(){nodes.get('⟁OUTPUT').textContent=JSON.stringify({grammar:manifest.grammar,declaredKeys:Object.keys(manifest.keys),resolvedDOMKeys:[...nodes.keys()],actions:Object.keys(manifest.actions),state},null,2)}
+};window.ASX=Object.freeze({manifest,get:key=>nodes.get(key),call:(name)=>{if(!Object.hasOwn(actions,name))throw Error('Unknown ASX action: '+name);actions[name]();actions['manifest.inspect']()}});document.addEventListener('click',e=>{const el=e.target.closest('[data-asx-call]');if(el)window.ASX.call(el.dataset.asxCall)});actions['manifest.inspect']()})();
+</script>
+</body></html>

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kuhul://schema/neighborhood-distill-output/v2",
+  "type": "object",
+  "required": ["root", "field", "neighbors"],
+  "properties": {
+    "root": { "type": "string", "pattern": "^⟁[A-Z0-9_]+$" },
+    "field": { "type": "string", "minLength": 1 },
+    "neighbors": {
+      "type": "array", "minItems": 8, "maxItems": 8,
+      "items": {
+        "type": "object", "required": ["word", "relation", "kind", "question"],
+        "properties": {
+          "word": { "type": "string", "minLength": 1 },
+          "relation": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "minLength": 1 },
+          "question": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

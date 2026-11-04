@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<substitutions>
+  <substitution find="what's" replace="what is"/>
+  <substitution find="whats" replace="what is"/>
+  <substitution find="who's" replace="who is"/>
+  <substitution find="u" replace="you"/>
+  <substitution find="ur" replace="your"/>
+  <substitution find="pls" replace="please"/>
+</substitutions>

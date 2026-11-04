@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://asx/pi/pi.field.schema.json",
+  "title": "π.field",
+  "type": "object",
+  "required": ["id", "type", "bounds"],
+  "properties": {
+    "id": { "type": "string" },
+    "type": { 
+      "enum": ["wind", "magnetic", "gravity_well", "flow_gradient"] 
+    },
+    "bounds": {
+      "description": "The AABB or Sphere defining where the field exists",
+      "type": "object",
+      "properties": {
+        "origin": { "type": "array", "items": { "type": "number" }, "minItems": 3 },
+        "size": { "type": "array", "items": { "type": "number" }, "minItems": 3 }
+      }
+    },
+    "vector": {
+      "description": "Directional force vector [x, y, z]",
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 3
+    },
+    "intensity": { "type": "number", "default": 1.0 },
+    "falloff": {
+      "description": "How the force weakens over distance (linear, exponential)",
+      "enum": ["constant", "linear", "inverse_square"],
+      "default": "constant"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kuhul.local/schema/css-capabilities.v1.json",
+  "title": "K'UHUL CSS capability declaration manifest",
+  "type": "object",
+  "required": ["schema", "authority", "declaration", "agentBindings", "sheets", "uiExamples"],
+  "properties": {
+    "schema": { "const": "kuhul.css-capabilities.v1" },
+    "authority": { "const": "css_declaration_js_allowlist_candidate_handoffs" },
+    "declaration": { "type": "string" },
+    "agentBindings": { "type": "object" },
+    "sheets": { "type": "object" },
+    "uiExamples": { "type": "array", "items": { "type": "object", "required": ["label", "className", "args"], "properties": { "label": { "type": "string" }, "className": { "type": "string" }, "args": { "type": "array" } } } }
+  },
+  "patternProperties": { "^⟁(?:MATH|FN|GRAPH|SHEET|EVAL|AGENT|DB)(?::[A-Z0-9_]+)?$": { "type": "object", "required": ["kind"] } },
+  "additionalProperties": true
+}

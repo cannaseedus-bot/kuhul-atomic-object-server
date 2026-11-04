@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kuhul://schema/recursive-vector-lane/v1",
+  "title": "K'UHUL Recursive Vector Lane",
+  "description": "Field-backed semantic graph with typed lane references and explicit runtime admission policy.",
+  "type": "object",
+  "required": ["schema", "entry", "laneContract", "lanes", "runtime"],
+  "properties": {
+    "schema": { "const": "kuhul.recursive-vector-lane.v1" },
+    "entry": { "$ref": "#/$defs/glyph" },
+    "title": { "type": "string" },
+    "field": { "$ref": "#/$defs/semanticField" },
+    "laneContract": { "$ref": "#/$defs/lane" },
+    "lanes": {
+      "type": "object", "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/lane" }
+    },
+    "runtime": { "$ref": "#/$defs/runtime" }
+  },
+  "$defs": {
+    "glyph": { "type": "string", "pattern": "^⟁[^\\s]+$" },
+    "phase": { "enum": ["Pop", "Wo", "Yax", "Sek", "Chen", "Ch'en", "Xul"] },
+    "fold": {
+      "type": "object",
+      "properties": {
+        "phase": { "$ref": "#/$defs/phase" },
+        "state": { "enum": ["pending", "active", "verified", "committed", "rejected", "closed"] },
+        "bindings": { "type": "object" },
+        "evidence": { "type": "array" },
+        "result": {}
+      },
+      "additionalProperties": true
+    },
+    "vectorRef": {
+      "type": "object", "required": ["ref", "view"],
+      "properties": { "ref": { "type": "string", "minLength": 1 }, "view": { "type": "string", "minLength": 1 } },
+      "additionalProperties": true
+    },
+    "fieldBinding": {
+      "type": "object", "required": ["lane", "fold"],
+      "properties": { "lane": { "$ref": "#/$defs/glyph" }, "fold": { "$ref": "#/$defs/fold" } },
+      "additionalProperties": true
+    },
+    "lane": {
+      "type": "object", "required": ["lane", "vector", "fields", "fold"],
+      "properties": {
+        "lane": { "oneOf": [{ "$ref": "#/$defs/glyph" }, { "const": "glyph_reference" }] },
+        "level": { "type": "integer", "minimum": 0 },
+        "vector": { "$ref": "#/$defs/vectorRef" },
+        "fields": { "type": "object", "additionalProperties": { "$ref": "#/$defs/fieldBinding" } },
+        "fold": { "$ref": "#/$defs/fold" },
+        "requires": { "type": "array", "items": { "type": "string" } },
+        "terminal": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "semanticField": {
+      "type": "object", "required": ["root", "field", "maxLevel", "terminal", "levels"],
+      "properties": {
+        "root": { "$ref": "#/$defs/glyph" },
+        "field": { "type": "string", "minLength": 1 },
+        "maxLevel": { "type": "integer", "minimum": 1 },
+        "terminal": { "type": "integer", "minimum": 1 },
+        "levels": { "type": "object", "minProperties": 1, "additionalProperties": { "$ref": "#/$defs/level" } },
+        "semanticNotation": { "$ref": "#/$defs/semanticNotation" },
+        "relations": { "type": "array", "items": { "$ref": "#/$defs/relation" } },
+        "inference": { "$ref": "#/$defs/inference" },
+        "memory": { "$ref": "#/$defs/memory" }
+      },
+      "additionalProperties": true
+    },
+    "level": {
+      "type": "object", "required": ["role", "symbol", "kind", "lane", "notation"],
+      "properties": {
+        "role": { "type": "string" }, "symbol": { "$ref": "#/$defs/glyph" },
+        "kind": { "type": "string" }, "lane": { "$ref": "#/$defs/glyph" },
+        "notation": { "type": "array", "items": { "type": "string" } },
+        "requires": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "semanticNotation": {
+      "type": "object", "properties": {
+        "format": { "type": "string" }, "representation": { "type": "string" },
+        "patterns": { "type": "object", "additionalProperties": { "type": "string" } }
+      }, "additionalProperties": true
+    },
+    "relation": {
+      "type": "object", "required": ["notation", "subject", "predicate", "object", "type", "polarity"],
+      "properties": {
+        "notation": { "type": "string" }, "subject": { "$ref": "#/$defs/glyph" },
+        "predicate": { "type": "string" }, "object": { "$ref": "#/$defs/glyph" },
+        "type": { "type": "string" }, "polarity": { "enum": ["positive", "negative"] },
+        "scope": { "type": "string" }, "mechanism": { "$ref": "#/$defs/glyph" }, "action": { "$ref": "#/$defs/glyph" }
+      }, "additionalProperties": true
+    },
+    "inference": {
+      "type": "object", "properties": {
+        "mode": { "type": "string" },
+        "rules": { "type": "array", "items": { "type": "object", "required": ["if", "then", "status"], "properties": { "if": { "type": "array", "items": { "type": "string" } }, "then": { "type": "string" }, "status": { "type": "string" } }, "additionalProperties": true } },
+        "constraints": { "type": "array", "items": { "type": "string" } }
+      }, "additionalProperties": true
+    },
+    "memory": { "type": "object", "properties": { "replay": { "type": "string" }, "field": { "type": "string" }, "provenance": { "type": "string" }, "commitPolicy": { "type": "string" } }, "additionalProperties": true },
+    "runtime": {
+      "type": "object", "required": ["traversal", "cyclePolicy", "revisitPolicy", "commit", "maxDepth", "maxVisits", "execution"],
+      "properties": {
+        "traversal": { "enum": ["recursive"] }, "referenceMode": { "type": "string" },
+        "cyclePolicy": { "type": "string" }, "revisitPolicy": { "type": "string" },
+        "verification": { "type": "string" }, "commit": { "type": "string" },
+        "maxDepth": { "type": "integer", "minimum": 1 }, "maxVisits": { "type": "integer", "minimum": 1 },
+        "execution": { "enum": ["explicit_admission_only"] }
+      }, "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

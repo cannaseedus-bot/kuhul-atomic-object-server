@@ -1,0 +1,50 @@
+{
+  "schema": "kuhul.micronaut_data.research.v1",
+  "question_id": "what-is-saturn",
+  "question": "What is Saturn?",
+  "query_terms": "saturn",
+  "ngrams": {
+    "unigram": [
+      "what",
+      "is",
+      "saturn"
+    ],
+    "bigram": [
+      "what is",
+      "is saturn"
+    ],
+    "trigram": [
+      "what is saturn"
+    ]
+  },
+  "retrieved_at": "2026-11-03T01:43:52.463Z",
+  "retrieval_status": "retrieved",
+  "authority": "source_evidence_only; not_verified_fact",
+  "created_by": [
+    "Librarian-µ",
+    "Factory-µ"
+  ],
+  "factory_materialization": {
+    "track": "Factory-µ",
+    "operation": "create_question_scoped_research_record",
+    "admission": "evidence_record_only",
+    "path": "micronauts-data/what-is-saturn.json"
+  },
+  "sources": [
+    {
+      "source": "NASA",
+      "title": "Saturn Facts",
+      "url": "https://science.nasa.gov/saturn/facts/",
+      "text": "Explore This Section Our Solar System Saturn Facts Saturn is the sixth planet from the Sun, and the second-largest planet in our solar system. Introduction Namesake Potential for Life Size and Distance Orbit and Rotation Moons Rings Formation Structure Surface Atmosphere Magnetosphere Introduction NASA’s Cassini spacecraft captured one of its last looks at Saturn, and its main rings from a distance. The images used to create this view were taken on Oct. 28, 2016. The spacecraft arrived at Saturn in 2004, and the mission ended Sept.15, 2017. Credits: NASA/JPL-Caltech/Space Science Institute Like fellow gas giant Jupiter, Saturn is a massive ball made mostly of hydrogen and helium. Saturn is not the only planet to have rings, but none are as spectacular or as complex as Saturn's. Saturn also has dozens of moons. From the jets of water that spray from Saturn's moon Enceladus to the methane lakes on smoggy Titan , the Saturn system is a rich source of scientific discovery and still holds many mysteries. Namesake The farthest planet from Earth discovered by the unaided human eye, Saturn has been known since ancient times. The planet is named for the Roman god of agriculture and wealth, who was also the father of Jupiter. Potential for Life Saturn's environment is not conducive to life as we know it. The temperatures, pressures, and materials that characterize this planet are most likely too extreme and volatile for organisms to adapt to. While planet Saturn is an unlikely place for living things to take hold, the same is not true of some of its many moons. Satellites like Enceladus and Titan, home to internal oceans, could possibly support life. Size and Distance With an equatorial diameter of about 74,897 miles (120,500 kilometers), Saturn is 9 times wider than Earth. If Earth were the size of a nickel, Saturn would be about as big as a volleyball. From an average distance of 886 million miles (1.4 billion kilometers), Saturn is 9.5 astronomical units away from the Sun. One astronomical unit (abbreviated as AU), is the distance from the Sun to Earth. From this distance, it takes sunlight 80 minutes to travel from the Sun to Saturn. Orbit and Rotation Saturn has the second-shortest day in the solar system. One day on Saturn takes only 10.7 hours (the time it takes for Saturn to rotate or spin around once), and Saturn makes a complete orbit around the Sun (a year in Saturnian time) in about 29.4 Earth years (10,756 Earth days). Its axis is tilted by 26.73 degrees with respect to its orbit around the Sun, which is similar to Earth's 23.5-degree tilt. This means that, like Earth, Saturn experiences seasons. Moons Saturn is home to a vast array of intriguing and unique worlds. From the haze-shrouded surface of Titan to crater-riddled Phoebe, each of Saturn's moons tells another piece of the story surrounding the Saturn system. As of March 2025, Saturn had 274 confirmed moons in its orbit, far more than any other planet in our solar system, with other Saturnian satellites continually awaiting confirmation of their discovery and official naming by the International Astronomical Union (IAU). Colorful Colossuses and Changing Hues : A giant of a moon appears before a giant of a planet undergoing seasonal changes in this natural color view of Titan and Saturn from NASA's Cassini spacecraft. NASA/JPL-Caltech/Space Science Institute Rings Saturn's rings are thought to be pieces of comets, asteroids, or shattered moons that broke up before they reached the planet, torn apart by Saturn's powerful gravity. They are made of billions of small chunks of ice and rock coated with other materials such as dust. The ring particles mostly range from tiny, dust-sized icy grains to chunks as big as a house. A few particles are as large as mountains. The rings would look mostly white if you looked at them from the cloud tops of Saturn, and interestingly, each ring orbits at a different speed around the planet. Saturn's ring system extends up to 175,000 miles (282,000 kilometers) from the planet, yet the vertical height is typically about 30 feet (10 meters) in the main rings. Named alphabetically in the order they were discovered, the rings are relatively close to each other, with the exception of a gap measuring 2,920 miles (4,700 kilometers) in width called the Cassini Division that separates Rings A and B. The main rings are A, B, and C. Rings D, E, F, and G are fainter and more recently discovered. Starting at Saturn and moving outward, there is the D ring, C ring, B ring, Cassini Division, A ring, F ring, G ring, and finally, the E ring. Much farther out, there is the very faint Phoebe ring in the orbit of Saturn's moon Phoebe. Formation Saturn took shape when the rest of the solar system formed about 4.5 billion years ago when gravity pulled swirling gas and dust in to become this gas giant. About 4 billion years ago, Saturn settled into its current position in the outer solar system, where it is the sixth planet from the Sun. Like ",
+      "retrieved_at": "2026-11-03T01:43:53.010Z"
+    },
+    {
+      "source": "Wikipedia",
+      "title": "Saturn",
+      "url": "https://en.wikipedia.org/wiki/Saturn",
+      "text": "Saturn is the sixth planet from the Sun, and is the second largest planet in the Solar System, after Jupiter. It is a gas giant, with an average radius of about 9 times that of Earth. It has an eighth of the average density of Earth, but is over 95 times more massive. Even though Saturn is almost as big as Jupiter, it has less than a third of its mass. Saturn orbits the Sun at a distance of 9.59 AU (1,434 million km), with an orbital period of 29.45 years. Saturn's interior is thought to be composed of a rocky core, surrounded by a deep layer of metallic hydrogen, an intermediate layer of liquid hydrogen and liquid helium, and an outer layer of gas. Saturn has a pale yellow hue, due to ammonia crystals in its upper atmosphere. An electrical current in the metallic hydrogen layer is thought to give rise to Saturn's planetary magnetic field, which is weaker than Earth's, but has a magnetic moment 580 times that of Earth because of Saturn's greater size. Saturn's magnetic field strength is about a twentieth that of Jupiter. The outer atmosphere is generally bland and lacking in contrast, although long-lived features can appear. Wind speeds on Saturn can reach 1,800 kilometers per hour (1,100 miles per hour). The planet has a bright and extensive system of rings, composed mainly of ice particles, with a smaller amount of rocky debris and dust. At least 293 moons orbit the planet, of which 63 are officially named; these do not include the hundreds of moonlets in the rings. Titan, Saturn's largest moon and the second largest in the Solar System, is larger (but less massive) than the planet Mercury and is the only moon in the Solar System that has a substantial atmosphere.",
+      "retrieved_at": "2026-11-03T01:43:53.340Z"
+    }
+  ],
+  "failures": []
+}
