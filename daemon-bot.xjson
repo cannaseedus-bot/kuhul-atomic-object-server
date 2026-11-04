@@ -145,6 +145,25 @@
       "@phase": "Sek"
     },
     {
+      "@id": "typed-query→exp-3",
+      "@from": "@skills.skill-typed-query",
+      "@to": "@experts.exp-3",
+      "@control": "route",
+      "@condition": "match(intent=typed-query)",
+      "@weight": "@variable.routing_bias[exp-3]",
+      "@phase": "Sek"
+    },
+    {
+      "@id": "semanticTools→response",
+      "@from": "@lanes.skills",
+      "@to": "@semanticTools",
+      "@control": "eliza_prefilter",
+      "@condition": "xaiml_miss",
+      "@weight": 1.0,
+      "@phase": "Wo",
+      "@note": "Wo-phase intent pre-filter: runs after XAIML miss, before Sek model dispatch"
+    },
+    {
       "@id": "agent→router",
       "@from": "@agent.main",
       "@to": "@moe.router",
@@ -309,7 +328,71 @@
           "track_tokens": true
         }
       }
+    },
+    "skill-typed-query": {
+      "@lane": 1,
+      "@dict": 3,
+      "@kind": "atomic_block",
+      "@phase": "Wo",
+      "enabled": true,
+      "name": "Typed-Query",
+      "micronaut": "TYPED-QUERY-µ",
+      "trigger": "user issues a typed retrieval query (KeyQuery, TextQuery, RelationQuery, PatternQuery, CapabilityQuery)",
+      "action": "handle_typed-query",
+      "priority": 0.85,
+      "@role": "query",
+      "@grammar_ref": "typed-query-mu.kgf",
+      "@control": {
+        "mode": "infer",
+        "variable": "skill_active",
+        "route": "skill-typed-query",
+        "throttle": {
+          "max_calls_per_min": 120,
+          "burst": 10,
+          "cooldown_ms": 250
+        },
+        "metrics": {
+          "track_latency_ms": true,
+          "track_tokens": true
+        }
+      }
     }
+  },
+  "@semanticTools": {
+    "@kind": "kuhul.daemon.semantic-tools.v1",
+    "@source": "manifest.json#daemonIntentPatternsRef",
+    "@engines": {
+      "fast_path": "micronaut/daemon_intent.py:recognize_daemon_intent",
+      "field_pipeline": "micronaut/daemon_eliza.py:run_pipeline"
+    },
+    "@authority": "template_response_only; no_execution; no_commit",
+    "@phases": {
+      "Pop/Wo": "gather — CFPC intent + gap classification from raw text",
+      "Wo":     "build  — intent graph bigrams + question proposals",
+      "Yax":   "resolve — gemma embed similarity OR GGUF structured data generation",
+      "Sek":   "compile — runtime assembles response from field + model data"
+    },
+    "@controlFlow": {
+      "xaiml_miss": "try_fast_path → try_field_pipeline → model",
+      "fast_path_match": "return_template; skip Sek dispatch",
+      "field_pipeline_match": "return_compiled_field_response; skip Sek dispatch",
+      "pipeline_miss": "continue_to_model"
+    },
+    "@intentResolver": {
+      "fast_path": {
+        "classifier": "recognize_daemon_intent",
+        "source": "micronaut/intent-patterns.json",
+        "threshold": 0.33
+      },
+      "field_pipeline": {
+        "gather": "cfpc_classifier.recognize_intents + classify_gap",
+        "build": "intent_graph.IntentGraph.propose_questions",
+        "resolve_embed": "embeddinggemma:latest@ollama (optional)",
+        "resolve_gguf": "gemma-3-1B-it-QAT-Q4_0@lmstudio (optional)",
+        "compile": "daemon runtime assembles from field + model data"
+      }
+    },
+    "@modelRole": "data_supplier_only; models generate structured JSON; runtime compiles reply"
   },
   "@experts": {
     "exp-0": {
@@ -384,6 +467,35 @@
         "mode": "route",
         "variable": "routing_bias",
         "route": "exp-2",
+        "throttle": {
+          "max_calls_per_min": 240,
+          "burst": 20,
+          "cooldown_ms": 100
+        },
+        "metrics": {
+          "track_latency_ms": true,
+          "track_tokens": true,
+          "track_hits": true
+        }
+      }
+    },
+    "exp-3": {
+      "@lane": 2,
+      "@dict": 3,
+      "@kind": "atomic_block",
+      "@phase": "Sek",
+      "name": "Typed-Query",
+      "domain": "typed-query",
+      "micronaut": "TYPED-QUERY-µ",
+      "weights_ref": "expert_3",
+      "trainable": true,
+      "layer_start": 0,
+      "layer_end": 8,
+      "routing_bias": 0.0,
+      "@control": {
+        "mode": "route",
+        "variable": "routing_bias",
+        "route": "exp-3",
         "throttle": {
           "max_calls_per_min": 240,
           "burst": 20,

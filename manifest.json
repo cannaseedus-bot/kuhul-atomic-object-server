@@ -93,6 +93,7 @@
   "prefer_related_applications": false,
   "behavioralModesRef": "micronaut/behavioral-modes.json",
   "daemonCommandPatternsRef": "micronaut/command-patterns.json",
+  "daemonIntentPatternsRef": "micronaut/intent-patterns.json",
   "uiFrames": {
     "definition": "micronaut/ui-frames.json",
     "projector": "lib/frame-projection.js",
@@ -6452,6 +6453,11 @@
       {
         "label": "Web research",
         "action": "daemon.webResearch"
+      },
+      {
+        "label": "Skill creator",
+        "action": "daemon.skillCreator",
+        "prefill": "/skill-creator "
       }
     ]
   },

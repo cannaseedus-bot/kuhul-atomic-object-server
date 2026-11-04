@@ -10,7 +10,12 @@
       "routes": {
         "health": { "method": "GET", "path": "/health" },
         "phases": { "method": "GET", "path": "/phases" },
-        "validate": { "method": "POST", "path": "/validate" }
+        "validate": { "method": "POST", "path": "/validate" },
+        "validate-xjson-contract": {
+          "method": "POST",
+          "path": "/validate",
+          "description": "Pass the XJSON processor's .kl contract through native phase-runtime structural validation. Validation is not XCFE admission or processor invocation."
+        }
       }
     },
     "xsl-runtime-api": {
@@ -24,7 +29,35 @@
         "stylesheet": { "method": "GET", "path": "/api/xsl/stylesheet" },
         "resolve": { "method": "GET", "path": "/api/xsl/resolve" },
         "validate": { "method": "POST", "path": "/api/xsl/validate" },
-        "context-fields": { "method": "POST", "path": "/api/xsl/context/fields" }
+        "context-fields": { "method": "POST", "path": "/api/xsl/context/fields" },
+        "intent-graph": { "method": "GET", "path": "/api/xsl/intent-graph", "description": "Read-only parsed kgf.intent-graph/1 topology; no dispatch authority." },
+        "intent-questions": { "method": "POST", "path": "/api/xsl/intent-graph/questions", "description": "CFPC classifies the submitted prompt, then the intent graph returns field/bigram question candidates; proposal-only, no XCFE admission." },
+        "eliza-dispatch": {
+          "method": "POST",
+          "path": "/api/xsl/eliza/dispatch",
+          "description": "ELIZA-1 operator-scoped field generation. operator selects one of 16 operators (CAUSE, CONTRAST, DEPENDENCY, CONSTRAINT, EVIDENCE, SEQUENCE, BOUNDARY, STATE, CONFLICT, ALTERNATIVE, INVARIANT, TEST, RELATION, SUBSTITUTE, VERIFY, DIRECT); query is the user text. Returns kuhul.semantic-field-proposal.v1 with eliza_operator, eliza_family, eliza_phase metadata."
+        }
+      }
+    },
+    "code-micronaut-worker": {
+      "provider": "local-jsonl-worker",
+      "description": "Host-invoked CODEGEN/MCDR JSONL worker. Routes are fixed task identifiers; source is passed as bounded JSON data. Outputs are proposals or analysis and are never executed or written by the worker.",
+      "worker": "micronaut/micronaut-coder/bots.py",
+      "authority": "proposal_only; XCFE_admission_separate",
+      "routes": {
+        "generator": { "task": "generate", "description": "Deterministic code skeleton proposal; not model synthesis." },
+        "reviewer": { "task": "review", "description": "Review source text." },
+        "refactorer": { "task": "refactor", "description": "Request refactoring suggestions; no source writes." },
+        "optimizer": { "task": "optimize", "description": "Request optimization suggestions; no source writes." },
+        "parse-ast": { "task": "parse_ast", "description": "Parse source text through the registered Tree-sitter WASM runtime; language selects a fixed host-allowlisted grammar module." },
+        "diff": { "task": "diff", "description": "Compare two source strings." },
+        "todos": { "task": "todos", "description": "Extract TODO markers from source text." },
+        "document": { "task": "document", "description": "Produce documentation candidates." },
+        "test": { "task": "test", "description": "Produce test candidates; does not execute tests." },
+        "explain": { "task": "explain", "description": "Summarize source structure." },
+        "github-review": { "task": "github_review", "description": "Format review findings as a GitHub review candidate." },
+        "xjson-project": { "task": "xjson_project", "description": "Project an XJSON value to XML-style nodes and enumerate static API declarations without invoking them." },
+        "validate-contract": { "task": "validate_contract", "description": "Submit K'UHUL source (.kl/.kgf/.kbnf) to the phase runtime for contract validation; proposal check only, never executes the program." }
       }
     },
     "model-api": {

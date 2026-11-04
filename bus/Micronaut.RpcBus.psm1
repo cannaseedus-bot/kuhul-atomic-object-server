@@ -25,7 +25,7 @@ function Get-MicronautRpcRegistry {
     }
     foreach ($portProperty in $registry.ports.PSObject.Properties) {
         $port = $portProperty.Value
-        if ($port.provider -notin @('rest-json', 'opencl-adamw', 'http-static', 'local-jsonl-fold', 'local-deterministic-classifier')) {
+        if ($port.provider -notin @('rest-json', 'opencl-adamw', 'http-static', 'local-jsonl-fold', 'local-deterministic-classifier', 'local-jsonl-worker')) {
             throw "Port '$($portProperty.Name)' uses a provider not allowed by the host: '$($port.provider)'"
         }
         if ($port.provider -eq 'rest-json') {
@@ -34,6 +34,14 @@ function Get-MicronautRpcRegistry {
                 $route = $routeProperty.Value
                 if ($route.method -notin @('GET', 'POST', 'PUT', 'PATCH', 'DELETE') -or [string]$route.path -notmatch '^/[A-Za-z0-9_./{}-]*$' -or [string]$route.path -match '\.\.') {
                     throw "REST route '$($routeProperty.Name)' on port '$($portProperty.Name)' has an invalid method or path."
+                }
+            }
+        }
+        elseif ($port.provider -eq 'local-jsonl-worker') {
+            if ($null -eq $port.routes) { throw "Local worker port '$($portProperty.Name)' needs routes." }
+            foreach ($routeProperty in $port.routes.PSObject.Properties) {
+                if ([string]$routeProperty.Value.task -notmatch '^[a-z][a-z0-9_]*$') {
+                    throw "Local worker route '$($routeProperty.Name)' on port '$($portProperty.Name)' has an invalid task id."
                 }
             }
         }
@@ -70,6 +78,49 @@ function Invoke-MicronautRpcRoute {
     $registry = Get-MicronautRpcRegistry -Path $Path
     $port = $registry.ports.$PortName
     if ($null -eq $port) { throw "Unknown RPC port '$PortName'. Use RPCList to discover ports." }
+    if ($port.provider -eq 'local-jsonl-worker') {
+        $route = $port.routes.$RouteName
+        if ($null -eq $route) { throw "Unknown route '$RouteName' on port '$PortName'." }
+        if (-not $PayloadPath) { throw "Route '$RouteName' requires -InputPath with a JSON request body." }
+        $payload = [System.IO.Path]::GetFullPath($PayloadPath)
+        if (-not (Test-Path -LiteralPath $payload -PathType Leaf)) { throw "RPC payload file not found: $payload" }
+        $rawPayload = Get-Content -LiteralPath $payload -Raw -Encoding UTF8
+        if ([System.Text.Encoding]::UTF8.GetByteCount($rawPayload) -gt 1048576) { throw 'Local worker request exceeds the 1 MiB host limit.' }
+        $payloadObject = $rawPayload | ConvertFrom-Json -AsHashtable
+        if ($payloadObject -isnot [System.Collections.IDictionary]) { throw 'Local worker request body must be a JSON object.' }
+        $request = @{ task = [string]$route.task; payload = $payloadObject } | ConvertTo-Json -Depth 30 -Compress
+
+        # The worker path and executable are fixed by the host. Registry data
+        # selects only a task from this validated route table; it cannot choose
+        # a command, executable, working directory, or arbitrary input path.
+        $root = Split-Path -Parent $PSScriptRoot
+        $worker = Join-Path $root 'micronaut\micronaut-coder\bots.py'
+        if (-not (Test-Path -LiteralPath $worker -PathType Leaf)) { throw "CODEGEN worker not found: $worker" }
+        $python = Get-Command python -CommandType Application -ErrorAction Stop
+        $start = [System.Diagnostics.ProcessStartInfo]::new()
+        $start.FileName = $python.Source
+        $start.WorkingDirectory = Join-Path $root 'micronaut\micronaut-coder'
+        $start.UseShellExecute = $false
+        $start.RedirectStandardInput = $true
+        $start.RedirectStandardOutput = $true
+        $start.RedirectStandardError = $false
+        $start.CreateNoWindow = $true
+        [void]$start.ArgumentList.Add($worker)
+        $process = [System.Diagnostics.Process]::new()
+        $process.StartInfo = $start
+        if (-not $process.Start()) { throw 'Could not start the CODEGEN JSONL worker.' }
+        $stdoutTask = $process.StandardOutput.ReadToEndAsync()
+        $process.StandardInput.WriteLine($request)
+        $process.StandardInput.Close()
+        if (-not $process.WaitForExit(30000)) {
+            $process.Kill($true)
+            throw 'CODEGEN worker exceeded the 30 second host limit.'
+        }
+        $stdout = $stdoutTask.GetAwaiter().GetResult()
+        if ($process.ExitCode -ne 0) { throw "CODEGEN worker failed with exit code $($process.ExitCode)." }
+        try { return ($stdout.Trim() | ConvertFrom-Json) }
+        catch { throw "CODEGEN worker returned invalid JSON: $($_.Exception.Message)" }
+    }
     if ($port.provider -ne 'rest-json') { throw "Port '$PortName' is host-dispatched via '$($port.dispatch)'; it is not a REST route." }
     $route = $port.routes.$RouteName
     if ($null -eq $route) { throw "Unknown route '$RouteName' on port '$PortName'." }

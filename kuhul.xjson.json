@@ -17,6 +17,7 @@
       "micronaut",
       "widget",
       "topology",
+      "intent_graph",
       "vector",
       "image",
       "video",
@@ -497,6 +498,57 @@
         "source_ref": "advisor-bootstrap.json",
         "projection_status": "generated_projection_runtime_router_authoritative"
       }
+    },
+    "micronaut:XJSON_PROCESSOR": {
+      "@descriptorStatus": "contract_declared_registration_unverified",
+      "@identity": {
+        "id": "micronaut:XJSON_PROCESSOR",
+        "name": "Micronaut XJSON Processor",
+        "class": "semantic_document_projection",
+        "authority_claim": "data_projection_only",
+        "binary_ref": "micronaut/micronaut-coder/micronaut_xjson.exe",
+        "source_runtime_ref": "micronaut/xjson.py"
+      },
+      "@phaseBindings": {
+        "Wo": { "role": "bind_document_and_contract", "descriptor_ref": "phase:Wo" },
+        "Yax": { "role": "project_xjson_nodes_and_route_metadata", "descriptor_ref": "phase:Yax" },
+        "Sek": { "role": "host_route_request_only", "descriptor_ref": "phase:Sek" },
+        "Ch'en": { "role": "validate_projection_and_contract", "descriptor_ref": "phase:Ch'en" },
+        "Xul": { "role": "return_verified_projection", "descriptor_ref": "phase:Xul" }
+      },
+      "@capabilities": {
+        "declared": ["xjson_project", "xjson_static_route_describe", "phase_contract_validate"],
+        "registered": [],
+        "registered_status": "not_verified_in_this_declarative_document",
+        "registration_source": "host RPC registry"
+      },
+      "@lanes": {
+        "input": "lane:XJSON_DOCUMENT",
+        "projection": "lane:XML_NODE_PROJECTION",
+        "routes": "lane:STATIC_API_DECLARATIONS",
+        "output": "lane:XJSON_PROPOSAL"
+      },
+      "@contract": {
+        "source_ref": "micronaut/micronaut-coder/micronaut_xjson.contract.kl",
+        "validation_rpc": "code-micronaut-worker.validate-contract",
+        "validation_status": "must_be_checked_by_host"
+      },
+      "@xcfe": {
+        "admission_requirement": "required_before_native_invocation",
+        "dispatch_claim": "host_controlled",
+        "projection_authority_claim": "data_only",
+        "static_api_execution_claim": false,
+        "phase_authorization_requirement": "required",
+        "verification_phase_ref": "phase:Ch'en",
+        "closure_phase_ref": "phase:Xul"
+      },
+      "@output": {
+        "type": "XJSONProjectionProposal",
+        "xml_node_projection": true,
+        "declared_routes_are_data": true,
+        "persistence_claim": false,
+        "dispatch_claim": false
+      }
     }
   },
   "@xsl": {
@@ -566,6 +618,13 @@
         "@match": "xj:entry[@key='@topology']"
       },
       {
+        "@id": "propose-intent-graph-questions",
+        "@phaseRef": "phase:Yax",
+        "@operation": "field_bigram_question_candidates",
+        "@effect": "proposal_only",
+        "@match": "xj:entry[@key='@topology']/xj:entry[@key='@intentGraph']"
+      },
+      {
         "@operation": "typed_resource_binding",
         "@phaseRef": "phase:Wo",
         "@id": "route-data-resource",
@@ -631,6 +690,20 @@
       "mml_graph",
       "gml_graph"
     ]
+  },
+  "@topology": {
+    "@intentGraph": {
+      "@schema": "kgf.intent-graph/1",
+      "@source": "vendor/key-grammar-kit/data/intent-graph.gml",
+      "@reader": "micronaut/intent_graph.py",
+      "@daemonPath": "micronaut/daemon_eliza.py:run_pipeline",
+      "@phase": "Yax",
+      "@output": "QuestionCandidate",
+      "@effect": "proposal_only",
+      "@admission": "separate_xcfe_gate",
+      "@cyclePolicy": "active_path_detection",
+      "@maxDepth": 4
+    }
   },
   "@xcfe": {
     "@control": "separate_runtime_gate",
@@ -745,6 +818,53 @@
           "keys_per_field": "integer"
         },
         "@path": "/api/xsl/context/fields"
+      },
+      "eliza-dispatch": {
+        "@contentType": "application/json",
+        "@response": "kuhul.semantic-field-proposal.v1",
+        "@effect": "prompt_invokes_local_field_distiller_with_eliza1_operator_framing",
+        "@method": "POST",
+        "@request": {
+          "operator": "string",
+          "query": "string",
+          "field_count": "integer",
+          "keys_per_field": "integer"
+        },
+        "@path": "/api/xsl/eliza/dispatch",
+        "@operators": "CAUSE|CONTRAST|DEPENDENCY|CONSTRAINT|EVIDENCE|SEQUENCE|BOUNDARY|STATE|CONFLICT|ALTERNATIVE|INVARIANT|TEST|RELATION|SUBSTITUTE|VERIFY|DIRECT",
+        "@operatorSource": "vendor/key-grammar-kit/data/manifest/eliza.manifest.json",
+        "@operatorFamilies": {
+          "causal":     ["CAUSE"],
+          "epistemic":  ["CONTRAST", "EVIDENCE", "CONFLICT", "INVARIANT", "TEST", "VERIFY"],
+          "dependency": ["DEPENDENCY", "CONSTRAINT"],
+          "context":    ["SEQUENCE", "BOUNDARY"],
+          "semantic":   ["STATE", "ALTERNATIVE", "RELATION"],
+          "control":    ["SUBSTITUTE"],
+          "runtime":    ["DIRECT"]
+        }
+      },
+      "intent-graph": {
+        "@effect": "read_only_graph_data",
+        "@method": "GET",
+        "@path": "/api/xsl/intent-graph",
+        "@contentType": "application/json",
+        "@response": "kgf.intent-graph/1"
+      },
+      "intent-questions": {
+        "@effect": "field_to_question_candidates_only",
+        "@method": "POST",
+        "@path": "/api/xsl/intent-graph/questions",
+        "@contentType": "application/json",
+        "@response": "kgf.intent-graph.question-proposals.v1",
+        "@request": {
+          "field_key": "semantic_field_key",
+          "prompt": "context_text_CFPC_classifies_server_side",
+          "weight": "number_0_to_1_optional",
+          "confidence": "number_0_to_1_optional",
+          "relativity": "number_0_to_1_optional",
+          "gate": "number_0_to_1_optional"
+        },
+        "@authority": "proposal_only; XCFE_admission_not_performed"
       },
       "stylesheet": {
         "@method": "GET",

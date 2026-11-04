@@ -238,11 +238,78 @@ that resolves those declarations against active Micronaut registrations and
 reports drift. The Advisor semantic map is a compiled projection; the
 bootstrap/runtime router remains the source of route behavior.
 
+**Daemon asset utilization is uneven.** The active response path is
+`daemon.js` through `lib/object-api.cjs`; the browser loads
+`micronaut/xaiml/chat-frame.compiled.js`, whose source is
+`micronaut/xaiml/chat-frame.js`. The active manifest supplies the AIML
+patterns and `micronaut/xaiml/daemon-cli.xaiml`; the chat frame also resolves
+the app descriptor, knowledge file, and model runtime frame. However,
+these daemon files need different treatment:
+
+| File / artifact | Status in the current runtime | Plan action |
+|---|---|---|
+| `daemon-bot.xjson` | Present, but no runtime consumer references it. | Missed wiring: consume it as a non-authoritative descriptor from the existing daemon UI/API path. |
+| `daemon-bot.properties` | Present; no active loader was found. | Decide whether to load it or label it archival. |
+| `daemon-bot.substitutions` | Present; `daemon.js` performs substitution handling separately rather than loading this file. | Missed wiring if this file is intended to configure matching; otherwise label it archival and avoid implying it is active. |
+| `daemon-bot.pipeline.json` | Present and explicitly `analysis_only`; it does not run AIML. | Keep it non-runtime unless a separately contracted runner is needed. |
+| `vendor/key-grammar-kit/data/intent-graph.gml` + `micronaut/intent_graph.py` | The adapter validates typed references, resolves the graph path from XJSON, and emits existing `QuestionCandidate` records. `daemon_eliza.run_pipeline` consumes it after CFPC and returns topology/proposal provenance; XJSON, XSL projection, JS helper, REST API, and `/bus` declare graph and question-candidate routes. | Remaining: run the API/CLI conformance checks. Ranking, verification, XCFE admission, and persistence stay downstream. |
+| `micronaut/xaiml/chat-frame.js` and `chat-frame.compiled.js` | Source and compiled UI both exist; `chat.html` loads the compiled file. | Add source/compiled parity validation to prevent stale UI behavior. |
+| `tools/check_daemon_asset_wiring.py` | Missing. | Add a checker for required daemon references, active-vs-archival classification, and chat-frame source/compiled parity. |
+
+The remaining daemon assets are present and referenced through the active
+manifest/chat path: `daemon.js`, `lib/object-api.cjs`,
+`micronaut/xaiml/daemon-cli.xaiml`, `micronaut/xaiml/model-runtime-frame.json`,
+`vendor/key-grammar-kit/data/apps/daemon-bot.asx-app.json`, and
+`vendor/key-grammar-kit/data/apps/daemon-bot-knowledge.json`. The root AIML
+banks are part of the manifest-backed pattern inventory/build path. Impact:
+editing an unwired descriptor or legacy source can appear successful while
+serving continues to use another representation. No new daemon data file is
+needed; the concrete missing file is the wiring/parity checker, while the
+XJSON/properties/substitutions items are existing files that were missed by
+runtime integration or need an explicit archival decision.
+
+**Intent assets overlap but are not one registry.** Intent-related files
+include `micronaut/xaiml/greeting-intents.json` (manifest-referenced and
+consumed by the chat-frame greeting projection),
+`vendor/key-grammar-kit/data/cfpc/what-is.intent-resolver.v1.json` (loaded by
+`micronaut/cfpc_classifier.py`), CFPC pattern documents under
+`vendor/key-grammar-kit/data/cfpc/` (classifier data with structural validation),
+`vendor/key-grammar-kit/data/tracks/CFPC-u.semantic-tracks.v1.json` and
+`intent-unresolved.semantic-tracks.v1.json` (declarative track profiles), plus
+the question-engine KGF/bindings and `micronaut/question_engine.py`. They cover
+surface greetings, intent classification, gap routing, and question proposals.
+`vendor/key-grammar-kit/data/intent-graph.gml` adds field/bigram/wildcard
+question topology; `micronaut/intent_graph.py` validates and adapts it into
+the existing `QuestionCandidate` type. `daemon_eliza.py` uses the descriptor-
+selected graph after CFPC classification, and the XJSON API exposes read-only
+graph data and candidate generation. No checker reconciles the distinct intent
+sources yet. The graph remains a topology adapter, not a second generic intent
+resolver or a replacement for the classifier/question engine.
+
 **Phase data is not yet a shared Python/XSLT source.** The phase descriptor
 table exists in the semantic registry and in the feed stylesheet. The Python
 feed wrapper invokes XSLT and checks emitted phase fields, but ordinary Python
 Micronaut routing does not load the same phase map. Updating one copy can leave
 the other stale. XPath 3.1 `map {}` syntax is not directly a Python data API.
+
+**ELIZA evidence recording is wired; model-call provenance remains open.**
+`micronaut/jrom_tables.py` reads the JROM controller and key-table manifests,
+records ELIZA traces and field proposals under their `evidence_only` policies,
+and writes matching hash-chained events to both `jrom_event` and the configured
+JSONL stream. The writer does not create tables, run XCFE admission, or commit
+learning state. Ch'en event spelling is canonical; the replay validator keeps
+accepting legacy `Chen` records. The writer validates the JSONL prefix against
+SQLite and catches the stream up from committed event rows. Model calls still
+do not emit JROM records containing profile/backend/model identity and
+request/result provenance.
+
+**Micronaut table and program projections are declarative.**
+`data/host/manifests/micronauts.tables.json` is now included by the JROM table
+controller and maps through `key.tables.json` as read-only declaration data.
+`data/micronaut/micronaut.programs.xsl` projects the canonical v0.1 program JSON
+to typed XML nodes with `projection_only`, `admission=not_evaluated`, and
+`dispatch=not_invoked` markers. No synchronizer seeds these tables yet, and
+neither the XSLT projection nor a stored row establishes runtime registration.
 
 **Micronaut model references and JROM are not connected.** `models.toml` has
 named profiles, but the semantic registry has no `model_profile_ref` per
@@ -293,26 +360,40 @@ compiled into `kuhul.semantic-grammar.json`.
 4. Add `model_profile_ref` to Micronaut descriptors and validate every
    reference against `micronaut/models.toml`; then migrate the distillers.
 5. Instrument the model-call boundary with JROM provenance events that record
-   profile/backend/model and request/result hashes without credentials.
+   profile/backend/model and request/result hashes without credentials. The
+   ELIZA evidence-table recorder is separate and does not satisfy this model
+   provenance requirement.
 6. Add the `MY MODEL KEEPS FORGETTING *` and `DIAGNOSE MEMORY *` categories to
    the active daemon AIML set, then drive `eliza_question_candidates` through
    the serving path into CFPC.
-7. Wire `reply_formatting` to source-bounded output generation and deterministic
+7. Verify the intent-graph/XJSON/API/daemon chain; then close the remaining
+   daemon utilization gaps by consuming `daemon-bot.xjson` as a
+   non-authoritative descriptor in the existing chat/API path; either load
+   `daemon-bot.properties` and `daemon-bot.substitutions` from that path or
+   mark them archival and remove runtime claims that imply they are active;
+   add `tools/check_daemon_asset_wiring.py` to check those references and that
+   `chat-frame.compiled.js` matches `chat-frame.js`. Keep
+   `daemon-bot.pipeline.json` analysis-only unless a separate runner contract
+   is added.
+8. Wire `reply_formatting` to source-bounded output generation and deterministic
    validation; keep depth/format and WCR contributions as proposal inputs.
-8. Build the verified temporal-fact refresh lifecycle from source evidence
+9. Build the verified temporal-fact refresh lifecycle from source evidence
    through verification and authorized update; do not promote the latest
    candidate by recency alone.
-9. Segment lexicon definitions at the next headword; re-measure the 1,736
+10. Segment lexicon definitions at the next headword; re-measure the 1,736
    flagged rows before and after.
-10. Decide how modern vocabulary enters the field: authored rows, model rows
+11. Decide how modern vocabulary enters the field: authored rows, model rows
    promoted from `neighborhood.jsonl`, or both with declared precedence.
-11. Design a data promotion path with the same shape as `mu-factory`: candidate
+12. Design a data promotion path with the same shape as `mu-factory`: candidate
    directory, marker file, recompute-and-compare, grants stay empty.
-12. Wire `question_engine` and the adapter into the execution field
+13. Wire `question_engine` and the adapter into the execution field
    (`fold:PROPOSE`, `fold:RANK_PROPOSALS`) so they are declared, not just
    imported.
-13. Widen wildcard matching beyond trailing star, or declare the limitation in
+14. Widen wildcard matching beyond trailing star, or declare the limitation in
    the KGF.
+15. Add an idempotent, source-hash-checked projection loader for Micronaut
+    declaration/program/route rows; preserve read-only status and keep runtime
+    registration and XCFE admission independent.
 
 ## Verify
 

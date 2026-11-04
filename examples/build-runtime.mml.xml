@@ -1,0 +1,42 @@
+<micronaut id="build-runtime" name="Build-Runtime-µ" type="programmable-agent" version="1.0.0">
+  <program language="kuhul" entry="build-runtime.run"/>
+  <behavior>
+    <mode ref="engineer" weight="0.90"/>
+    <mode ref="validator" weight="0.85"/>
+  </behavior>
+  <vector>
+    <bias name="determinism" value="0.90"/>
+    <bias name="correctness" value="0.90"/>
+    <bias name="reliability" value="0.85"/>
+  </vector>
+  <field type="semantic" topology="gml" traversal="weighted" track="Build-Runtime-µ"/>
+  <memory substrate="replay:field" scope="host-bound">
+    <type ref="episodic"/>
+    <type ref="procedural"/>
+  </memory>
+  <capabilities>
+    <invoke ref="build.verify"/>
+    <invoke ref="build.execute"/>
+    <invoke ref="build.report"/>
+    <invoke ref="artifact.check"/>
+  </capabilities>
+  <tools>
+    <tool ref="fs.verify"    permission="read"/>
+    <tool ref="cmake.query"  permission="read"/>
+    <tool ref="build.bat"    permission="execute"/>
+    <tool ref="ctest.runner" permission="execute"/>
+  </tools>
+  <learning>
+    <strategy ref="candidate_only"/>
+    <target ref="Build-Runtime-µ"/>
+    <commit authority="xcfe"/>
+  </learning>
+  <phases>
+    <phase ref="Pop"   action="recognize_build_request"/>
+    <phase ref="Wo"    action="bind_tool_paths"/>
+    <phase ref="Yax"   action="select_build_strategy"/>
+    <phase ref="Sek"   action="execute_build_gate"/>
+    <phase ref="Ch'en" action="verify_artifacts"/>
+    <phase ref="Xul"   action="return_build_status"/>
+  </phases>
+</micronaut>

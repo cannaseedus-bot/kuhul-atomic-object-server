@@ -83,6 +83,29 @@ micronaut.bat kso                         # Package neighborhood.jsonl → field
 .\Micronaut.ps1 Package -InputPath neighborhood.jsonl -OutputPath field.kso -All
 ```
 
+Full action reference (AgentCreate, Chat, Services, Worker, StartPhaseRuntimeApi, etc.): @Micronaut.ps1
+
+## Skills
+
+Project skills live in `.claude/skills/`. Invoke with `/skill-name` or let Claude trigger them automatically.
+
+| Skill | Invocation | Purpose |
+|---|---|---|
+| `run-tests` | `/run-tests` | Run all 4 test suites in order with expected counts |
+| `build-runtime` | `/build-runtime` | Build `kuhul_phase_runtime.exe`; has paired `Build-Runtime-µ` micronaut |
+| `skill-creator` | `/skill-creator <name>` | Create a new skill + paired micronaut candidate via `mu-factory.py` |
+
+**Adding a new skill:** Use `/skill-creator <name>`. It writes `.claude/skills/<name>/SKILL.md`, generates `examples/<name>.mml.xml`, and scaffolds the micronaut candidate with `mu-factory.py create`. Review the candidate, then `python mu-factory.py admit micronaut/generated/candidates/agents/<name>` to promote it to the live daemon registry.
+
+**Skill ↔ Agent routing** (after admission): skills and their paired micronauts share an id and communicate through the orchestrator:
+- Skill → Agent: `POST /api/daemon/agents/<name>/reply`
+- Agent → Skill: phase action triggers skill invocation via orchestrator
+- Agent → Agent: `POST /api/daemon/agents/<other-name>/reply`
+
+Skills are formal first-class entities in the daemon: `@lanes.skills` (dict 1, bus=intent) in `daemon-bot.xjson` wires each skill to an expert via `@edges` at the Sek phase. When adding a skill through `/skill-creator`, also register it in that file to wire it into intent routing. Full daemon architecture: @daemon-bot.xjson
+
+**Model profiles** (backend, endpoint, temperature, context size) for all daemon actions are declared in `micronaut/models.toml` — including `[profiles.openai_compatible]` for OpenAI-compatible endpoints (LM Studio at `http://127.0.0.1:17889/v1`). Edit that file to change which model a skill or agent uses: @micronaut/models.toml
+
 ## Environment Variables
 
 | Variable | Default | Purpose |
