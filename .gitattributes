@@ -1,0 +1,15 @@
+# Normalize line endings to LF in the repo; check out as-is on Windows
+* text=auto eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+
+# Treat binary files as binary
+*.kso binary
+*.bson binary
+*.safetensors binary
+*.dll binary
+*.exe binary
+*.zip binary
+*.png binary
+*.ico binary

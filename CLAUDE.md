@@ -28,6 +28,19 @@ pip install -r requirements.txt
 pip install -e gguf-py/    # editable GGUF metadata package
 ```
 
+## Linting
+
+**JavaScript/Node.js:**
+```bash
+npm run lint          # ESLint across all .js/.cjs/.mjs files
+```
+
+**Python:**
+```bash
+ruff check micronaut/ tools/ flat/ field/    # check
+ruff check --fix micronaut/ tools/ flat/ field/  # auto-fix safe issues
+```
+
 ## Testing
 
 Run all four suites; all must pass before a change is considered complete:
